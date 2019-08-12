@@ -1,19 +1,28 @@
-import { RouteBase, RouteType, RouteSuccessResult } from "./route";
+import { RouteBase, RouteMethod, RouteSuccessResult, RequestModel, ResponseContentModel } from "./route";
+import { Config } from "../config";
+import urljoin from "url-join";
+import { Log } from "../log";
 
 export class HelloRoute extends RouteBase {
+    getRequestModel(): RequestModel {
+        throw new Error("Method not implemented.");
+    }
+    getResponseContentModel(): ResponseContentModel {
+        throw new Error("Method not implemented.");
+    }
     getPath(): string {
-        return "/";
+        return urljoin(Config.APIVersion(), "/hello");
     }
-    getType(): RouteType {
-        return RouteType.GET;
+
+    getRouteMethod(): RouteMethod {
+        return RouteMethod.GET;
     }
+
     getAction(): Function {
         return (req, res) => {
-            res.send(HelloRoute.Response());
+            //   res.type('application/json');
+            res.json(new RouteSuccessResult(HelloRoute.Message()));
         }
-        /* return () => {
-             return new RouteSuccessResult("Such a good time to drink a coffee!");
-         }*/
     }
-    static Response() { return "Such a good time to drink a coffee!"; }
+    static Message() { return "Such a good time to drink a coffee!"; }
 }

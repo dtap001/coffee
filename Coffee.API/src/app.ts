@@ -1,7 +1,6 @@
 import { Server } from "./server";
 import { Log } from "./log";
 import { CoffeeStorage } from "./storage";
-
 export class API {
     storage: CoffeeStorage;
     server: Server;
@@ -19,5 +18,4 @@ export class API {
         process.exit(0);
     }
 }
-
 new API();

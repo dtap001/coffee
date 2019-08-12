@@ -1,9 +1,8 @@
 {
   "compilerOptions": {
-    "target": "es5",
+    "target": "es6",
     "module": "commonjs",
     "outDir": "./dist",
-
     "strict": true,
     "noImplicitAny": false,
     "noUnusedLocals": false,
@@ -11,9 +10,25 @@
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
     "strictPropertyInitialization": false,
-
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports":true
   },
-  "include": ["src/**/*"],
-  "exclude": ["node_modules", "**/*.test.ts"]
+  "references": [
+    {
+      "path": "../Coffee.Common"
+    }
+  ],
+  "paths": {
+    "@src/*": [ "src/*" ],
+    "@common/*": [
+      "../Coffee.Common/*"
+    ]
+  },
+  "include": [
+    "src/**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "**/*.test.ts"
+  ]
 }

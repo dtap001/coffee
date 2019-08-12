@@ -13,6 +13,6 @@ export class Log {
         this.format(`DEBUG: ${msg} `);
     }
     static e(msg: string, error: any) {
-        this.format(`ERROR: ${msg} ${error} `);
+        this.format(`ERROR: ${msg} Err: ${JSON.stringify(error)} `);
     }
 }

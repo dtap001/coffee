@@ -1,23 +1,28 @@
-import { RouteBase, RouteType } from "./route";
+import { RouteBase, RouteMethod } from "./route";
+import { Log } from "../log";
 
 export class RouteFactory {
     private app;
     constructor(app) {
         this.app = app;
     }
-    register(route: RouteBase) {
-        switch (route.getType()) {
-            case RouteType.GET:
+
+    register<T extends RouteBase>(routeType: (new () => T)) {
+        let route = new routeType();
+
+        switch (route.getRouteMethod()) {
+            case RouteMethod.GET:
                 /*   this.app.get(route.getPath(),
                      //  new RouteActionWrapper(route.getAction()).onRouteActivation());*/
                 this.app.get(route.getPath(),
                     route.getAction());
                 break;
-            case RouteType.POST:
+            case RouteMethod.POST:
                 this.app.post(route.getPath(),
                     route.getAction());
                 break;
         }
+        Log.d(`Registered route: ${route.getPath()}`)
     };
 }
 export class RouteActionWrapper {
