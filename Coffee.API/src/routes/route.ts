@@ -8,10 +8,10 @@ export abstract class RouteBase {
     abstract getAction(): Function;
     abstract getRequestModel(): RequestModel;
     abstract getResponseContentModel(): ResponseContentModel;
-
-    validate(req: express.Request, model: RequestModel) {
-        if (!deepEqual(req.body, model)) {
-            throw new RouteError({message:`Expected model for this route: ${JSON.stringify(model)}`});
+    validate<T extends RequestModel>(req: express.Request, model: (new () => T)) {
+        let modelInstance = new model();
+        if (!deepEqual(req.body, modelInstance)) {
+            throw new InvalidRequestModelError({ message: `Expected model for this route: ${JSON.stringify(modelInstance)}` });
         }
     }
 }
@@ -46,11 +46,18 @@ export class RouteError extends Error {
     constructor(args: { message: string, err?: Error }) {
         super();
         this.message = args.message;
-        this.code = uuid.v4();
-        Log.e(`Code: ${this.code}`, args.err);
+        this.uid = uuid.v4();
+        Log.e(`UID: ${this.uid} Msg: ${args.message}`, args.err);
     }
-    message: string;
-    code: string;
+    public message: string;
+    public uid: string;
+    code = 500;
+}
+export class InvalidRequestModelError extends RouteError {
+    constructor(args: { message: string, err?: Error }) {
+        super(args);
+        this.code = 400;
+    }
 }
 export enum RouteMethod {
     GET,

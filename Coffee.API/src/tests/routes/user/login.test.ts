@@ -13,7 +13,8 @@ const server = new Server();
 const route = new LoginRoute();
 describe(`Testing ${route.getPath()}`, () => {
     it('Should 400 because invalid request', (done) => {
-        chaiRequestLib(server.getApp()).get(route.getPath())
+        chaiRequestLib(server.getApp()).post(route.getPath())
+            .set('content-type', 'application/json')
             .send(
                 { "passwordHashX": "asd", "userX": "asd" }
             )
@@ -26,7 +27,8 @@ describe(`Testing ${route.getPath()}`, () => {
     }).timeout(8000);
 
     it('Should return invalid login data', (done) => {
-        chaiRequestLib(server.getApp()).get(route.getPath())
+        chaiRequestLib(server.getApp()).post(route.getPath())
+            .set('content-type', 'application/json')
             .send(
                 new LoginRequest().init(
                     { passwordHash: "asd", user: "asd" })

@@ -10,7 +10,7 @@
             "name": "Run mocha",
             "env": {
                 //"TS_NODE_PROJECT": "./tsconfig.commonjs.json"
-                "TS_NODE_COMPILER_OPTIONS":"{\"esModuleInterop\": true}"
+                "TS_NODE_COMPILER_OPTIONS": "{\"esModuleInterop\": true,\"experimentalDecorators\":true,\"emitDecoratorMetadata\":true}"
             },
             "program": "${workspaceFolder}/Coffee.API/node_modules/mocha/bin/_mocha",
             "args": [

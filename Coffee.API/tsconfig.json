@@ -11,7 +11,17 @@
     "noFallthroughCasesInSwitch": true,
     "strictPropertyInitialization": false,
     "esModuleInterop": true,
-    "allowSyntheticDefaultImports":true
+    "allowSyntheticDefaultImports": true,
+    "lib": [
+      "es6",
+      "dom"
+    ],
+    "types": [
+      "reflect-metadata"
+    ],
+    "moduleResolution": "node",
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true
   },
   "references": [
     {
@@ -19,7 +29,9 @@
     }
   ],
   "paths": {
-    "@src/*": [ "src/*" ],
+    "@src/*": [
+      "src/*"
+    ],
     "@common/*": [
       "../Coffee.Common/*"
     ]

@@ -13,11 +13,9 @@ export class HelloRoute extends RouteBase {
     getPath(): string {
         return urljoin(Config.APIVersion(), "/hello");
     }
-
     getRouteMethod(): RouteMethod {
         return RouteMethod.GET;
     }
-
     getAction(): Function {
         return (req, res) => {
             //   res.type('application/json');
