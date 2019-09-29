@@ -10,7 +10,7 @@ export class LoginRoute extends RouteBase {
         return new LoginRequest();
     }
     getResponseContentModel(): ResponseContentModel {
-        throw new Error("Method not implemented.");
+        throw new Error("Method not implemented. YET");
     }
     getPath(): string {
         return Config.APIVersion() + "/user/login";
