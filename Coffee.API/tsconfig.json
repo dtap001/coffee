@@ -23,11 +23,7 @@
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true
   },
-  "references": [
-    {
-      "path": "../Coffee.Common"
-    }
-  ],
+  "references": [],
   "paths": {
     "@src/*": [
       "src/*"

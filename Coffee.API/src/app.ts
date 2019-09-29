@@ -3,6 +3,8 @@ import { Log } from "./log";
 import { IStorage } from "./storage/istorage";
 import TYPES from "./types";
 import container from "./diContainer";
+import "reflect-metadata"; // type ORM needs the invocation in global namespace
+
 export class API {
     server: Server;
 

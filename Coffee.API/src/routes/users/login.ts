@@ -10,7 +10,7 @@ export class LoginRoute extends RouteBase {
         return new LoginRequest();
     }
     getResponseContentModel(): ResponseContentModel {
-        throw new Error("Method not implemented. YET");
+        throw new Error("Method not implemented.");
     }
     getPath(): string {
         return Config.APIVersion() + "/user/login";
@@ -24,9 +24,8 @@ export class LoginRoute extends RouteBase {
 
             var storage = container.get<IStorage>(TYPES.Storage);
             let resultUser = storage.getUser((req.body as LoginRequest).user, (req.body as LoginRequest).passwordHash);
-            
-            res.type('application/json');
-            res.json(new LoginResponse());
+
+            this.sendResponse(res, new LoginResponse());
         }
     }
 }

@@ -14,6 +14,10 @@ export abstract class RouteBase {
             throw new InvalidRequestModelError({ message: `Expected model for this route: ${JSON.stringify(modelInstance)}` });
         }
     }
+    sendResponse(res:express.Response, responsenContent:ResponseContentModel){
+        res.type('application/json');
+        res.json(responsenContent);
+    }
 }
 
 export class RequestModel { }
