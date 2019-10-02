@@ -10,9 +10,9 @@ export abstract class RouteBase {
     abstract getResponseContentModel(): ResponseContentModel;
     validate<T extends RequestModel>(req: express.Request, model: (new () => T)) {
         let modelInstance = new model();
-        if (!deepEqual(req.body, modelInstance)) {
+       /* if (!deepEqual(req.body, modelInstance)) {
             throw new InvalidRequestModelError({ message: `Expected model for this route: ${JSON.stringify(modelInstance)}` });
-        }
+        }*/
     }
     sendResponse(res:express.Response, responsenContent:ResponseContentModel){
         res.type('application/json');

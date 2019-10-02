@@ -1,10 +1,9 @@
 import { Container } from "inversify";
-import { IStorage } from "./storage/istorage";
 import TYPES from "./types";
-import { SQLiteStorage } from "./storage/SQLiteStorage";
+import { CoffeeStorage } from "./storage/Storage";
 
 var container = new Container();
 container = new Container();
-container.bind<IStorage>(TYPES.Storage).to(SQLiteStorage).inSingletonScope();
+container.bind<CoffeeStorage>(TYPES.Storage).to(CoffeeStorage).inSingletonScope();
 
 export default container;

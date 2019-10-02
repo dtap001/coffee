@@ -2,25 +2,16 @@ import { Entity, Column, PrimaryGeneratedColumn, OneToOne, JoinColumn, OneToMany
 import { Role } from "./Role";
 
 @Entity()
-export class User {
+export class UserEntity {
 
     @PrimaryGeneratedColumn()
-    id: number;
-
-    @Column("int")
-    height: number;
-
-    @Column("int")
-    width: number;
+    id: number;   
 
     @Column()
-    orientation: string;
+    passwordHash: string;
 
     @Column()
-    compressed: boolean;
-
-    @Column()
-    comment: string;
+    email: string;
 
     @OneToMany(type => Role, role => role.id)
     roles: Role[];

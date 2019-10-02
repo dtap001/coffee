@@ -1,9 +1,9 @@
 import { RouteBase, RouteMethod as RouteMethod, RequestModel, ResponseContentModel } from "../route";
 import * as express from "express"
 import { Config } from "../../config";
-import { IStorage } from "../../storage/istorage";
 import TYPES from "../../types";
 import container from "../../diContainer";
+import { CoffeeStorage } from "../../storage/Storage";
 
 export class LoginRoute extends RouteBase {
     getRequestModel(): RequestModel {
@@ -21,11 +21,13 @@ export class LoginRoute extends RouteBase {
     getAction(): Function {
         return (req: express.Request, res: express.Response) => {
             this.validate(req, LoginRequest);
+            let that = this;
+            var storage = container.get<CoffeeStorage>(TYPES.Storage);
+            storage.getUser((req.body as LoginRequest).user, (req.body as LoginRequest).passwordHash).then(function (user) {
+                that.sendResponse(res, { JWT: user.name } as LoginResponse);
+            }).catch(function (err) {
 
-            var storage = container.get<IStorage>(TYPES.Storage);
-            let resultUser = storage.getUser((req.body as LoginRequest).user, (req.body as LoginRequest).passwordHash);
-
-            this.sendResponse(res, new LoginResponse());
+            });
         }
     }
 }
