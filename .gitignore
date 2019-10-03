@@ -62,3 +62,6 @@ typings/
 
 #ts->js
 Coffee.API/dist
+Coffee.API/jwt/private.key
+Coffee.API/jwt/public.key
+Coffee.API/coffee.sqlite
