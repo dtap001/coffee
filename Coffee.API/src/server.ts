@@ -15,7 +15,7 @@ export class Server {
         this.app = express();
         this.app.use(bodyParser.json())
         this.app.use(bodyParser.urlencoded({ extended: false }))
-     
+
         this.registerRoutes();
         this.app.listen(Config.Port(), err => {
             if (err) {
@@ -27,7 +27,11 @@ export class Server {
 
     registerRoutes() {
         this.app.use(function (req: express.Request, res, next) {
-            Log.i(`Incoming request URL: ${req.url}`);
+            if (Config.IsDebug()) {
+                Log.i(`Incoming request URL: ${req.url} Body: ${JSON.stringify(req.body)}`);
+            } else {
+                Log.i(`Incoming request URL: ${req.url}`);
+            }
             next();
         });
         let factory = new RouteFactory(this.app);
@@ -35,7 +39,7 @@ export class Server {
         factory.register(LoginRoute);
 
         // configure the app to use bodyParser()
-       //  this.app.use(express.json());
+        //  this.app.use(express.json());
         /*   this.app.use(express.json({
              inflate: true,
              limit: '100kb',
@@ -54,7 +58,7 @@ export class Server {
             res.json(new RouteErrorResult(error));
         });
         this.app.use(function (req: express.Request, res, next) {
-            res.status(404).send(new RouteErrorResult(new RouteError(new Error(`Invalid route: ${req.url}`))));
+            res.status(404).send(new RouteErrorResult(new RouteError(`Invalid route: ${req.url}`)));
         });
     }
 }

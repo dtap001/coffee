@@ -1,4 +1,5 @@
 import moment = require("moment");
+import { Config } from "./config";
 
 export class Log {
     private static format(msg) {
@@ -10,6 +11,7 @@ export class Log {
     }
 
     static d(msg: string) {
+        if(Config.IsDebug()){return;}
         this.format(`DEBUG: ${msg} `);
     }
     static e(msg: string, error: any) {

@@ -1,9 +1,10 @@
 import { Server } from "./server";
-import { Log } from "./log"; 
+import { Log } from "./log";
 import TYPES from "./types";
 import container from "./diContainer";
 import "reflect-metadata"; // type ORM needs the invocation in global namespace
-import { CoffeeStorage } from "./storage/Storage";
+import { CoffeeStorage } from "./storage/storage";
+import { RoleCache } from "./cache/roleCache";
 
 export class API {
     server: Server;
@@ -11,10 +12,11 @@ export class API {
     constructor() {
         Log.i(`API has started. Current path ${__dirname}. \nConnecting to DB`);
         var storage = container.get<CoffeeStorage>(TYPES.Storage);
-
-        storage.initialize().then(() => {
+       storage.initialize().then(() => {
             Log.i("Starting server.");
             this.server = new Server();
+            let cache = new RoleCache();
+       
         }, (err) => {
             this.DIE();
         });

@@ -1,11 +1,16 @@
-import { RouteBase, RouteMethod as RouteMethod, RequestModel, ResponseContentModel } from "../route";
+import { RouteBase, RouteMethod as RouteMethod, RequestModel, ResponseContentModel, RouteSuccessResult, RouteErrorResult, BaseEror, RouteError } from "../route";
 import * as express from "express"
 import { Config } from "../../config";
 import TYPES from "../../types";
 import container from "../../diContainer";
-import { CoffeeStorage } from "../../storage/Storage";
+import { CoffeeStorage } from "../../storage/storage";
+import { CoffeeJWT } from "../../jwt";
+import { RoleEntity } from "../../storage/entities/Role";
 
 export class LoginRoute extends RouteBase {
+    getSufficientRoles(): [RoleEntity] {
+        throw new Error("Method not implemented.");
+    }
     getRequestModel(): RequestModel {
         return new LoginRequest();
     }
@@ -23,10 +28,11 @@ export class LoginRoute extends RouteBase {
             this.validate(req, LoginRequest);
             let that = this;
             var storage = container.get<CoffeeStorage>(TYPES.Storage);
+            let jwt = new CoffeeJWT();
             storage.getUser((req.body as LoginRequest).user, (req.body as LoginRequest).passwordHash).then(function (user) {
-                that.sendResponse(res, { JWT: user.name } as LoginResponse);
-            }).catch(function (err) {
-
+                that.sendRouteResult(res, new RouteSuccessResult(new LoginResponse(jwt.sign())));// { content: new LoginResponse("") } as RouteSuccessResult);
+            }).catch(function (err: RouteError) {
+                that.sendRouteResult(res, new RouteErrorResult(err));
             });
         }
     }
@@ -34,6 +40,10 @@ export class LoginRoute extends RouteBase {
 
 export class LoginResponse extends ResponseContentModel {
     JWT: string;
+    constructor(jwt: string) {
+        super();
+        this.JWT = jwt;
+    }
 }
 
 export class LoginRequest extends RequestModel {
