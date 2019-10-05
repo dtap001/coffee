@@ -4,7 +4,7 @@ import urljoin from "url-join";
 import { Log } from "../log";
 
 export class HelloRoute extends RouteBase {
-    getSufficientRoles(): [import("../storage/entities/Role").RoleEntity] {
+    getSufficientRoles(): string[] {
         throw new Error("Method not implemented.");
     }
     getRequestModel(): RequestModel {

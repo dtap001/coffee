@@ -1,7 +1,7 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToOne, JoinColumn, OneToMany } from "typeorm";  
+import { Entity, Column, PrimaryGeneratedColumn,  ManyToMany,  JoinTable } from "typeorm";  
 
 import { RoleEntity } from "./Role";
-@Entity()
+@Entity("Users")
 export class UserEntity {
 
     @PrimaryGeneratedColumn()
@@ -13,6 +13,8 @@ export class UserEntity {
     @Column()
     email: string;
 
-    @OneToMany(type => RoleEntity, role => role.id)
-    roles: RoleEntity[];
+    @ManyToMany(type => RoleEntity)
+    @JoinTable() 
+     roles: RoleEntity[];
+     
 }

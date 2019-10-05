@@ -1,6 +1,6 @@
 import {Entity, Column, PrimaryGeneratedColumn, OneToOne, JoinColumn} from "typeorm";
 
-@Entity()
+@Entity("Roles")
 export class RoleEntity {
 
     @PrimaryGeneratedColumn()

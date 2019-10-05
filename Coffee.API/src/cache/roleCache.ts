@@ -8,13 +8,8 @@ import { Log } from "../log";
 
 export class RoleCache {
     roles: RoleEntity[];
-    constructor() {
-        let that = this;
+    async initialize() {
         let storage = container.get<CoffeeStorage>(TYPES.Storage);
-        storage.getRoles().then(function (roles) {
-            that.roles = roles;
-        }).catch(function (err) {
-            Log.e(err, err);
-        });
+        this.roles = await storage.getRoles();
     }
 }

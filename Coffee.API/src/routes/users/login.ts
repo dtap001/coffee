@@ -8,7 +8,7 @@ import { CoffeeJWT } from "../../jwt";
 import { RoleEntity } from "../../storage/entities/Role";
 
 export class LoginRoute extends RouteBase {
-    getSufficientRoles(): [RoleEntity] {
+    getSufficientRoles(): string[] {
         throw new Error("Method not implemented.");
     }
     getRequestModel(): RequestModel {
@@ -30,7 +30,7 @@ export class LoginRoute extends RouteBase {
             var storage = container.get<CoffeeStorage>(TYPES.Storage);
             let jwt = new CoffeeJWT();
             storage.getUser((req.body as LoginRequest).user, (req.body as LoginRequest).passwordHash).then(function (user) {
-                that.sendRouteResult(res, new RouteSuccessResult(new LoginResponse(jwt.sign())));// { content: new LoginResponse("") } as RouteSuccessResult);
+                that.sendRouteResult(res, new RouteSuccessResult(new LoginResponse(jwt.sign(user.roles))));
             }).catch(function (err: RouteError) {
                 that.sendRouteResult(res, new RouteErrorResult(err));
             });

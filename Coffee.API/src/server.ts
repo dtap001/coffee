@@ -7,11 +7,15 @@ import { RouteErrorResult, RouteError } from "./routes/route";
 import { LoginRoute } from "./routes/users/login";
 //var bodyParser = require('body-parser');
 import bodyParser from "body-parser";
+import { GetUsersRoute } from "./routes/users/get";
 
 export class Server {
     private app;
     public getApp() { return this.app; }
-    constructor() {
+
+    async initialize() {
+        Log.i("Starting server.");
+
         this.app = express();
         this.app.use(bodyParser.json())
         this.app.use(bodyParser.urlencoded({ extended: false }))
@@ -19,9 +23,10 @@ export class Server {
         this.registerRoutes();
         this.app.listen(Config.Port(), err => {
             if (err) {
-                return console.error(err);
+                return Promise.reject(err);
             }
-            return Log.i(`Express server is listening on ${Config.Port()}`);
+            Log.i(`Server is listening on ${Config.Port()}`);
+            return Promise.resolve();
         });
     }
 
@@ -37,6 +42,7 @@ export class Server {
         let factory = new RouteFactory(this.app);
         factory.register(HelloRoute);
         factory.register(LoginRoute);
+        factory.register(GetUsersRoute);
 
         // configure the app to use bodyParser()
         //  this.app.use(express.json());

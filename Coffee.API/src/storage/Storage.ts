@@ -13,6 +13,8 @@ import { RoleEntity } from "./entities/Role";
 export class CoffeeStorage {
     private _connection: Connection;
     async initialize() {
+        Log.i(`Connecting to DB: ${__dirname}.`);
+
         try {
             let connection = await createConnection({
                 type: "sqlite",
@@ -25,22 +27,35 @@ export class CoffeeStorage {
                 synchronize: true,
             });
             this._connection = connection;
+            Log.i("DB is connected");
+            return Promise.resolve();
         } catch (err) {
             Log.e(`Could not connect to the DB ${err} `, err)
-            throw new DBError("Could not connect to the DB");
+            return Promise.reject("Could not connect to the DB");
         }
     }
 
     async getUser(email: string, passwordHash: string): Promise<User> {
         try {
-            let user = await this._connection.getRepository(UserEntity).findOne({ email: email, passwordHash: passwordHash } as UserEntity);
+            let user = await this._connection.getRepository(UserEntity).findOne({ email: email, passwordHash: passwordHash } as UserEntity, { relations: ["roles"] });
             if (user == null || user == undefined) {
                 return Promise.reject(new RouteError("User not found"));
             }
-            return Promise.resolve({ name: user.email, passwordHash: user.passwordHash } as User);
+            return Promise.resolve({ name: user.email, roles: user.roles.map(e => e.caption) } as User);
         } catch (err) {
             Log.e("Getuser error: " + err, err);
-            throw new DBError();
+            return Promise.reject(err)
+        }
+    }
+
+    async getUsers(queryString: string): Promise<User[]> {
+        try {
+            let users = await this._connection.getRepository(UserEntity).find({ relations: ["roles"] });
+
+            return Promise.resolve(users.map(user => { return { name: user.email, roles: user.roles.map(role => role.caption) } as User }));
+        } catch (err) {
+            Log.e("Getusers error: " + err, err);
+            return Promise.reject(err)
         }
     }
 

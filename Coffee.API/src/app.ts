@@ -4,23 +4,28 @@ import TYPES from "./types";
 import container from "./diContainer";
 import "reflect-metadata"; // type ORM needs the invocation in global namespace
 import { CoffeeStorage } from "./storage/storage";
-import { RoleCache } from "./cache/roleCache";
+import { CoffeCache } from "./storage/coffe.cache";
 
 export class API {
-    server: Server;
+    server = new Server();
 
     constructor() {
-        Log.i(`API has started. Current path ${__dirname}. \nConnecting to DB`);
+        Log.i("API initialization starting.");
         var storage = container.get<CoffeeStorage>(TYPES.Storage);
-       storage.initialize().then(() => {
-            Log.i("Starting server.");
-            this.server = new Server();
-            let cache = new RoleCache();
-       
-        }, (err) => {
+        var cache = container.get<CoffeCache>(TYPES.Cache);
+        try {
+            const init = async () => {
+                await storage.initialize();
+                await cache.initialize();
+                await this.server.initialize();
+            }
+            init();
+        } catch (err) {
+            Log.e("Initialization interrupted. Exiting.", err);
             this.DIE();
-        });
+        }
     }
+
     DIE() {
         process.exit(0);
     }

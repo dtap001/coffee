@@ -3,8 +3,11 @@ import { Log } from "../log";
 var deepEqual = require('deep-equal')
 import express from "express";
 import { RoleEntity } from "../storage/entities/Role";
+import { CoffeeJWT, JWTResult } from "../jwt";
+import container from "../diContainer";
+import TYPES from "../types";
 export abstract class RouteBase {
-    abstract getSufficientRoles(): [RoleEntity];
+    abstract getSufficientRoles(): string[];
     abstract getPath(): string;
     abstract getRouteMethod(): RouteMethod;
     abstract getAction(): Function;
@@ -15,6 +18,26 @@ export abstract class RouteBase {
         /* if (!deepEqual(req.body, modelInstance)) {
              throw new InvalidRequestModelError({ message: `Expected model for this route: ${JSON.stringify(modelInstance)}` });
          }*/
+    }
+    authorize(req: express.Request, res: express.Response, requiredRoles: string[]) {
+        var jwt = container.get<CoffeeJWT>(TYPES.JWT);
+
+        let token = req.headers['x-access-token'] || req.headers['authorization']; // Express headers are auto converted to lowercase
+        if ((token as string).startsWith('Bearer ')) {
+            // Remove Bearer from string
+            token = token.slice(7, token.length);
+        }
+        let result = jwt.verify(token as string);
+        if (!result.isValid) {
+            //  this.sendRouteResult(res, new RouteErrorResult(new UnauthorizedError(req.path)))
+            throw new UnauthorizedError(req.path);
+        }
+        for (var i = 0; i < result.roles.length; i++) {
+            if (requiredRoles.includes(result.roles[i])) {
+                return;
+            }
+        }
+        throw new UnauthorizedError(req.path);
     }
     sendRouteResult(res: express.Response, result: RouteResult) {
         res.type('application/json');
@@ -65,6 +88,15 @@ export class RouteError extends BaseEror {
         Log.e(`Route Error | UID: ${this.uid} Msg: ${message}`, null);
     }
     code = 400;
+}
+
+// Used when client should not  use that route
+export class UnauthorizedError extends BaseEror {
+    constructor(message: string) {
+        super(message);
+        Log.e(`Unauthorized | UID: ${this.uid} Msg: ${message}`, null);
+    }
+    code = 401;
 }
 
 // used when something went wrong inside the server 

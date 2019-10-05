@@ -22,7 +22,7 @@ export class RouteFactory {
                     route.getAction());
                 break;
         }
-        Log.d(`Registered route: ${route.getPath()}`)
+        Log.i(`Registered route: ${route.getPath()}`)
     };
 }
 export class RouteActionWrapper {
