@@ -1,0 +1,11 @@
+{
+    "mochaExplorer.cwd": "Coffee.API",
+    "mochaExplorer.files": "Coffee.API/src/tests/**/*.ts",
+    "mochaExplorer.require": "ts-node/register",
+    "mochaExplorer.logpanel": true,
+    "editor.formatOnSave": true,
+    "typescript.tsdk": "node_modules\\typescript\\lib",
+    "mochaExplorer.debuggerPort": 9228,
+    "mochaExplorer.exit": true,
+    "mochaExplorer.timeout": 10000
+}

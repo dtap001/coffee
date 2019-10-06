@@ -3,11 +3,13 @@ import { Config } from "./config";
 import { RouteFactory } from "./routes/routeFactory";
 import { HelloRoute } from "./routes/hello";
 import { Log } from "./log";
-import { RouteErrorResult, RouteError } from "./routes/route";
+import { RouteErrorResult, RouteError, BaseEror } from "./routes/route";
 import { LoginRoute } from "./routes/users/login";
 //var bodyParser = require('body-parser');
 import bodyParser from "body-parser";
 import { GetUsersRoute } from "./routes/users/get";
+import { DeleteUserRoute } from "./routes/users/delete";
+import { SaveUserRoute } from "./routes/users/save";
 
 export class Server {
     private app;
@@ -43,6 +45,8 @@ export class Server {
         factory.register(HelloRoute);
         factory.register(LoginRoute);
         factory.register(GetUsersRoute);
+        factory.register(DeleteUserRoute);
+        factory.register(SaveUserRoute);
 
         // configure the app to use bodyParser()
         //  this.app.use(express.json());
@@ -57,7 +61,7 @@ export class Server {
 
         this.app.use(function (err, req, res: express.Response, next) {
             let error = err;
-            if (!(err instanceof RouteError)) {//convert every error to route error
+            if (!(err instanceof BaseEror)) {//convert every error to route error
                 error = new RouteError(err);
             }
             res.statusCode = (err as RouteError).code;

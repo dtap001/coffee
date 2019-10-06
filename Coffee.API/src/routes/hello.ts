@@ -1,16 +1,8 @@
 import { RouteBase, RouteMethod, RouteSuccessResult, RequestModel, ResponseContentModel } from "./route";
 import { Config } from "../config";
-import urljoin from "url-join";
-import { Log } from "../log";
-
+import urljoin from "url-join"; 
 export class HelloRoute extends RouteBase {
     getSufficientRoles(): string[] {
-        throw new Error("Method not implemented.");
-    }
-    getRequestModel(): RequestModel {
-        throw new Error("Method not implemented.");
-    }
-    getResponseContentModel(): ResponseContentModel {
         throw new Error("Method not implemented.");
     }
     getPath(): string {
@@ -21,7 +13,6 @@ export class HelloRoute extends RouteBase {
     }
     getAction(): Function {
         return (req, res) => {
-            //   res.type('application/json');
             res.json(new RouteSuccessResult(HelloRoute.Message()));
         }
     }

@@ -11,8 +11,6 @@ export abstract class RouteBase {
     abstract getPath(): string;
     abstract getRouteMethod(): RouteMethod;
     abstract getAction(): Function;
-    abstract getRequestModel(): RequestModel;
-    abstract getResponseContentModel(): ResponseContentModel;
     validate<T extends RequestModel>(req: express.Request, model: (new () => T)) {
         let modelInstance = new model();
         /* if (!deepEqual(req.body, modelInstance)) {
@@ -29,15 +27,14 @@ export abstract class RouteBase {
         }
         let result = jwt.verify(token as string);
         if (!result.isValid) {
-            //  this.sendRouteResult(res, new RouteErrorResult(new UnauthorizedError(req.path)))
-            throw new UnauthorizedError(req.path);
+            throw new UnauthorizedError(`JWT token is invalid.`);
         }
         for (var i = 0; i < result.roles.length; i++) {
             if (requiredRoles.includes(result.roles[i])) {
                 return;
             }
         }
-        throw new UnauthorizedError(req.path);
+        throw new UnauthorizedError(`Insufficent roles for route ${req.path}`);
     }
     sendRouteResult(res: express.Response, result: RouteResult) {
         res.type('application/json');

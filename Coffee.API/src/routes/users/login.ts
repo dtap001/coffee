@@ -11,12 +11,6 @@ export class LoginRoute extends RouteBase {
     getSufficientRoles(): string[] {
         throw new Error("Method not implemented.");
     }
-    getRequestModel(): RequestModel {
-        return new LoginRequest();
-    }
-    getResponseContentModel(): ResponseContentModel {
-        throw new Error("Method not implemented.");
-    }
     getPath(): string {
         return Config.APIVersion() + "/user/login";
     }

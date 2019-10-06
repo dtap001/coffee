@@ -4,8 +4,6 @@ import { Config } from "../../config";
 import TYPES from "../../types";
 import container from "../../diContainer";
 import { CoffeeStorage } from "../../storage/storage";
-import { CoffeeJWT } from "../../jwt";
-import { RoleEntity } from "../../storage/entities/Role";
 import { User } from "../../models/user";
 import { CoffeCache } from "../../storage/coffe.cache";
 
@@ -13,12 +11,6 @@ export class GetUsersRoute extends RouteBase {
     getSufficientRoles(): string[] {
         let roles = container.get<CoffeCache>(TYPES.Cache).AllRoles;
         return roles.map(r => r.caption);
-    }
-    getRequestModel(): RequestModel {
-        return new GetUsersRequest();
-    }
-    getResponseContentModel(): ResponseContentModel {
-        throw new Error("Method not implemented.");
     }
     getPath(): string {
         return Config.APIVersion() + "/user/get";

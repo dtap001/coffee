@@ -11,7 +11,7 @@ import { RoleEntity } from "./entities/Role";
 
 @injectable()
 export class CoffeeStorage {
-    private _connection: Connection;
+    protected _connection: Connection;
     async initialize() {
         Log.i(`Connecting to DB: ${__dirname}.`);
 
@@ -58,7 +58,36 @@ export class CoffeeStorage {
             return Promise.reject(err)
         }
     }
-
+    async deleteUser(id: number): Promise<void> {
+        try {
+            await this._connection.getRepository(UserEntity).delete({ id: id });
+            return Promise.resolve();
+        } catch (err) {
+            Log.e("deleteUser error: " + err, err);
+            return Promise.reject(err)
+        }
+    }
+    async saveUser(user: User): Promise<void> {
+        try {
+            let userEntity = await this._connection.getRepository(UserEntity).findOne({ id: user.id });
+            if (userEntity == null) {//create
+                await this._connection.getRepository(UserEntity).save({
+                    passwordHash: "test",
+                    email: user.email,
+                    name: user.name
+                } as UserEntity);
+            } else {//update
+                userEntity.passwordHash = user.passwordHash;
+                userEntity.email = user.email;
+                userEntity.name = user.name;
+                await this._connection.getRepository(UserEntity).save(userEntity);
+            }
+            return Promise.resolve();
+        } catch (err) {
+            Log.e("saveUser error: " + err, err);
+            return Promise.reject(err)
+        }
+    }
     async getRoles(): Promise<RoleEntity[]> {
         try {
             let roles = await this._connection.getRepository(RoleEntity).find();
