@@ -23,7 +23,7 @@ export class LoginRoute extends RouteBase {
             let that = this;
             var storage = container.get<CoffeeStorage>(TYPES.Storage);
             let jwt = new CoffeeJWT();
-            storage.getUser((req.body as LoginRequest).user, (req.body as LoginRequest).passwordHash).then(function (user) {
+            storage.getUser((req.body as LoginRequest).email, (req.body as LoginRequest).passwordHash).then(function (user) {
                 that.sendRouteResult(res, new RouteSuccessResult(new LoginResponse(jwt.sign(user.roles))));
             }).catch(function (err: RouteError) {
                 that.sendRouteResult(res, new RouteErrorResult(err));
@@ -41,10 +41,10 @@ export class LoginResponse extends ResponseContentModel {
 }
 
 export class LoginRequest extends RequestModel {
-    init(args: { user: string, passwordHash: string }) {
-        this.user = args.user;
+    init(args: { email: string, passwordHash: string }) {
+        this.email = args.email;
         this.passwordHash = args.passwordHash;
     }
-    public user: string = "";
+    public email: string = "";
     public passwordHash: string = "";
 }

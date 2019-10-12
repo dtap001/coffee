@@ -4,7 +4,6 @@ import { Config } from "../../config";
 import TYPES from "../../types";
 import container from "../../diContainer";
 import { CoffeeStorage } from "../../storage/storage";
-import { User } from "../../models/user";
 import { CoffeCache } from "../../storage/coffe.cache";
 
 export class DeleteUserRoute extends RouteBase {

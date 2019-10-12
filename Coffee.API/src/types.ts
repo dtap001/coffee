@@ -1,7 +1,9 @@
 let TYPES = {
     Storage: Symbol("Storage"),
     Cache: Symbol("Cache"),
-    JWT: Symbol("JWT")
+    JWT: Symbol("JWT"),
+    WOLUtil: Symbol("WOLUtil"),
+    JobManager: Symbol("JobManager")
 };
 
 export default TYPES;

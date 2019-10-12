@@ -7,9 +7,10 @@ import { RouteErrorResult, RouteError, BaseEror } from "./routes/route";
 import { LoginRoute } from "./routes/users/login";
 //var bodyParser = require('body-parser');
 import bodyParser from "body-parser";
-import { GetUsersRoute } from "./routes/users/get";
 import { DeleteUserRoute } from "./routes/users/delete";
 import { SaveUserRoute } from "./routes/users/save";
+import { SearchUsersRoute } from "./routes/users/search";
+import { SearchTargetsRoute } from "./routes/targets/search";
 
 export class Server {
     private app;
@@ -44,9 +45,10 @@ export class Server {
         let factory = new RouteFactory(this.app);
         factory.register(HelloRoute);
         factory.register(LoginRoute);
-        factory.register(GetUsersRoute);
+        factory.register(SearchUsersRoute);
         factory.register(DeleteUserRoute);
         factory.register(SaveUserRoute);
+        factory.register(SearchTargetsRoute);
 
         // configure the app to use bodyParser()
         //  this.app.use(express.json());

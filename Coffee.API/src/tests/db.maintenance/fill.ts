@@ -1,11 +1,6 @@
 import 'mocha';
 import * as chai from 'chai';
 import chaiHttp = require('chai-http');
-import { Server } from '../../server';
-import { HelloRoute } from '../../routes/hello';
-import container from '../../diContainer';
-import { CoffeeStorage } from '../../storage/storage';
-import TYPES from '../../types';
 import { Log } from '../../log';
 import { RoleEntity } from '../../storage/entities/Role';
 import { UserEntity } from '../../storage/entities/User';
@@ -47,7 +42,10 @@ describe('Filling DB', () => {
 
                 let adminRole = await storage.con.getRepository(RoleEntity).findOne({ caption: "admin" } as RoleEntity);
 
-                let admin = new UserEntity();
+                let admin = await storage.con.getRepository(UserEntity).findOne({ name: "admin" } as UserEntity);
+                if (admin == null) {
+                    admin = new UserEntity();
+                }
                 admin.name = "admin";
                 admin.email = "admin@admin.hu";
                 admin.passwordHash = "pass";

@@ -10,6 +10,6 @@ export class RoleCache {
     roles: RoleEntity[];
     async initialize() {
         let storage = container.get<CoffeeStorage>(TYPES.Storage);
-        this.roles = await storage.getRoles();
+        this.roles = await storage.getAllRoles();
     }
 }

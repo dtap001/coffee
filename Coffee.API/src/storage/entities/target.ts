@@ -1,18 +1,13 @@
 import { Entity, Column, PrimaryGeneratedColumn, OneToOne, JoinColumn, OneToMany, ManyToMany } from "typeorm";
-import { Role } from "./Role";
 
 @Entity()
-export class Target {
-
+export class TargetEntity {
     @PrimaryGeneratedColumn()
     id: number;
-
     @Column()
-    address: string;
-
+    macAddress: string;
     @Column()
-    caption: string;  
-
-    @OneToMany(type => Role, role => role.id)
-    roles: Role[];
+    ipAddress: string;
+    @Column()
+    caption: string;
 }

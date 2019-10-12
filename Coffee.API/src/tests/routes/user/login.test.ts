@@ -1,19 +1,26 @@
+import "reflect-metadata" // type ORM needs the invocation in global namespace
 import 'mocha';
 import * as chai from 'chai';
 import chaiHttp = require('chai-http');
-import { Server } from '../../../server';
-import { LoginRoute, LoginRequest } from '../../../routes/users/login';
+//import { LoginRoute, LoginRequest } from '../../../routes/users/login';
+import { API } from "../../../api";
 chai.use(chaiHttp);
 
 let chaiLib = <any>chai;
 let chaiRequestLib = chaiLib.default.request;
 let chaiAsserLib = chaiLib.default.assert;
+let _api;
+//let route;//= new LoginRoute();
 
-const server = new Server();
-const route = new LoginRoute();
-describe(`Testing ${route.getPath()}`, () => {
+describe(`Testing `, () => {
+    beforeEach(function () {
+        _api = new API();
+        _api.start().then(function () {
+            return;
+        });
+    });
     it('Should 400 because invalid request', (done) => {
-        chaiRequestLib(server.getApp()).post(route.getPath())
+        chaiRequestLib(_api.server.getApp()).post()//route.getPath())
             .set('content-type', 'application/json')
             .send(
                 { "passwordHashX": "asd", "userX": "asd" }
@@ -26,15 +33,14 @@ describe(`Testing ${route.getPath()}`, () => {
             });
     }).timeout(8000);
 
-    it('Should return invalid login data', (done) => {
-        chaiRequestLib(server.getApp()).post(route.getPath())
+    it('Should test login with correct credentials', (done) => {
+        chaiRequestLib(_api.server.getApp()).post()//route.getPath())
             .set('content-type', 'application/json')
             .send(
-                new LoginRequest().init(
-                    { passwordHash: "asd", user: "asd" })
+                //  new LoginRequest().init(
+                //        { passwordHash: "pass", email: "admin" })
             ).then((res: any) => {
-                chaiAsserLib(res.body.displayname).to.eql('name'); // assertion expression which will be true if "displayname" equal to "name" 
-                chai.expect(res.status).to.eql(200);// expression which will be true if response status equal to 200 
+                chai.expect(res.status).to.eql(200);
                 done();
             }).catch((err) => {
                 console.log("Catched : " + JSON.stringify(err))
