@@ -7,7 +7,7 @@ import { CoffeeStorage } from "../../storage/storage";
 import { User } from "../../models/user";
 import { CoffeCache } from "../../storage/coffe.cache";
 
-export class SaveUserRoute extends RouteBase {
+export class UserSaveRoute extends RouteBase {
     getSufficientRoles(): string[] {
         let roles = container.get<CoffeCache>(TYPES.Cache).AdminRoles;
         return roles.map(r => r.caption);
@@ -30,14 +30,6 @@ export class SaveUserRoute extends RouteBase {
                 that.sendRouteResult(res, new RouteErrorResult(err));
             });
         }
-    }
-}
-
-export class SaveUserReponse extends ResponseContentModel {
-    users: User[];
-    constructor(users: User[]) {
-        super();
-        this.users = users;
     }
 }
 

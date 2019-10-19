@@ -1,6 +1,6 @@
 import { Entity, Column, PrimaryGeneratedColumn, OneToOne, JoinColumn, OneToMany, ManyToMany } from "typeorm";
 
-@Entity()
+@Entity("Targets")
 export class TargetEntity {
     @PrimaryGeneratedColumn()
     id: number;

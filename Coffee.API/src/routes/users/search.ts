@@ -7,7 +7,7 @@ import { CoffeeStorage } from "../../storage/storage";
 import { User } from "../../models/user";
 import { CoffeCache } from "../../storage/coffe.cache";
 
-export class SearchUsersRoute extends RouteBase {
+export class UsersSearchRoute extends RouteBase {
     getSufficientRoles(): string[] {
         let roles = container.get<CoffeCache>(TYPES.Cache).AllRoles;
         return roles.map(r => r.caption);

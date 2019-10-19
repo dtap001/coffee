@@ -5,26 +5,26 @@ import TYPES from "../../types";
 import container from "../../diContainer";
 import { CoffeeStorage } from "../../storage/storage";
 import { CoffeCache } from "../../storage/coffe.cache";
-import { JobManager } from "../../job.manager";
+import { Target } from "../../models/target";
 
-export class JobDeleteRoute extends RouteBase {
+export class TargetSaveRoute extends RouteBase {
     getSufficientRoles(): string[] {
-        let roles = container.get<CoffeCache>(TYPES.Cache).UserRoles;
+        let roles = container.get<CoffeCache>(TYPES.Cache).AllRoles;
         return roles.map(r => r.caption);
     }
     getPath(): string {
-        return Config.APIVersion() + "/job/delete";
+        return Config.APIVersion() + "/target/save";
     }
     getRouteMethod(): RouteMethod {
         return RouteMethod.POST;
     }
     getAction(): Function {
         return (req: express.Request, res: express.Response) => {
-            this.validate(req, DeleteJobRequest);
+            this.validate(req, SaveTargetRequest);
             this.authorize(req, res, this.getSufficientRoles());
             let that = this;
-            var jobManager = container.get<JobManager>(TYPES.JobManager);
-            jobManager.deleteJob((req.body as DeleteJobRequest).id).then(function () {
+            var storage = container.get<CoffeeStorage>(TYPES.Storage);
+            storage.saveTarget((req.body as SaveTargetRequest).target).then(function () {
                 that.sendRouteResult(res, new RouteSuccessResult({} as ResponseContentModel));
             }).catch(function (err: RouteError) {
                 that.sendRouteResult(res, new RouteErrorResult(err));
@@ -33,6 +33,6 @@ export class JobDeleteRoute extends RouteBase {
     }
 }
 
-export class DeleteJobRequest extends RequestModel {
-    public id: number;
+export class SaveTargetRequest extends RequestModel {
+    public target: Target;
 }

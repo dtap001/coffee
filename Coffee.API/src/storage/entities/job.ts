@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, , JoinTable, ManyToOne } from "typeorm";
+import { Entity, Column, PrimaryGeneratedColumn, JoinTable, ManyToOne, OneToOne } from "typeorm";
 import { Target } from "../../models/target";
 import { TargetEntity } from "./target";
 
@@ -9,8 +9,9 @@ export class JobEntity {
     @Column()
     caption: string;
     @Column()
-    timeStamp: string;
-    @ManyToOne(type => Target)
+    cronTiming: string;
+
+    @ManyToOne(type => TargetEntity)
     @JoinTable()
-    target: TargetEntity[];
+    target: TargetEntity;
 }

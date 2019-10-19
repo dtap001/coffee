@@ -7,7 +7,7 @@ import { CoffeeStorage } from "../../storage/storage";
 import { CoffeeJWT } from "../../jwt";
 import { RoleEntity } from "../../storage/entities/Role";
 
-export class LoginRoute extends RouteBase {
+export class UserLoginRoute extends RouteBase {
     getSufficientRoles(): string[] {
         throw new Error("Method not implemented.");
     }

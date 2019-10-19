@@ -6,7 +6,7 @@ import container from "../../diContainer";
 import { CoffeeStorage } from "../../storage/storage";
 import { CoffeCache } from "../../storage/coffe.cache";
 
-export class WakeTargetRoute extends RouteBase {
+export class TargetWakeRoute extends RouteBase {
     getSufficientRoles(): string[] {
         let roles = container.get<CoffeCache>(TYPES.Cache).AllRoles;
         return roles.map(r => r.caption);

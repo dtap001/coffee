@@ -4,13 +4,18 @@ import { RouteFactory } from "./routes/routeFactory";
 import { HelloRoute } from "./routes/hello";
 import { Log } from "./log";
 import { RouteErrorResult, RouteError, BaseEror } from "./routes/route";
-import { LoginRoute } from "./routes/users/login";
 //var bodyParser = require('body-parser');
 import bodyParser from "body-parser";
-import { DeleteUserRoute } from "./routes/users/delete";
-import { SaveUserRoute } from "./routes/users/save";
-import { SearchUsersRoute } from "./routes/users/search";
-import { SearchTargetsRoute } from "./routes/targets/search";
+import { JobDeleteRoute } from "./routes/jobs/delete";
+import { TargetDeleteRoute } from "./routes/targets/delete";
+import { JobSaveRoute } from "./routes/jobs/save";
+import { TargetSaveRoute } from "./routes/targets/save";
+import { TargetWakeRoute } from "./routes/targets/wake";
+import { UserLoginRoute } from "./routes/users/login";
+import { UsersSearchRoute } from "./routes/users/search";
+import { UserDeleteRoute } from "./routes/users/delete";
+import { UserSaveRoute } from "./routes/users/save";
+import { TargetsSearchRoute } from "./routes/targets/search";
 
 export class Server {
     private app;
@@ -44,11 +49,16 @@ export class Server {
         });
         let factory = new RouteFactory(this.app);
         factory.register(HelloRoute);
-        factory.register(LoginRoute);
-        factory.register(SearchUsersRoute);
-        factory.register(DeleteUserRoute);
-        factory.register(SaveUserRoute);
-        factory.register(SearchTargetsRoute);
+        factory.register(UserLoginRoute);
+        factory.register(UsersSearchRoute);
+        factory.register(UserDeleteRoute);
+        factory.register(UserSaveRoute);
+        factory.register(JobDeleteRoute);
+        factory.register(JobSaveRoute);
+        factory.register(TargetDeleteRoute);
+        factory.register(TargetSaveRoute);
+        factory.register(TargetsSearchRoute);
+        factory.register(TargetWakeRoute);
 
         // configure the app to use bodyParser()
         //  this.app.use(express.json());

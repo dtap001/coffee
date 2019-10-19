@@ -13,6 +13,8 @@ import { Target } from "../models/target";
 import { WOLUtil } from "../wol.util";
 import container from "../diContainer";
 import TYPES from "../types";
+import { Job } from "../models/job";
+import { JobEntity } from "./entities/job";
 
 @injectable()
 export class CoffeeStorage {
@@ -32,6 +34,9 @@ export class CoffeeStorage {
                     //  __dirname + "/storage/entities/*.js"
                     UserEntity,
                     RoleEntity,
+                    TargetEntity,
+                    JobEntity,
+
                 ],
                 synchronize: true,
             });
@@ -136,10 +141,8 @@ export class CoffeeStorage {
                     caption: model.caption,
                     ipAddress: model.ipAddress,
                     macAddress: model.macAddress,
-                    id: model.id
                 } as TargetEntity);
-            } else {//update
-                entity.id = model.id;
+            } else {//update                
                 entity.macAddress = model.macAddress;
                 entity.ipAddress = model.ipAddress;
                 entity.caption = model.caption;
@@ -164,6 +167,28 @@ export class CoffeeStorage {
             return Promise.resolve();
         } catch (err) {
             Log.e("saveTarget error: " + err, err);
+            return Promise.reject(err)
+        }
+    }
+
+    async saveJob(model: Job): Promise<void> {
+        try {
+            let entity = await this._connection.getRepository(JobEntity).findOne({ id: model.id });
+            if (entity == null) {//create
+                await this._connection.getRepository(JobEntity).save({
+                    caption: model.caption,
+                    cronTiming: model.cronTiming,
+                    target: model.target
+                } as JobEntity);
+            } else {//update
+                entity.cronTiming = model.cronTiming;
+                entity.target = model.target;
+                entity.caption = model.caption;
+                await this._connection.getRepository(JobEntity).save(entity);
+            }
+            return Promise.resolve();
+        } catch (err) {
+            Log.e("saveJob error: " + err, err);
             return Promise.reject(err)
         }
     }

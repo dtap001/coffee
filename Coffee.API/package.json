@@ -53,6 +53,7 @@
     "typeorm": "^0.2.19",
     "url-join": "^4.0.1",
     "uuid": "^3.3.2",
-    "wake_on_lan": "^1.0.0"
+    "wake_on_lan": "^1.0.0",
+    "node-schedule": "latest"
   }
 }

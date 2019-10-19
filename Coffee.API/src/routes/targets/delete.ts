@@ -6,7 +6,7 @@ import container from "../../diContainer";
 import { CoffeeStorage } from "../../storage/storage";
 import { CoffeCache } from "../../storage/coffe.cache";
 
-export class DeleteTargetRoute extends RouteBase {
+export class TargetDeleteRoute extends RouteBase {
     getSufficientRoles(): string[] {
         let roles = container.get<CoffeCache>(TYPES.Cache).UserRoles;
         return roles.map(r => r.caption);
