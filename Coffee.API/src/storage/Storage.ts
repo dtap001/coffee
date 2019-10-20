@@ -192,4 +192,14 @@ export class CoffeeStorage {
             return Promise.reject(err)
         }
     }
+
+    async deleteJob(id: number): Promise<void> {
+        try {
+            await this._connection.getRepository(JobEntity).delete({ id: id });
+            return Promise.resolve();
+        } catch (err) {
+            Log.e("deleteJob error: " + err, err);
+            return Promise.reject(err)
+        }
+    }
 }

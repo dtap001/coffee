@@ -9,7 +9,7 @@ import { JobManager } from "../../job.manager";
 
 export class JobDeleteRoute extends RouteBase {
     getSufficientRoles(): string[] {
-        let roles = container.get<CoffeCache>(TYPES.Cache).UserRoles;
+        let roles = container.get<CoffeCache>(TYPES.Cache).AllRoles;
         return roles.map(r => r.caption);
     }
     getPath(): string {

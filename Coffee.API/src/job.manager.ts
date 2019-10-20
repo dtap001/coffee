@@ -8,7 +8,7 @@ import { injectable } from "inversify";
 @injectable()
 export class JobManager {
     async deleteJob(id: number) {
-        var storage = container.get<JobManager>(TYPES.JobManager);
+        var storage = container.get<CoffeeStorage>(TYPES.Storage);
         try {
             await storage.deleteJob(id);
             return Promise.resolve();
