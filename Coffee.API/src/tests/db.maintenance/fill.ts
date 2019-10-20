@@ -38,7 +38,7 @@ describe('Filling DB', () => {
         try {
             const init = async () => {
                 let storage = new TestStorage();
-                await storage.initialize();
+                await storage.initialize().catch((err) => { Log.e("Could not init storage", err) });
 
                 let adminRole = await storage.con.getRepository(RoleEntity).findOne({ caption: "admin" } as RoleEntity);
 

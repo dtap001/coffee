@@ -12,8 +12,6 @@ export class RouteFactory {
 
         switch (route.getRouteMethod()) {
             case RouteMethod.GET:
-                /*   this.app.get(route.getPath(),
-                     //  new RouteActionWrapper(route.getAction()).onRouteActivation());*/
                 this.app.get(route.getPath(),
                     route.getAction());
                 break;

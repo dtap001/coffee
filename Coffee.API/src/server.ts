@@ -76,7 +76,7 @@ export class Server {
             if (!(err instanceof BaseEror)) {//convert every error to route error
                 error = new RouteError(err);
             }
-            res.statusCode = (err as RouteError).code;
+            res.statusCode = (error as RouteError).code;
             res.json(new RouteErrorResult(error));
         });
         this.app.use(function (req: express.Request, res, next) {

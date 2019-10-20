@@ -21,11 +21,11 @@ export class JobSaveRoute extends RouteBase {
     }
     getAction(): Function {
         return (req: express.Request, res: express.Response) => {
-            this.validate(req, SaveJobRequest);
+            this.validate(req, JobSaveRequest);
             this.authorize(req, res, this.getSufficientRoles());
             let that = this;
             var jobManager = container.get<JobManager>(TYPES.JobManager);
-            jobManager.saveJob((req.body as SaveJobRequest).job).then(function () {
+            jobManager.saveJob((req.body as JobSaveRequest).job).then(function () {
                 that.sendRouteResult(res, new RouteSuccessResult({} as ResponseContentModel));
             }).catch(function (err: RouteError) {
                 that.sendRouteResult(res, new RouteErrorResult(err));
@@ -34,6 +34,6 @@ export class JobSaveRoute extends RouteBase {
     }
 }
 
-export class SaveJobRequest extends RequestModel {
+export class JobSaveRequest extends RequestModel {
     public job: Job;
 }

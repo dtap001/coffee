@@ -1,8 +1,8 @@
 import { Target } from "./target";
 
 export class Job {
-    id: number;
-    caption: string;
-    cronTiming: string;
-    target: Target;
+    public id: number = undefined;
+    public caption: string = undefined;
+    public cronTiming: string = undefined;
+    public target: Target = undefined;
 }

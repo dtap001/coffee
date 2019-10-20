@@ -1,11 +1,10 @@
 import uuid = require("uuid");
 import { Log } from "../log";
-var deepEqual = require('deep-equal')
 import express from "express";
-import { RoleEntity } from "../storage/entities/Role";
-import { CoffeeJWT, JWTResult } from "../jwt";
+import { CoffeeJWT } from "../jwt";
 import container from "../diContainer";
 import TYPES from "../types";
+import { CommonUtil } from "../utils";
 export abstract class RouteBase {
     abstract getSufficientRoles(): string[];
     abstract getPath(): string;
@@ -13,9 +12,9 @@ export abstract class RouteBase {
     abstract getAction(): Function;
     validate<T extends RequestModel>(req: express.Request, model: (new () => T)) {
         let modelInstance = new model();
-        /* if (!deepEqual(req.body, modelInstance)) {
-             throw new InvalidRequestModelError({ message: `Expected model for this route: ${JSON.stringify(modelInstance)}` });
-         }*/
+        if (!CommonUtil.deepEqual(req.body, modelInstance)) {
+            throw new InvalidRequestModelError(`Expected model for this route: ${JSON.stringify(modelInstance)}`);
+        }
     }
     authorize(req: express.Request, res: express.Response, requiredRoles: string[]) {
         var jwt = container.get<CoffeeJWT>(TYPES.JWT);
@@ -73,17 +72,21 @@ export class RouteErrorResult extends RouteResult {
 export class BaseEror {
     public uid: string;
     public message: string;
-    constructor(message: string) {
-        this.message = message;
+    constructor(err) {
         this.uid = uuid.v4();
+        Log.e(`Error | UID: ${this.uid} Msg: ${err}`, null);
+        if (typeof err == "object") {
+            this.message = err.message;
+        } else {
+            this.message = err;
+        }
     }
 }
 
 // Used when the input is not ok from the client
 export class RouteError extends BaseEror {
-    constructor(message: string) {
-        super(message);
-        Log.e(`Route Error | UID: ${this.uid} Msg: ${message}`, null);
+    constructor(err) {
+        super(err);
     }
     code = 400;
 }
