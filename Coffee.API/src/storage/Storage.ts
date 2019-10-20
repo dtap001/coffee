@@ -84,7 +84,7 @@ export class CoffeeStorage {
     async saveUser(user: User): Promise<void> {
         try {
             let userEntity = await this._connection.getRepository(UserEntity).findOne({ id: user.id });
-            if (userEntity == null) {//create
+            if (userEntity == null || userEntity == undefined) {//create
                 await this._connection.getRepository(UserEntity).save({
                     passwordHash: "test",
                     email: user.email,
@@ -136,7 +136,7 @@ export class CoffeeStorage {
     async saveTarget(model: Target): Promise<void> {
         try {
             let entity = await this._connection.getRepository(TargetEntity).findOne({ id: model.id });
-            if (entity == null) {//create
+            if (entity == null || entity == undefined) {//create
                 await this._connection.getRepository(TargetEntity).save({
                     caption: model.caption,
                     ipAddress: model.ipAddress,
@@ -158,7 +158,7 @@ export class CoffeeStorage {
     async wakeTarget(id: number): Promise<void> {
         try {
             let entity = await this._connection.getRepository(TargetEntity).findOne({ id: id });
-            if (entity == null) {//create
+            if (entity == null || entity == undefined) {//create
                 return Promise.reject("Invalid target ID");
             } else {
                 var wol = container.get<WOLUtil>(TYPES.WOLUtil);
@@ -174,7 +174,7 @@ export class CoffeeStorage {
     async saveJob(model: Job): Promise<void> {
         try {
             let entity = await this._connection.getRepository(JobEntity).findOne({ id: model.id });
-            if (entity == null) {//create
+            if (entity == null || entity == undefined) {//create
                 await this._connection.getRepository(JobEntity).save({
                     caption: model.caption,
                     cronTiming: model.cronTiming,

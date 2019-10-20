@@ -18,15 +18,15 @@ export class JobManager {
     }
 
     async saveJob(job: Job) {
-        var storage = container.get<CoffeeStorage>(TYPES.JobManager);
+        var storage = container.get<CoffeeStorage>(TYPES.Storage);
         try {
-            // await storage.saveJob(job);
+            await storage.saveJob(job);
 
             let scheduledJob = schedule.scheduledJobs[job.id];
             if (scheduledJob != null) {
                 scheduledJob.cancel();
             }
-            schedule.scheduleJob(job.id, job.cronTiming, function (fireDate) {
+            schedule.scheduleJob(job.id + "", job.cronTiming, function (fireDate) {
                 var wol = container.get<WOLUtil>(TYPES.WOLUtil);
                 wol.wake(job.target.macAddress, job.target.ipAddress);
             })
