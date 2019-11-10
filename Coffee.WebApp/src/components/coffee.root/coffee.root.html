@@ -1,0 +1,22 @@
+<div fxLayout="column" fxLayoutAlign="start stretch">
+    <div style="background-color:#6f4e37" fxFlex="100px" fxLayout="row" fxLayoutAlign="space-between center">
+        <label fxFlex="20">Coffee</label>
+        <div fxFlex="grow" fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="end center">
+            <div class="ui-inputgroup">
+                <span class="ui-inputgroup-addon"><i class="pi pi-user"
+                        style="line-height: 1.25;color:#6f4e37 "></i></span>
+                <input type="text" pInputText placeholder="Username">
+            </div>
+            <div class="ui-inputgroup">
+                <span class="ui-inputgroup-addon"><i class="pi pi-key"
+                        style="line-height: 1.25;color:#6f4e37"></i></span>
+                <input type="password" pInputText placeholder="Password">
+            </div>
+            <p-button label="Login"></p-button>
+        </div>
+
+    </div>
+    <div fxLayout="column" fxFlex="auto" fxLayoutAlign="center center">
+        <router-outlet></router-outlet>
+    </div>
+</div>
