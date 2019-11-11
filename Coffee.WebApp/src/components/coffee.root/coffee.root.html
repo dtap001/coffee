@@ -17,6 +17,10 @@
 
     </div>
     <div fxLayout="column" fxFlex="auto" fxLayoutAlign="center center">
+        <p>loaded: {{(initState$ | async).loaded}}</p>
+        <p>loading: {{(initState$ | async).loading}}</p>
+        <p>data: {{((initState$ | async).data.ApiVersion)}}</p>
+        <p (click)="lofasz()">LOFASZ</p>
         <router-outlet></router-outlet>
     </div>
 </div>

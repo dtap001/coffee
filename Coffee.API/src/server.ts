@@ -16,18 +16,25 @@ import { UsersSearchRoute } from "./routes/users/search";
 import { UserDeleteRoute } from "./routes/users/delete";
 import { UserSaveRoute } from "./routes/users/save";
 import { TargetsSearchRoute } from "./routes/targets/search";
-
+import cors from "cors";
 export class Server {
     private app;
     public getApp() { return this.app; }
 
     async initialize() {
         Log.i("Starting server.");
+        const options: cors.CorsOptions = {
+            allowedHeaders: ["Origin", "X-Requested-With", "Content-Type", "Accept", "X-Access-Token"],
+            credentials: true,
+            methods: "GET,HEAD,OPTIONS,PUT,PATCH,POST,DELETE",
+            origin: "http://localhost:4200",
+            preflightContinue: false
+        };
 
         this.app = express();
         this.app.use(bodyParser.json())
         this.app.use(bodyParser.urlencoded({ extended: false }))
-
+        this.app.use(cors(options));
         this.registerRoutes();
         this.app.listen(Config.Port(), err => {
             if (err) {

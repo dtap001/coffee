@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { InitModel } from 'src/models/init.model';
+import { GeneralResponse } from 'src/models/general.response';
 
 @Injectable({
     providedIn: "root"
@@ -10,9 +11,9 @@ import { InitModel } from 'src/models/init.model';
 export class GeneralService {
     constructor(private http: HttpClient) { }
 
-    init(): Observable<InitModel> {
-        const URL = "/api/init";
-        return this.http.get<{ response: InitModel }>(URL, this.options(this.json())).pipe(map(v => v.response || null));
+    hello(): Observable<GeneralResponse> {
+        const URL = "http://localhost:3000/v1/hello";
+        return this.http.get<GeneralResponse>(URL, this.options(this.json()));
     }
     private options(headers?: HttpHeaders) {
         return { withCredentials: true, headers };

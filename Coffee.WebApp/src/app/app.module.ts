@@ -13,10 +13,14 @@ import { PageNotFoundComponent } from 'src/components/page.not.found/page.not.fo
 import { StoreModule } from '@ngrx/store';
 import { reducers, metaReducers } from 'src/store/reducers';
 import { EffectsModule } from '@ngrx/effects';
-import { AppEffects } from './app.effects';
+import { GeneralService } from './services/general.service';
+import { HelloEffect } from 'src/store/hello/hello.effect';
+import { HttpClientModule } from '@angular/common/http'; 
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
 @NgModule({
   imports: [
+    HttpClientModule,
     BrowserModule,
     BrowserAnimationsModule,
     FlexLayoutModule,
@@ -31,14 +35,15 @@ import { AppEffects } from './app.effects';
         strictActionImmutability: true
       }
     }),
-    EffectsModule.forRoot([AppEffects]),
+    EffectsModule.forRoot([HelloEffect]),
+    StoreDevtoolsModule
   ],
   declarations: [
     CoffeeRoot,
     LoginComponent,
     PageNotFoundComponent
   ],
-  providers: [],
+  providers: [GeneralService],
   bootstrap: [CoffeeRoot]
 })
 export class AppModule { }

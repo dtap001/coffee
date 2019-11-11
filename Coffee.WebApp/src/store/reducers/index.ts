@@ -1,6 +1,6 @@
 import { ActionReducerMap, MetaReducer } from "@ngrx/store"
-import *  as fromInit from './init.reducer'
-import { InitState } from './init.reducer'
+import *  as fromInit from '../hello/hello.reducer'
+import { InitState } from '../hello/hello.reducer'
 import { environment } from 'src/environments/environment';
 
 export interface CoffeeState {

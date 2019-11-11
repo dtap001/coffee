@@ -1,6 +1,6 @@
 import { InitModel } from 'src/models/init.model';
 import { ActionReducerMap, createReducer, on } from '@ngrx/store';
-import { InitAction, InitSuccessAction, InitFailedAction } from '../actions/init.action';
+import { HelloAction, HelloSuccessAction, HelloFailedAction } from './hello.action';
 
 export interface InitState {
     data: InitModel;
@@ -18,12 +18,12 @@ export const emptyState: InitState = {
 
 export const Reducer = createReducer(
     emptyState,
-    on(InitAction, state => ({ ...state, loading: true })),
-    on(InitSuccessAction, state => ({
+    on(HelloAction, state => ({ ...state, loading: true })),
+    on(HelloSuccessAction, state => ({
         ...state,
         loading: false,
         loggedIn: true,
         error: null
     })),
-    on(InitFailedAction, (state, { error }) => ({ ...state, loading: false, error })),
+    on(HelloFailedAction, (state, { error }) => ({ ...state, loading: false, error })),
 );
