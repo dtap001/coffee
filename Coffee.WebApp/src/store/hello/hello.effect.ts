@@ -21,7 +21,7 @@ export class HelloEffect {
       ofType(HelloAction),
       exhaustMap((action: Action) =>
         this.generalService.hello().pipe(
-          map(response => HelloSuccessAction({ payload: response.content as InitModel })),
+          map(response => HelloSuccessAction({ payload: response.content })),
           catchError(({ error }) => of(HelloFailedAction(error)))
         )
       )

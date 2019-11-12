@@ -36,7 +36,7 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
       }
     }),
     EffectsModule.forRoot([HelloEffect]),
-    StoreDevtoolsModule
+    StoreDevtoolsModule.instrument()
   ],
   declarations: [
     CoffeeRoot,
