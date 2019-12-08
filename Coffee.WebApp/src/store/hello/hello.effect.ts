@@ -4,15 +4,13 @@ import { Router } from '@angular/router';
 import { map, catchError, tap, exhaustMap } from "rxjs/operators";
 import { GeneralService } from 'src/app/services/general.service';
 import { of } from 'rxjs';
-import { Action } from '@ngrx/store';
-import { InitModel } from 'src/models/init.model';
+import { Action } from '@ngrx/store'; 
 import { HelloAction, HelloSuccessAction, HelloFailedAction } from './hello.action';
 
 @Injectable()
 export class HelloEffect {
   constructor(
-    private actions$: Actions,
-    private router: Router,
+    private actions$: Actions,   
     private generalService: GeneralService
   ) { }
 

@@ -1,32 +1,41 @@
-import { InitModel } from 'src/models/init.model';
-import { ActionReducerMap, createReducer, on } from '@ngrx/store';
+ 
+import { createReducer, on, createSelector, createFeatureSelector } from '@ngrx/store';
 import { HelloAction, HelloSuccessAction, HelloFailedAction } from './hello.action';
+import { HelloModel } from 'src/models/hello.model';
 
-export interface InitState {
-    data: InitModel;
+export interface HelloState {
+    data: HelloModel;
     loaded: boolean;
     loading: boolean;
-    apiVersion:string;
 }
 
-
-export const emptyState: InitState = {
-    data: {} as InitModel,
+export const emptyState: HelloState = {
+    data: {} as HelloModel,
     loaded: false,
-    loading: false,
-    apiVersion:"EMPTY",
+    loading: false
 }
-
 
 export const Reducer = createReducer(
     emptyState,
     on(HelloAction, state => ({ ...state, loading: true })),
-    on(HelloSuccessAction, (state:InitState,action) => ({
-        ...state,        
+    on(HelloSuccessAction, (state: HelloState, action) => ({
+        ...state,
         loading: false,
         loggedIn: true,
-        error: null,
-        apiVersion:action.payload.ApiVersion
+        error: null,        
+        //apiVersion: action.payload.ApiVersion
     })),
-    on(HelloFailedAction, (state, { error }) => ({ ...state, loading: false, error })),
+    on(HelloFailedAction, (state, { error }) => ({
+        ...state,
+        loading: false,
+        error
+    })),
 );
+
+export const getHelloState = createFeatureSelector<HelloState>('data');
+
+
+/*export const getIsLoggedIn = createSelector(
+    getHelloState,
+    (state: HelloState) => state.isLoggedIn
+);*/

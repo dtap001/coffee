@@ -1,15 +1,17 @@
-import { ActionReducerMap, MetaReducer } from "@ngrx/store"
-import *  as fromInit from '../hello/hello.reducer'
-import { InitState } from '../hello/hello.reducer'
+import { ActionReducerMap, MetaReducer } from "@ngrx/store";
+import *  as fromHello from '../hello/hello.reducer';
+import * as fromUser from '../user/user.reducer';
 import { environment } from 'src/environments/environment';
 
 export interface CoffeeState {
-    init: fromInit.InitState
+    hello: fromHello.HelloState,
+    user: fromUser.UserState
 }
 
 
 export const reducers: ActionReducerMap<CoffeeState> = {
-    init: fromInit.Reducer
+    hello: fromHello.Reducer,
+    user:fromUser.Reducer
 }
 
 

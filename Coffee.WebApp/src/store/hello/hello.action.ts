@@ -1,5 +1,5 @@
 import { Action, createAction, props } from '@ngrx/store'
-import { InitModel } from 'src/models/init.model';
+import { HelloModel } from 'src/models/hello.model';
 
 
 export const HelloAction = createAction(
@@ -8,7 +8,7 @@ export const HelloAction = createAction(
 
 export const HelloSuccessAction = createAction(
     "[Hello] Success",
-    props<{ payload: InitModel }>()
+    props<{ payload: HelloModel }>()
 );
 
 export const HelloFailedAction = createAction(

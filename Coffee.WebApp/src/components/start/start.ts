@@ -1,11 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 
- 
+
 @Component({
-    templateUrl: './login.html',
+    templateUrl: './start.html',
 })
-export class LoginComponent implements OnInit {
-    title = 'Coffee';
+export class StartComponent implements OnInit {
     cars = ["asd", "asd", "asd"];
 
     ngOnInit() {

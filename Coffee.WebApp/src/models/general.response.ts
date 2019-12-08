@@ -4,6 +4,6 @@ export class GeneralResponse {
     error: {
         uid: string,
         message: string,
-        code: SVGAnimatedNumberList
+        code: number
     }
 }
