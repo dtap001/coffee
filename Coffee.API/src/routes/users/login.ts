@@ -6,6 +6,7 @@ import container from "../../diContainer";
 import { CoffeeStorage } from "../../storage/storage";
 import { CoffeeJWT } from "../../jwt";
 import { RoleEntity } from "../../storage/entities/Role";
+import { User } from "../../models/user";
 
 export class UserLoginRoute extends RouteBase {
     getSufficientRoles(): string[] {
@@ -23,8 +24,8 @@ export class UserLoginRoute extends RouteBase {
             let that = this;
             var storage = container.get<CoffeeStorage>(TYPES.Storage);
             let jwt = new CoffeeJWT();
-            storage.getUser((req.body as LoginRequest).email, (req.body as LoginRequest).passwordHash).then(function (user) {
-                that.sendRouteResult(res, new RouteSuccessResult(new LoginResponse(jwt.sign(user.roles))));
+            storage.getUser((req.body as LoginRequest).user, (req.body as LoginRequest).password).then(function (user) {
+                that.sendRouteResult(res, new RouteSuccessResult(new LoginResponse(jwt.sign(user.roles), user)));
             }).catch(function (err: RouteError) {
                 that.sendRouteResult(res, new RouteErrorResult(err));
             });
@@ -33,18 +34,22 @@ export class UserLoginRoute extends RouteBase {
 }
 
 export class LoginResponse extends ResponseContentModel {
-    JWT: string;
-    constructor(jwt: string) {
+    Token: string;
+    UserName: string;
+    Email: string;
+    constructor(jwt: string, user: User) {
         super();
-        this.JWT = jwt;
+        this.Token = jwt;
+        this.UserName = user.name;
+        this.Email = user.email;
     }
 }
 
 export class LoginRequest extends RequestModel {
-    init(args: { email: string, passwordHash: string }) {
-        this.email = args.email;
-        this.passwordHash = args.passwordHash;
+    init(args: { user: string, passwordHash: string }) {
+        this.user = args.user;
+        this.password = args.passwordHash;
     }
-    public email: string = "";
-    public passwordHash: string = "";
+    public user: string = "";
+    public password: string = "";
 }

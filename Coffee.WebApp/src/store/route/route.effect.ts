@@ -9,9 +9,9 @@ import { of } from 'rxjs';
 import { Action, Store, select } from '@ngrx/store';
 import { ROUTER_NAVIGATION } from '@ngrx/router-store';
 import { HelloSuccessAction, HelloFailedAction, HelloAction } from '../hello/hello.action';
-import { ROUTE_PATHS } from 'src/app/app-routing.module';
 import { AppRouterState } from 'src/core/reducers/router.reducers';
 import { HelloState } from '../hello/hello.reducer';
+import { COFFEE_APP_PATHS } from 'src/app/app-routing.module';
 
 @Injectable()
 export class RouteEffect {
@@ -28,9 +28,8 @@ export class RouteEffect {
         this.actions$.pipe(
             ofType(ROUTER_NAVIGATION),
             map(this.mapToRouterStateUrl),
-           // filter(state => state.url == (`${ROUTE_PATHS.ROOT}`)),
-           // map(() => this.store.pipe(select(getIsLoggedIn))),
-            tap(param =>console.log("asdasd")),
+            filter(routerState => routerState.url == (`${COFFEE_APP_PATHS.TARGETS_DETAIL}`)),
+            // map(() => this.store.pipe(select(getIsLoggedIn))),
             map(state => HelloAction())
             //,          
             /* exhaustMap((action: Action) =>
@@ -40,7 +39,7 @@ export class RouteEffect {
                  )
              )*/
         )
-    ) 
+    )
 }
 /*
 @Injectable()

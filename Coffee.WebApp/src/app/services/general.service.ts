@@ -2,12 +2,26 @@ import { Injectable } from "@angular/core";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Observable } from 'rxjs';
 import { GeneralResponse } from 'src/models/general.response';
+import { Store } from '@ngrx/store';
+import * as fromRoot from '../../store/reducers'
+import { UserState } from 'src/store/login/login.reducer';
+import { TargetModel } from 'src/models/target.model';
+import { TargetsSearchResponse, TargetsDeleteResponse, TargetsSaveResponse, TargetsWakeResponse } from 'src/models/targets.responses';
 
 @Injectable({
     providedIn: "root"
 })
 export class GeneralService {
-    constructor(private http: HttpClient) { }
+    _token: string;
+    constructor(private http: HttpClient, private store: Store<fromRoot.CoffeeState>) {
+        this.store.select(state => state.user.data.Token)
+            .subscribe((Token) => {
+                if (Token) {
+                    this._token = Token;
+                }
+            });
+    }
+
 
     hello(): Observable<GeneralResponse> {
         const URL = "http://localhost:3000/v1/hello";
@@ -15,9 +29,47 @@ export class GeneralService {
     }
 
     login(userName: string, password: string): Observable<GeneralResponse> {
-        const URL = "http://localhost:3000/v1/login";
-        return this.http.post<GeneralResponse>(URL, { userName: userName, password: password }, this.options(this.json()));
+        const URL = "http://localhost:3000/v1/user/login";
+        let response$ = this.http.post<GeneralResponse>(URL, { user: userName, password: password }, this.options(this.json()));
+        return this.wrapWithIsOKCheck(response$);
     }
+
+    targetsSearch(search: string): Observable<TargetsSearchResponse> {
+        const URL = "http://localhost:3000/v1/targets/search";
+        let response$ = this.http.post<TargetsSearchResponse>(URL, { search: search }, this.options(this.json()));
+        return this.wrapWithIsOKCheck(response$);
+    }
+
+    targetsDelete(id: number): Observable<TargetsDeleteResponse> {
+        const URL = "http://localhost:3000/v1/targets/delete";
+        let response$ = this.http.post<TargetsDeleteResponse>(URL, { id: id }, this.options(this.json()));
+        return this.wrapWithIsOKCheck(response$);
+    }
+
+    targetsSave(target: TargetModel): Observable<TargetsSaveResponse> {
+        const URL = "http://localhost:3000/v1/targets/save";
+        let response$ = this.http.post<TargetsSaveResponse>(URL, { target: target }, this.options(this.json()));
+        return this.wrapWithIsOKCheck(response$);
+    }
+
+    targetsWake(id: number): Observable<TargetsWakeResponse> {
+        const URL = "http://localhost:3000/v1/targets/wake";
+        let response$ = this.http.post<TargetsWakeResponse>(URL, { id: id }, this.options(this.json()));
+        return this.wrapWithIsOKCheck(response$);
+    }
+
+    private wrapWithIsOKCheck(response$: Observable<GeneralResponse>): Observable<GeneralResponse> {
+        let result$ = new Observable<GeneralResponse>(observer => {
+            response$.subscribe(response => {
+                if (!response.isOK) {
+                    return observer.error(response);
+                }
+                return observer.next(response)
+            });
+        });
+        return result$
+    }
+
 
     private options(headers?: HttpHeaders) {
         return { withCredentials: true, headers };
@@ -25,8 +77,9 @@ export class GeneralService {
 
     private json(): HttpHeaders {
         return new HttpHeaders({
-            'Content-Type': 'application/x-www-form-urlencoded',
-            Accept: 'application/json'
+            'Content-Type': 'application/json',
+            Accept: 'application/json',
+            "Authorization": " Bearer " + this._token
         });
     }
 }

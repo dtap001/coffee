@@ -1,5 +1,5 @@
 export class GeneralResponse {
-    isOk: boolean;
+    isOK: boolean;
     content: any;
     error: {
         uid: string,

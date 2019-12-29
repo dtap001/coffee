@@ -1,25 +1,23 @@
 <div fxLayout="column" fxLayoutAlign="start stretch">
     <div style="background-color:#6f4e37" fxFlex="100px" fxLayout="row" fxLayoutAlign="space-between center">
         <label fxFlex="20">Coffee</label>
-        <div fxFlex="grow" fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="end center">
+        <div *ngIf="(userState$ != null )  && (userState$ | async).loggedIn == false" fxFlex="grow" fxLayout="row"
+            fxLayoutGap="10px" fxLayoutAlign="end center">
             <div class="ui-inputgroup">
                 <span class="ui-inputgroup-addon"><i class="pi pi-user"
                         style="line-height: 1.25;color:#6f4e37 "></i></span>
-                <input type="text" pInputText placeholder="Username">
+                <input [(ngModel)]="userName" type="text" pInputText placeholder="Username">
             </div>
             <div class="ui-inputgroup">
                 <span class="ui-inputgroup-addon"><i class="pi pi-key"
                         style="line-height: 1.25;color:#6f4e37"></i></span>
-                <input type="password" pInputText placeholder="Password">
+                <input [(ngModel)]="password" type="password" pInputText placeholder="Password">
             </div>
-            <p-button label="Login"></p-button>
+            <p-button (click)="doLogin(userName,password)" label="Login"></p-button>
         </div>
 
     </div>
-    <div fxLayout="column" fxFlex="auto" fxLayoutAlign="center center">
-        <p>loaded: {{(helloState$ | async).loaded}}</p>
-        <p>loading: {{(helloState$ | async).loading}}</p>
-        <p>apiVersion: {{((helloState$ | async).data.ApiVersion)}}</p>    
-        <router-outlet></router-outlet>
+    <div fxLayout="column" fxFlex="auto" fxLayoutAlign="center center">       
+         <router-outlet></router-outlet>
     </div>
 </div>
