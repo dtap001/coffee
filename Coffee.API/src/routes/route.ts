@@ -48,7 +48,7 @@ export class ResponseContentModel { }
 
 export class RouteResult {
     isOK: boolean;
-    content: ResponseContentModel;
+    content: any;//todo check
     error: RouteError;
 }
 

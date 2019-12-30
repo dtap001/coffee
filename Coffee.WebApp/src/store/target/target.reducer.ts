@@ -10,7 +10,7 @@ export interface TargetsState {
 }
 
 export const emptyState: TargetsState = {
-    data: {} as TargetModel[],
+    data: [],
     loaded: false,
     loading: false,
     error: null

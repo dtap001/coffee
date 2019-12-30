@@ -4,7 +4,6 @@ import { Observable } from 'rxjs';
 import { GeneralResponse } from 'src/models/general.response';
 import { Store } from '@ngrx/store';
 import * as fromRoot from '../../store/reducers'
-import { UserState } from 'src/store/login/login.reducer';
 import { TargetModel } from 'src/models/target.model';
 import { TargetsSearchResponse, TargetsDeleteResponse, TargetsSaveResponse, TargetsWakeResponse } from 'src/models/targets.responses';
 
@@ -12,16 +11,8 @@ import { TargetsSearchResponse, TargetsDeleteResponse, TargetsSaveResponse, Targ
     providedIn: "root"
 })
 export class GeneralService {
-    _token: string;
-    constructor(private http: HttpClient, private store: Store<fromRoot.CoffeeState>) {
-        this.store.select(state => state.user.data.Token)
-            .subscribe((Token) => {
-                if (Token) {
-                    this._token = Token;
-                }
-            });
+    constructor(private http: HttpClient) {
     }
-
 
     hello(): Observable<GeneralResponse> {
         const URL = "http://localhost:3000/v1/hello";
@@ -78,8 +69,8 @@ export class GeneralService {
     private json(): HttpHeaders {
         return new HttpHeaders({
             'Content-Type': 'application/json',
-            Accept: 'application/json',
-            "Authorization": " Bearer " + this._token
+            'Accept': 'application/json',
+            'Access-Control-Allow-Origin': ["http://localhost:4200", "http://localhost:3000"],
         });
     }
 }

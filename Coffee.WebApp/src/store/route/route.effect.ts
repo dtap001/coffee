@@ -6,12 +6,12 @@ import { Router } from '@angular/router';
 import { map, catchError, tap, exhaustMap, filter, flatMap } from "rxjs/operators";
 import { GeneralService } from 'src/app/services/general.service';
 import { of } from 'rxjs';
-import { Action, Store, select } from '@ngrx/store';
 import { ROUTER_NAVIGATION } from '@ngrx/router-store';
-import { HelloSuccessAction, HelloFailedAction, HelloAction } from '../hello/hello.action';
 import { AppRouterState } from 'src/core/reducers/router.reducers';
-import { HelloState } from '../hello/hello.reducer';
-import { COFFEE_APP_PATHS } from 'src/app/app-routing.module';
+import { HelloState } from '../hello/hello.reducer'; 
+import { TargetsSearchAction } from '../target/target.action';
+import { Store } from '@ngrx/store';
+import { COFFEE_APP_PATHS } from 'src/app/paths';
 
 @Injectable()
 export class RouteEffect {
@@ -28,18 +28,13 @@ export class RouteEffect {
         this.actions$.pipe(
             ofType(ROUTER_NAVIGATION),
             map(this.mapToRouterStateUrl),
-            filter(routerState => routerState.url == (`${COFFEE_APP_PATHS.TARGETS_DETAIL}`)),
-            // map(() => this.store.pipe(select(getIsLoggedIn))),
-            map(state => HelloAction())
-            //,          
-            /* exhaustMap((action: Action) =>
-                 this.generalService.hello().pipe(
-                     map(response => HelloSuccessAction({ payload: response.content })),
-                     catchError(({ error }) => of(HelloFailedAction(error)))
-                 )
-             )*/
-        )
-    )
+            tap((routerState) => { console.log(`URL: ${JSON.stringify(routerState)}`) }),
+            filter(routerState =>
+                routerState.url.includes(`${COFFEE_APP_PATHS.TARGETS}`)// ||
+                //  state.url.includes(`${ROLE_ROUTE}/detail`)
+            ),
+            map((routerState) => TargetsSearchAction({ search: "" }))// routerState.queryParams["id"] }))
+        ))
 }
 /*
 @Injectable()

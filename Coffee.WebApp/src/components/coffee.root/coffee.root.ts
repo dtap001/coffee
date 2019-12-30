@@ -4,11 +4,10 @@ import { Store } from '@ngrx/store';
 import { HelloAction } from 'src/store/hello/hello.action';
 import { Observable } from 'rxjs';
 import { HelloState } from 'src/store/hello/hello.reducer';
-import { LoginAction } from 'src/store/login/login.action';
-import { state } from '@angular/animations';
-import { UserState } from 'src/store/login/login.reducer';
-import { Router } from '@angular/router';
-import { COFFEE_APP_PATHS } from 'src/app/app-routing.module';
+import { Router } from '@angular/router'; 
+import { UserState } from 'src/store/user/user.reducer';
+import { UserLoginAction } from 'src/store/user/user.action';
+import { COFFEE_APP_PATHS } from 'src/app/paths';
 
 @Component({
   selector: 'coffee-root',
@@ -29,7 +28,7 @@ export class CoffeeRoot implements OnInit {
   public userState$: Observable<UserState>;
 
   public doLogin(userName: string, password: string) {
-    this.store.dispatch(LoginAction({ userName: userName, password: password }));
+    this.store.dispatch(UserLoginAction({ userName: userName, password: password }));
   }
 
   ngOnInit() {

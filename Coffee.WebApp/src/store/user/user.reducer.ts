@@ -1,47 +1,40 @@
-
 import { createReducer, on, createSelector, createFeatureSelector } from '@ngrx/store';
 import { UserModel } from 'src/models/user.model';
-import { UserLoginFailedAction, UserLoginAction, UserLoginSuccess } from './user.action';
+import { UserLoginFailAction, UserLoginAction,  UserLoginSuccessAction } from './user.action';
 
 export interface UserState {
     data: UserModel;
-    isLoggedIn: boolean;
     loaded: boolean;
     loading: boolean;
+    loggedIn: boolean;
+    error: any
 }
 
 export const emptyState: UserState = {
     data: {} as UserModel,
     loaded: false,
     loading: false,
-    isLoggedIn: false
+    loggedIn: false,
+    error: null
 }
 
 export const Reducer = createReducer(
     emptyState,
-    on(UserLoginAction, (state) => ({
-        ...state,
-        loading: true
-    })),
-    on(UserLoginSuccess, (state: UserState, action) => ({
+    on(UserLoginAction, state => ({ ...state, loading: true })),
+    on(UserLoginSuccessAction, (state: UserState, action) => ({
         ...state,
         loading: false,
+        loaded: true,
         loggedIn: true,
         error: null,
-        isLoggedIn: true,
+        data: action.payload
     })),
-    on(UserLoginFailedAction, (state, { error }) => ({
+    on(UserLoginFailAction, (state, { error }) => ({
         ...state,
         loading: false,
-        error,
-        isLoggedIn: false
+        loggedIn: false,
+        error
     })),
 );
 
 export const getUserState = createFeatureSelector<UserState>('data');
-
-
-export const getIsLoggedIn = createSelector(
-    getUserState,
-    (state: UserState) => state.isLoggedIn
-);

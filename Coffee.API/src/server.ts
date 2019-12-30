@@ -24,10 +24,10 @@ export class Server {
     async initialize() {
         Log.i("Starting server.");
         const options: cors.CorsOptions = {
-            allowedHeaders: ["Origin", "X-Requested-With", "Content-Type", "Accept", "X-Access-Token"],
+            allowedHeaders: ["Origin", "X-Requested-With", "Content-Type", "Accept", "X-Access-Token", "Access-Control-Allow-Headers", "Access-Control-Allow-Origin", "Authorization"],
             credentials: true,
             methods: "GET,HEAD,OPTIONS,PUT,PATCH,POST,DELETE",
-            origin: "http://localhost:4200",
+            origin: ["http://localhost:4200", "http://localhost:3000"],
             preflightContinue: false
         };
 

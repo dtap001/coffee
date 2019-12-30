@@ -10,7 +10,7 @@ import { of } from 'rxjs';
 import { TargetsSearchAction, TargetsDeleteSuccessAction, TargetsDeleteFailAction, TargetsSaveAction, TargetsSaveSuccessAction, TargetsSaveFailAction, TargetsWakeAction, TargetsWakeSuccessAction, TargetsWakeFailAction, TargetsDeleteAction, TargetsSearchSuccessAction, TargetsSearchFailAction } from './target.action';
 
 @Injectable()
-export class LoginEffect {
+export class TargetsEffect {
     constructor(
         private actions$: Actions,
         private generalService: GeneralService

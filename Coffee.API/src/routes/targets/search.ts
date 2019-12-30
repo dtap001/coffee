@@ -17,7 +17,7 @@ export class TargetsSearchRoute extends RouteBase {
         return Config.APIVersion() + "/targets/search";
     }
     getRouteMethod(): RouteMethod {
-        return RouteMethod.GET;
+        return RouteMethod.POST;
     }
     getAction(): Function {
         return (req: express.Request, res: express.Response) => {
@@ -25,8 +25,8 @@ export class TargetsSearchRoute extends RouteBase {
             this.authorize(req, res, this.getSufficientRoles());
             let that = this;
             var storage = container.get<CoffeeStorage>(TYPES.Storage);
-            storage.searchTargets((req.body as SearchTargetsRequest).querystring).then(function (targets) {
-                that.sendRouteResult(res, new RouteSuccessResult({ targets: targets } as SearchTargetsResponse));
+            storage.searchTargets((req.body as SearchTargetsRequest).search).then(function (targets) {
+                that.sendRouteResult(res, new RouteSuccessResult(targets));
             }).catch(function (err: RouteError) {
                 that.sendRouteResult(res, new RouteErrorResult(err));
             });
@@ -43,5 +43,5 @@ export class SearchTargetsResponse extends ResponseContentModel {
 }
 
 export class SearchTargetsRequest extends RequestModel {
-    public querystring: string = "";
+    public search: string = "";
 }

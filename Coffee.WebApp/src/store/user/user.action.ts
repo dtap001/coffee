@@ -8,12 +8,12 @@ export const UserLoginAction = createAction(
     props<{ userName: string, password: string }>()
 );
 
-export const UserLoginSuccess = createAction(
+export const UserLoginSuccessAction = createAction(
     "[UserLogin] Success",
     props<{ payload: UserModel }>()
 );
 
-export const UserLoginFailedAction = createAction(
+export const UserLoginFailAction = createAction(
     "[UserLogin] Fail",
     props<{ error: String }>()
 );
