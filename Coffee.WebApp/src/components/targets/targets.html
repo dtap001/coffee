@@ -10,6 +10,7 @@
                 <th>Caption</th>
                 <th>MAC</th>
                 <th>IP</th>
+                <td>Edit</td>
                 <th>Wake</th>
                 <th>Remove</th>
             </tr>
@@ -20,6 +21,7 @@
                 <td>{{target.caption}}</td>
                 <td>{{target.macAddress}}</td>
                 <td>{{target.ipAddress}}</td>
+                <td><p-button (click)="edit(target)">Edit</p-button></td>
                 <td>#</td>
                 <td>X</td>
             </tr>

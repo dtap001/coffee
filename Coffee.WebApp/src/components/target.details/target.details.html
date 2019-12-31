@@ -1,2 +1,6 @@
 <p>DETAILS</p>
+<ng-container *ngIf="target$ | async as data">
+
+    {{(target$ |async).caption}}
+</ng-container>
  <back-button></back-button>

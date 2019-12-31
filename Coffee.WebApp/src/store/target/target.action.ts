@@ -3,6 +3,10 @@ import { UserModel } from 'src/models/user.model';
 import { TargetModel } from 'src/models/target.model';
 
 
+export const TargetDetailAction = createAction(
+    "[TargetDetail] Start",
+    props<{ id: number }>()
+);
 export const TargetsSearchAction = createAction(
     "[SearchTargets] Start",
     props<{ search: string }>()

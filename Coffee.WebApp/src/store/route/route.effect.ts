@@ -8,8 +8,8 @@ import { GeneralService } from 'src/app/services/general.service';
 import { of } from 'rxjs';
 import { ROUTER_NAVIGATION } from '@ngrx/router-store';
 import { AppRouterState } from 'src/core/reducers/router.reducers';
-import { HelloState } from '../hello/hello.reducer'; 
-import { TargetsSearchAction } from '../target/target.action';
+import { HelloState } from '../hello/hello.reducer';
+import { TargetsSearchAction, TargetDetailAction } from '../target/target.action';
 import { Store } from '@ngrx/store';
 import { COFFEE_APP_PATHS } from 'src/app/paths';
 
@@ -20,21 +20,39 @@ export class RouteEffect {
         private generalService: GeneralService,
         private store: Store<HelloState>
     ) { }
+
     private mapToRouterStateUrl = (action): AppRouterState => {
+        console.log("MAP: " + JSON.stringify(action));
         return action.payload.routerState;
     };
 
-    locationUpdate$ = createEffect(() =>
+    targetsSearch$ = createEffect(() =>
         this.actions$.pipe(
             ofType(ROUTER_NAVIGATION),
             map(this.mapToRouterStateUrl),
             tap((routerState) => { console.log(`URL: ${JSON.stringify(routerState)}`) }),
             filter(routerState =>
-                routerState.url.includes(`${COFFEE_APP_PATHS.TARGETS}`)// ||
-                //  state.url.includes(`${ROLE_ROUTE}/detail`)
+                routerState.url.includes(`${COFFEE_APP_PATHS.TARGETS}`)
             ),
-            map((routerState) => TargetsSearchAction({ search: "" }))// routerState.queryParams["id"] }))
-        ))
+            map((routerState) => TargetsSearchAction({ search: this.undefinedToEmpty(routerState["root"].queryParams.search) }))
+        ));
+
+    targetDetails$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(ROUTER_NAVIGATION),
+            map(this.mapToRouterStateUrl),
+            tap((routerState) => { console.log(`URL: ${JSON.stringify(routerState)}`) }),
+            filter(routerState =>
+                //  routerState.url.includes(`${COFFEE_APP_PATHS.TARGETS}`) ||
+                routerState.url.includes(`${COFFEE_APP_PATHS.TARGETS_DETAIL}`)
+            ),
+            map((routerState) => TargetDetailAction({ id: routerState["root"].queryParams.id }))
+        ));
+
+    private undefinedToEmpty(value) {
+        if (value === undefined) { return ""; }
+        return value;
+    }
 }
 /*
 @Injectable()

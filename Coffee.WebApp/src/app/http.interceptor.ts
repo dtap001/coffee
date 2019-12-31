@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import * as fromRoot from '../store/reducers'
 import { tap } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
-import { GeneralResponse } from 'src/models/general.response'; 
+import { GeneralResponse } from 'src/models/general.response';
 import { COFFEE_APP_PATHS } from './paths';
 
 @Injectable()
@@ -37,7 +37,12 @@ export class AuthInterceptor implements HttpInterceptor {
             }
         },
             (err: any) => {
-
+                if (err instanceof HttpErrorResponse) {
+                    if (err.status !== 401) {
+                        return;
+                    }
+                    return this.router.navigate([COFFEE_APP_PATHS.ROOT]);
+                }
             }));
     }
 }

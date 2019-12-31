@@ -1,9 +1,10 @@
 import { createReducer, on, createSelector, createFeatureSelector } from '@ngrx/store'
 import { TargetModel } from 'src/models/target.model';
-import { TargetsSearchAction, TargetsSearchSuccessAction, TargetsSearchFailAction, TargetsWakeAction, TargetsWakeSuccessAction, TargetsWakeFailAction, TargetsDeleteAction, TargetsDeleteSuccessAction, TargetsDeleteFailAction, TargetsSaveFailAction, TargetsSaveAction } from './target.action';
+import { TargetsSearchAction, TargetsSearchSuccessAction, TargetsSearchFailAction, TargetsWakeAction, TargetsWakeSuccessAction, TargetsWakeFailAction, TargetsDeleteAction, TargetsDeleteSuccessAction, TargetsDeleteFailAction, TargetsSaveFailAction, TargetsSaveAction, TargetDetailAction } from './target.action';
 
 export interface TargetsState {
     data: TargetModel[];
+    selectedTarget: TargetModel,
     loaded: boolean;
     loading: boolean;
     error: any
@@ -13,11 +14,17 @@ export const emptyState: TargetsState = {
     data: [],
     loaded: false,
     loading: false,
-    error: null
+    error: null,
+    selectedTarget: new TargetModel()
 }
 
 export const Reducer = createReducer(
     emptyState,
+    on(TargetDetailAction, (state: TargetsState, action) => ({
+        ...state,
+        selectedTarget:
+            state.data.filter(item => { return item.id == action.id }).length == 0 ? state.selectedTarget : state.data.filter(item => { return item.id == action.id })[0]
+    })),
     on(TargetsSearchAction, state => ({ ...state, loading: true })),
     on(TargetsSearchSuccessAction, (state: TargetsState, action) => ({
         ...state,
@@ -39,6 +46,7 @@ export const Reducer = createReducer(
         error: null,
         data: [...state.data.filter(item => item.id == action.target.id), action.target]
     })),
+
     on(TargetsWakeFailAction, (state, { error }) => ({
         ...state,
         loading: false,
@@ -74,7 +82,10 @@ export const Reducer = createReducer(
 );
 
 export const getTargetsState = createFeatureSelector<TargetsState>('data');
-
+export const getSelectedTarget = createSelector(
+    getTargetsState,
+    (state: TargetsState) => state.selectedTarget
+);
 
 /*export const getIsLoggedIn = createSelector(
     getHelloState,
