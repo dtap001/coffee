@@ -3,7 +3,7 @@ import { HelloModel } from 'src/models/hello.model';
 
 
 export const HelloAction = createAction(
-    "[Hello] Start"    
+    "[Hello] Start"
 );
 
 export const HelloSuccessAction = createAction(
@@ -15,3 +15,8 @@ export const HelloFailedAction = createAction(
     "[Hello] Fail",
     props<{ error: String }>()
 );
+export const KickedOutAction = createAction(
+    "[KickedOutAction]",
+    props<{}>()
+);
+

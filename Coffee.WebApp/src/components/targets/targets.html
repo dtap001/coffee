@@ -1,30 +1,75 @@
-<div fxLayout="row" fxFlexAlign="center center">
-    <p-button (click)="add()">Add</p-button>
-    <p-button (click)="add()">Discover</p-button>
+<div fxLayout="column" fxLayoutAlign="start center">
+
+    <div fxLayout="row" fxLayoutGap="20px" fxFlexAlign="space-between center">
+        <p-button (click)="add()" fxLayout="column" fxLayoutAlign="center stretch">
+            <div fxLayout="row" fxFlexFill fxLayoutAlign="center center">
+                <i style="color:white" class="pi pi-plus"></i>
+                <label>Add</label>
+            </div>
+        </p-button>
+        <p-button (click)="add()" fxLayout="column" fxLayoutAlign="center stretch">
+            <div fxLayout="row" fxFlexFill fxLayoutAlign="center center">
+                <i style="color:white" class="pi pi-search-plus"></i>
+                <label>Discover</label>
+            </div>
+        </p-button>
+    </div>
+
+    <div fxLayout="row" fxLayoutAlign="center center" *ngIf="targets$ | async as data">
+        <p-table fxFlex="50" [value]="data">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th>Pin</th>
+                    <th>Caption</th>
+                    <th>MAC</th>
+                    <th>IP</th>
+                    <th>Edit</th>
+                    <th>Wake</th>
+                    <th>Remove</th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-target>
+                <tr>
+                    <td>
+                        <p-button fxLayout="column" fxLayoutAlign="center stretch" (click)="edit(target)">
+                            <div fxLayout="row" fxFlexFill fxLayoutAlign="center center">
+                                <i style="color:white" class="pi pi-paperclip"></i>
+                            </div>
+                        </p-button>
+                    </td>
+                    <td>{{target.caption}}</td>
+                    <td>{{target.macAddress}}</td>
+                    <td>{{target.ipAddress}}</td>
+                    <td class="no-padding">
+                        <!--  <div class="table-button" fxFlex="100" fxLayoutAlign="center center">
+                        <i style="color:white" class="pi pi-check"></i>
+                        <label>Edit</label>
+                    </div>-->
+                        <p-button fxLayout="column" fxLayoutAlign="center stretch" (click)="edit(target)">
+                            <div fxLayout="row" fxFlexFill fxLayoutAlign="center center">
+                                <i style="color:white" class="pi pi-pencil"></i>
+                                <label>Edit</label>
+                            </div>
+                        </p-button>
+                    </td>
+                    <td class="no-padding">
+                        <p-button fxLayout="column" fxLayoutAlign="center stretch" (click)="edit(target)">
+                            <div fxLayout="row" fxFlexFill fxLayoutAlign="center center">
+                                <i style="color:white" class="pi pi-power-off"></i>
+                                <label>Wake</label>
+                            </div>
+                        </p-button>
+                    </td>
+                    <td class="no-padding">
+                        <p-button fxLayout="column" fxLayoutAlign="center stretch" (click)="edit(target)">
+                            <div fxLayout="row" fxFlexFill fxLayoutAlign="center center">
+                                <i style="color:white" class="pi pi-ban"></i>
+                                <label>Remove</label>
+                            </div>
+                        </p-button>
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
 </div>
-<ng-container *ngIf="targets$ | async as data">
-    <p-table [value]="data">
-        <ng-template pTemplate="header">
-            <tr>
-                <th>Pin</th>
-                <th>Caption</th>
-                <th>MAC</th>
-                <th>IP</th>
-                <td>Edit</td>
-                <th>Wake</th>
-                <th>Remove</th>
-            </tr>
-        </ng-template>
-        <ng-template pTemplate="body" let-target>
-            <tr>
-                <td>*</td>
-                <td>{{target.caption}}</td>
-                <td>{{target.macAddress}}</td>
-                <td>{{target.ipAddress}}</td>
-                <td><p-button (click)="edit(target)">Edit</p-button></td>
-                <td>#</td>
-                <td>X</td>
-            </tr>
-        </ng-template>
-    </p-table>
-</ng-container>

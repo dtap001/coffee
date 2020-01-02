@@ -1,15 +1,42 @@
 * {
-    box-sizing: border-box
-  }
+  box-sizing: border-box;
+}
 
-html,body {
+html,
+body {
   height: 100%;
   width: 100%;
   margin: 0px;
 }
-
-
+tr {
+  height: 50px !important;
+  min-width: 50px !important;
+}
 coffe-root {
-  display:block;
-  height:100%
+  display: block;
+  height: 100%;
+}
+
+i {
+  font-size: 30px !important;
+}
+
+p-button > button {
+  background-color: #6f4e37 !important;
+  color: white;
+  border: 0px !important;
+  &:hover {
+    background-color: #583e2b !important;
+  }
+  &:active {
+    background-color: #412e21 !important;
+  }
+}
+.no-padding {
+  padding: 5px !important;
+}
+
+p-button {
+  height: 100px;
+  width: 150px;
 }

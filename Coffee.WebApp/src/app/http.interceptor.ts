@@ -7,6 +7,7 @@ import { tap } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 import { GeneralResponse } from 'src/models/general.response';
 import { COFFEE_APP_PATHS } from './paths';
+import { KickedOutAction } from 'src/store/hello/hello.action';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
@@ -32,6 +33,7 @@ export class AuthInterceptor implements HttpInterceptor {
         return next.handle(request).pipe(tap((response) => {
             if (response instanceof HttpResponse && !(response.body as GeneralResponse).isOK) {
                 if ((response.body as GeneralResponse).error.code == 401) {
+                    this.store.dispatch(KickedOutAction({}))
                     return this.router.navigate([COFFEE_APP_PATHS.ROOT]);
                 }
             }
@@ -41,6 +43,7 @@ export class AuthInterceptor implements HttpInterceptor {
                     if (err.status !== 401) {
                         return;
                     }
+                    this.store.dispatch(KickedOutAction({}))
                     return this.router.navigate([COFFEE_APP_PATHS.ROOT]);
                 }
             }));

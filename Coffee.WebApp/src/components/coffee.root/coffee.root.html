@@ -1,6 +1,6 @@
 <div fxLayout="column" fxLayoutAlign="start stretch">
     <div style="background-color:#6f4e37" fxFlex="100px" fxLayout="row" fxLayoutAlign="space-between center">
-        <label fxFlex="20">Coffee</label>
+        <img fxFlex="20"  src="assets/logo.png">
         <div *ngIf="(userState$ != null )  && (userState$ | async).loggedIn == false" fxFlex="grow" fxLayout="row"
             fxLayoutGap="10px" fxLayoutAlign="end center">
             <div class="ui-inputgroup">
@@ -15,9 +15,17 @@
             </div>
             <p-button (click)="doLogin(userName,password)" label="Login"></p-button>
         </div>
+        <div *ngIf="(userState$ != null )  && (userState$ | async).loggedIn == true" fxFlex="grow" fxLayout="row"
+            fxLayoutGap="10px" fxLayoutAlign="space-around center">
+            <label>Targets</label>
+            <label>Users</label>
+            <label>Settings</label>
+            <label>Logout</label>
+        </div>
+
 
     </div>
-    <div fxLayout="column" fxFlex="auto" fxLayoutAlign="center center">       
-         <router-outlet></router-outlet>
+    <div fxLayout="column" fxFlex="auto" fxLayoutAlign="center center">
+        <router-outlet fxLayout="column" fxFlex="auto" fxLayoutAlign="center center"></router-outlet>
     </div>
 </div>

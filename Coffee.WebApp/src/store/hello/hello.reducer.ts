@@ -1,6 +1,6 @@
- 
+
 import { createReducer, on, createSelector, createFeatureSelector } from '@ngrx/store';
-import { HelloAction, HelloSuccessAction, HelloFailedAction } from './hello.action';
+import { HelloAction, HelloSuccessAction, HelloFailedAction, KickedOutAction } from './hello.action';
 import { HelloModel } from 'src/models/hello.model';
 
 export interface HelloState {
@@ -22,7 +22,7 @@ export const Reducer = createReducer(
         ...state,
         loading: false,
         loggedIn: true,
-        error: null,        
+        error: null,
         //apiVersion: action.payload.ApiVersion
     })),
     on(HelloFailedAction, (state, { error }) => ({

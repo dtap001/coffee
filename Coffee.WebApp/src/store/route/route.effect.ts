@@ -22,7 +22,6 @@ export class RouteEffect {
     ) { }
 
     private mapToRouterStateUrl = (action): AppRouterState => {
-        console.log("MAP: " + JSON.stringify(action));
         return action.payload.routerState;
     };
 
@@ -41,7 +40,7 @@ export class RouteEffect {
         this.actions$.pipe(
             ofType(ROUTER_NAVIGATION),
             map(this.mapToRouterStateUrl),
-            tap((routerState) => { console.log(`URL: ${JSON.stringify(routerState)}`) }),
+            tap((routerState) => { console.log(`URL: ${JSON.stringify(routerState.url)}`) }),
             filter(routerState =>
                 //  routerState.url.includes(`${COFFEE_APP_PATHS.TARGETS}`) ||
                 routerState.url.includes(`${COFFEE_APP_PATHS.TARGETS_DETAIL}`)
