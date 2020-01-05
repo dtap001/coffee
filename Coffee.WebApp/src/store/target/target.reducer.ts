@@ -7,7 +7,8 @@ export interface TargetsState {
     selectedTarget: TargetModel,
     loaded: boolean;
     loading: boolean;
-    error: any
+    error: any,
+    discoveredTargets:TargetModel[]
 }
 
 export const emptyState: TargetsState = {
@@ -15,7 +16,8 @@ export const emptyState: TargetsState = {
     loaded: false,
     loading: false,
     error: null,
-    selectedTarget: new TargetModel()
+    selectedTarget: new TargetModel(),
+    discoveredTargets : []
 }
 
 export const Reducer = createReducer(
@@ -58,7 +60,7 @@ export const Reducer = createReducer(
         loading: false,
         loaded: true,
         error: null,
-        data: state.data.filter(item => item.id == action.deletedTarget.id),
+        data: state.data.filter(item => item.id != action.deletedTarget.id),
     })),
     on(TargetsDeleteFailAction, (state, { error }) => ({
         ...state,

@@ -1,5 +1,8 @@
-<div fxLayout="column" fxLayoutAlign="start center">
+<p-dialog header="Title" [(visible)]="isDiscoveryVisible" [style]="{width: '300px', height: '200px'}">
+    <discover-dialog></discover-dialog>>
+</p-dialog>
 
+<div fxLayout="column" fxLayoutAlign="start center">
     <div fxLayout="row" fxLayoutGap="20px" fxFlexAlign="space-between center">
         <p-button (click)="add()" fxLayout="column" fxLayoutAlign="center stretch">
             <div fxLayout="row" fxFlexFill fxLayoutAlign="center center">
@@ -7,7 +10,7 @@
                 <label>Add</label>
             </div>
         </p-button>
-        <p-button (click)="add()" fxLayout="column" fxLayoutAlign="center stretch">
+        <p-button (click)="isDiscoveryVisible = true" fxLayout="column" fxLayoutAlign="center stretch">
             <div fxLayout="row" fxFlexFill fxLayoutAlign="center center">
                 <i style="color:white" class="pi pi-search-plus"></i>
                 <label>Discover</label>
@@ -20,7 +23,7 @@
             <ng-template pTemplate="header">
                 <tr>
                     <th>Pin</th>
-                    <th>Caption</th>
+                    <th>Hostname</th>
                     <th>MAC</th>
                     <th>IP</th>
                     <th>Edit</th>
@@ -61,7 +64,7 @@
                         </p-button>
                     </td>
                     <td class="no-padding">
-                        <p-button fxLayout="column" fxLayoutAlign="center stretch" (click)="edit(target)">
+                        <p-button fxLayout="column" fxLayoutAlign="center stretch" (click)="remove(target)">
                             <div fxLayout="row" fxFlexFill fxLayoutAlign="center center">
                                 <i style="color:white" class="pi pi-ban"></i>
                                 <label>Remove</label>

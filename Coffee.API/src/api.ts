@@ -1,12 +1,12 @@
 import container from "./diContainer";
-import { Server } from "./server";
+import { CoffeeServer } from "./server";
 import { Log } from "./log";
 import TYPES from "./types";
 import { CoffeeStorage } from "./storage/storage";
 import { CoffeCache } from "./storage/coffe.cache";
 
 export class API {
-    server = new Server();
+    server = new CoffeeServer();
     storage: CoffeeStorage;
     async start() {
         Log.i("API initialization starting.");

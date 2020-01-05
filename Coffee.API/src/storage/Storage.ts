@@ -15,6 +15,8 @@ import container from "../diContainer";
 import TYPES from "../types";
 import { Job } from "../models/job";
 import { JobEntity } from "./entities/job";
+import { DisocveryEntity } from "./entities/discovery";
+import { Discovery } from "../models/discovery";
 
 @injectable()
 export class CoffeeStorage {
@@ -36,6 +38,7 @@ export class CoffeeStorage {
                     RoleEntity,
                     TargetEntity,
                     JobEntity,
+                    DisocveryEntity
 
                 ],
                 synchronize: true,
@@ -124,10 +127,11 @@ export class CoffeeStorage {
             return Promise.reject(err)
         }
     }
-    async deleteTarget(id: number): Promise<void> {
+    async deleteTarget(id: number): Promise<Target> {
         try {
+            let target = await this._connection.getRepository(TargetEntity).find({ id: id });
             await this._connection.getRepository(TargetEntity).delete({ id: id });
-            return Promise.resolve();
+            return Promise.resolve(target[0]);
         } catch (err) {
             Log.e("deleteTarget error: " + err, err);
             return Promise.reject(err)
@@ -199,6 +203,38 @@ export class CoffeeStorage {
             return Promise.resolve();
         } catch (err) {
             Log.e("deleteJob error: " + err, err);
+            return Promise.reject(err)
+        }
+    }
+
+    async getDiscovery(network: string): Promise<Discovery> {
+        try {
+            let entity = await this._connection.getRepository(DisocveryEntity).findOne({ network: network });
+            return Promise.resolve({ id: entity.id, finishedTimeStamp: entity.finishedTimeStamp, network: entity.network, startedTimeStamp: entity.startedTimeStamp } as Discovery);
+        } catch (err) {
+            Log.e("getDiscovery error: " + err, err);
+            return Promise.reject(err)
+        }
+    }
+
+    async saveDiscovery(model: Discovery): Promise<void> {
+        try {
+            let entity = await this._connection.getRepository(DisocveryEntity).findOne({ id: model.id });
+            if (entity == null || entity == undefined) {//create
+                await this._connection.getRepository(DisocveryEntity).save({
+                    network: model.network,
+                    startedTimeStamp: model.startedTimeStamp,
+                    finishedTimeStamp: model.finishedTimeStamp,
+                } as DisocveryEntity);
+            } else {//update                
+                entity.network = model.network;
+                entity.startedTimeStamp = model.startedTimeStamp;
+                entity.finishedTimeStamp = model.finishedTimeStamp;
+                await this._connection.getRepository(DisocveryEntity).save(entity);
+            }
+            return Promise.resolve();
+        } catch (err) {
+            Log.e("saveDiscovery error: " + err, err);
             return Promise.reject(err)
         }
     }

@@ -17,8 +17,13 @@ import { UserDeleteRoute } from "./routes/users/delete";
 import { UserSaveRoute } from "./routes/users/save";
 import { TargetsSearchRoute } from "./routes/targets/search";
 import cors from "cors";
-export class Server {
+import { Server, createServer } from "http";
+import { SocketServer } from "./socketServer";
+
+export class CoffeeServer {
+    private server: Server;
     private app;
+
     public getApp() { return this.app; }
 
     async initialize() {
@@ -32,17 +37,22 @@ export class Server {
         };
 
         this.app = express();
+        this.server = createServer(this.app);
+
         this.app.use(bodyParser.json())
         this.app.use(bodyParser.urlencoded({ extended: false }))
         this.app.use(cors(options));
         this.registerRoutes();
-        this.app.listen(Config.Port(), err => {
+        new SocketServer(this.server);
+        this.server.listen(Config.Port()); /*, err => {
             if (err) {
                 return Promise.reject(err);
             }
             Log.i(`Server is listening on ${Config.Port()}`);
+           
             return Promise.resolve();
-        });
+        });*/
+        return Promise.resolve();
     }
 
     registerRoutes() {

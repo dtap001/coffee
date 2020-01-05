@@ -1,6 +1,6 @@
 <div fxLayout="column" fxLayoutAlign="start stretch">
     <div style="background-color:#6f4e37" fxFlex="100px" fxLayout="row" fxLayoutAlign="space-between center">
-        <img fxFlex="20"  src="assets/logo.png">
+        <img fxFlex="20" src="assets/logo.png">
         <div *ngIf="(userState$ != null )  && (userState$ | async).loggedIn == false" fxFlex="grow" fxLayout="row"
             fxLayoutGap="10px" fxLayoutAlign="end center">
             <div class="ui-inputgroup">
@@ -13,7 +13,12 @@
                         style="line-height: 1.25;color:#6f4e37"></i></span>
                 <input [(ngModel)]="password" type="password" pInputText placeholder="Password">
             </div>
-            <p-button (click)="doLogin(userName,password)" label="Login"></p-button>
+            <p-button (click)="doLogin(userName,password)" fxLayout="column" fxLayoutAlign="center stretch">
+                <div fxLayout="row" fxFlexFill fxLayoutAlign="center center" style="border:solid #624732 2px!important">
+                    <i style="color:white" class="pi pi-key"></i>
+                    <label>Login</label>
+                </div>
+            </p-button>
         </div>
         <div *ngIf="(userState$ != null )  && (userState$ | async).loggedIn == true" fxFlex="grow" fxLayout="row"
             fxLayoutGap="10px" fxLayoutAlign="space-around center">

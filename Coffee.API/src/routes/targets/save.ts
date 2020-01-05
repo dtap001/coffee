@@ -13,7 +13,7 @@ export class TargetSaveRoute extends RouteBase {
         return roles.map(r => r.caption);
     }
     getPath(): string {
-        return Config.APIVersion() + "/target/save";
+        return Config.APIVersion() + "/targets/save";
     }
     getRouteMethod(): RouteMethod {
         return RouteMethod.POST;

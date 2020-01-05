@@ -12,7 +12,7 @@ export class TargetWakeRoute extends RouteBase {
         return roles.map(r => r.caption);
     }
     getPath(): string {
-        return Config.APIVersion() + "/target/wake";
+        return Config.APIVersion() + "/targets/wake";
     }
     getRouteMethod(): RouteMethod {
         return RouteMethod.GET;

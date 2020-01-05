@@ -7,7 +7,7 @@ import {
 } from "rxjs/operators";
 import { GeneralService } from 'src/app/services/general.service';
 import { of } from 'rxjs';
-import { TargetsSearchAction, TargetsDeleteSuccessAction, TargetsDeleteFailAction, TargetsSaveAction, TargetsSaveSuccessAction, TargetsSaveFailAction, TargetsWakeAction, TargetsWakeSuccessAction, TargetsWakeFailAction, TargetsDeleteAction, TargetsSearchSuccessAction, TargetsSearchFailAction } from './target.action';
+import { TargetsSearchAction, TargetsDeleteSuccessAction, TargetsDeleteFailAction, TargetsSaveAction, TargetsSaveSuccessAction, TargetsSaveFailAction, TargetsWakeAction, TargetsWakeSuccessAction, TargetsWakeFailAction, TargetsDeleteAction, TargetsSearchSuccessAction, TargetsSearchFailAction, TargetDetailAction } from './target.action';
 
 @Injectable()
 export class TargetsEffect {
