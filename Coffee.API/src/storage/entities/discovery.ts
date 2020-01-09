@@ -10,6 +10,6 @@ export class DisocveryEntity {
     network: string;
     @Column()
     startedTimeStamp: Date;
-    @Column()
+    @Column({ nullable: true })
     finishedTimeStamp: Date;
 }

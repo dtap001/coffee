@@ -4,7 +4,8 @@ const EventEmitter = require('events');
 const ping = require('ping');
 import { IpUtils } from "./ip.utils";
 
-export class SubnetsPinger extends EventEmitter {
+export class SubnetPinger extends EventEmitter {
+    ranges
     constructor(_ranges) {
         super();
 

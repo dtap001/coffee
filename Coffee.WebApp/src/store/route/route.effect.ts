@@ -33,7 +33,7 @@ export class RouteEffect {
             filter(routerState =>
                 routerState.url.includes(`${COFFEE_APP_PATHS.TARGETS}`)
             ),
-            map((routerState) => TargetsSearchAction({ search: this.undefinedToEmpty(routerState["root"].queryParams.search) }))
+            map((routerState) => TargetsSearchAction({ search: this.undefinedToEmpty(routerState["root"].queryParams.search) })) //fix this shit
         ));
 
     targetDetails$ = createEffect(() =>

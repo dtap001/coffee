@@ -8,7 +8,7 @@ import { CoffeCache } from "../../storage/coffe.cache";
 import { Discovery } from "../../models/discovery";
 import { DiscoveryManager } from "../../discovery.manager";
 
-export class DiscoveryStart extends RouteBase {
+export class DiscoveryStartRoute extends RouteBase {
     getSufficientRoles(): string[] {
         let roles = container.get<CoffeCache>(TYPES.Cache).AllRoles;
         return roles.map(r => r.caption);

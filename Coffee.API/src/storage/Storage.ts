@@ -210,6 +210,7 @@ export class CoffeeStorage {
     async getDiscovery(network: string): Promise<Discovery> {
         try {
             let entity = await this._connection.getRepository(DisocveryEntity).findOne({ network: network });
+            if (entity == null) { return Promise.resolve(null); }
             return Promise.resolve({ id: entity.id, finishedTimeStamp: entity.finishedTimeStamp, network: entity.network, startedTimeStamp: entity.startedTimeStamp } as Discovery);
         } catch (err) {
             Log.e("getDiscovery error: " + err, err);

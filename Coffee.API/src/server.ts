@@ -19,9 +19,13 @@ import { TargetsSearchRoute } from "./routes/targets/search";
 import cors from "cors";
 import { Server, createServer } from "http";
 import { SocketServer } from "./socketServer";
+import { DiscoveryStartRoute } from "./routes/discovery/start";
+import container from "./diContainer";
+import TYPES from "./types";
 
 export class CoffeeServer {
     private server: Server;
+    private socketServer: SocketServer;
     private app;
 
     public getApp() { return this.app; }
@@ -43,7 +47,10 @@ export class CoffeeServer {
         this.app.use(bodyParser.urlencoded({ extended: false }))
         this.app.use(cors(options));
         this.registerRoutes();
-        new SocketServer(this.server);
+
+        this.socketServer = container.get<SocketServer>(TYPES.SocketServer);
+        this.socketServer.initialize(this.server);
+
         this.server.listen(Config.Port()); /*, err => {
             if (err) {
                 return Promise.reject(err);
@@ -76,6 +83,8 @@ export class CoffeeServer {
         factory.register(TargetSaveRoute);
         factory.register(TargetsSearchRoute);
         factory.register(TargetWakeRoute);
+        factory.register(DiscoveryStartRoute);
+
 
         // configure the app to use bodyParser()
         //  this.app.use(express.json());

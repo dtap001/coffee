@@ -5,7 +5,7 @@ import { GeneralResponse } from 'src/models/general.response';
 import { Store } from '@ngrx/store';
 import * as fromRoot from '../../store/reducers'
 import { TargetModel } from 'src/models/target.model';
-import { TargetsSearchResponse, TargetsDeleteResponse, TargetsSaveResponse, TargetsWakeResponse } from 'src/models/targets.responses';
+import { TargetsSearchResponse, TargetsDeleteResponse, TargetsSaveResponse, TargetsWakeResponse, DiscoveryStartResponse } from 'src/models/targets.responses';
 
 @Injectable({
     providedIn: "root"
@@ -46,6 +46,13 @@ export class GeneralService {
     targetsWake(id: number): Observable<TargetsWakeResponse> {
         const URL = "http://localhost:3000/v1/targets/wake";
         let response$ = this.http.post<TargetsWakeResponse>(URL, { id: id }, this.options(this.json()));
+        return this.wrapWithIsOKCheck(response$);
+    }
+
+    
+    discoveryStart(network:string): Observable<DiscoveryStartResponse> {
+        const URL = "http://localhost:3000/v1/discovery/start";
+        let response$ = this.http.post<DiscoveryStartResponse>(URL, { network: network }, this.options(this.json()));
         return this.wrapWithIsOKCheck(response$);
     }
 

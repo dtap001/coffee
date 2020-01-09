@@ -2,11 +2,12 @@ import { Log } from "./log";
 
 import socketIo from 'socket.io';
 import { Server } from "http";
-import { DiscoveryEvents } from "./discovery.manager";
-import { Target } from "./models/target";
+import { injectable } from "inversify";
+
+@injectable()
 export class SocketServer {
     private socket: SocketIO.Server;
-    constructor(server: Server) {
+    initialize(server: Server) {
         this.socket = socketIo(server);
         this.socket.on('connection', sckt => {
             Log.i('New client connected');
@@ -14,20 +15,25 @@ export class SocketServer {
             /*  socket.on('todoCreated', (todo) => {
                   io.sockets.emit('todoCreated', todo);
               });*/
-
+            sckt.on(new HelloEvent().TAG, () => {
+                Log.i('Hello received from client');
+            })
             sckt.on('disconnect', () => {
                 Log.i('Client disconnected');
             });
         });
     }
-
-    emitError(err: string) {
-        this.socket.emit(DiscoveryEvents.ERROR, err);
+    emit(event: SocketEvent) {
+        this.socket.emit(event.TAG, event.data);
     }
-    emitEnd() {
-        this.socket.emit(DiscoveryEvents.END);
-    }
-    emitFound(found: Target) {
-        this.socket.emit(DiscoveryEvents.FOUND, found);
+}
+export class SocketEvent {
+    public TAG: string;
+    public data: any;
+}
+export class HelloEvent extends SocketEvent {
+    constructor() {
+        super();
+        this.TAG = "Hello";
     }
 }

@@ -16,3 +16,7 @@ export class TargetsDeleteResponse extends GeneralResponse {
 export class TargetsSaveResponse extends GeneralResponse {
     content: TargetModel;
 }
+
+export class DiscoveryStartResponse extends GeneralResponse {
+    content: TargetModel;
+}
