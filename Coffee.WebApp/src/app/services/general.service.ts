@@ -5,7 +5,8 @@ import { GeneralResponse } from 'src/models/general.response';
 import { Store } from '@ngrx/store';
 import * as fromRoot from '../../store/reducers'
 import { TargetModel } from 'src/models/target.model';
-import { TargetsSearchResponse, TargetsDeleteResponse, TargetsSaveResponse, TargetsWakeResponse, DiscoveryStartResponse } from 'src/models/targets.responses';
+import { TargetsSearchResponse, TargetsDeleteResponse, TargetsSaveResponse, TargetsWakeResponse } from 'src/models/targets.responses';
+import { DiscoveryStopResponse, DiscoveryStartResponse, DiscoveryGetInterfacesResponse } from 'src/models/discovery.responses';
 
 @Injectable({
     providedIn: "root"
@@ -49,12 +50,25 @@ export class GeneralService {
         return this.wrapWithIsOKCheck(response$);
     }
 
-    
-    discoveryStart(network:string): Observable<DiscoveryStartResponse> {
+
+    discoveryStart(network: string): Observable<DiscoveryStartResponse> {
         const URL = "http://localhost:3000/v1/discovery/start";
         let response$ = this.http.post<DiscoveryStartResponse>(URL, { network: network }, this.options(this.json()));
         return this.wrapWithIsOKCheck(response$);
     }
+
+    discoveryStop(network: string): Observable<DiscoveryStopResponse> {
+        const URL = "http://localhost:3000/v1/discovery/stop";
+        let response$ = this.http.post<DiscoveryStopResponse>(URL, { network: network }, this.options(this.json()));
+        return this.wrapWithIsOKCheck(response$);
+    }
+
+    discoveryGetInterfaces(): Observable<DiscoveryGetInterfacesResponse> {
+        const URL = "http://localhost:3000/v1/discovery/getInterfaces";
+        let response$ = this.http.post<DiscoveryGetInterfacesResponse>(URL, {}, this.options(this.json()));
+        return this.wrapWithIsOKCheck(response$);
+    }
+
 
     private wrapWithIsOKCheck(response$: Observable<GeneralResponse>): Observable<GeneralResponse> {
         let result$ = new Observable<GeneralResponse>(observer => {

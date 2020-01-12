@@ -8,6 +8,7 @@ import { Target } from "./models/target";
 import { CoffeeStorage } from "./storage/storage";
 import { RouteError } from "./routes/route";
 import { Log } from "./log";
+import * as os from "os";
 
 var iprange = require('iprange');
 var ping = require('ping');
@@ -39,6 +40,7 @@ export class EndDiscoveryEvent extends SocketEvent {
 export class DiscoveryManager {
 
     static scan(network: string) {
+
         let allIP: [];
         allIP = iprange(network);
 
@@ -134,5 +136,31 @@ export class DiscoveryManager {
         } catch (err) {
             throw new RouteError("Failed to scan. Error: " + err.message)
         }
+    }
+    static getAvailableNetworks(): string[] {
+        let interfaces = os.networkInterfaces();
+        let result = [];
+        for (let key in interfaces) {
+            let actualInterface = interfaces[key];
+            for (let interfaceDetail of actualInterface) {
+                if (interfaceDetail.family != "IPv4") {
+                    continue;
+                }
+                let subnetAddressParts = interfaceDetail.netmask.split('.');
+
+                subnetAddressParts = subnetAddressParts.map((decimal) => parseInt(decimal, 10).toString(2));
+                //  let ipCIDR = element.address +  
+                let fullBinary = subnetAddressParts.join('');
+                let count = 0;
+                for (let item of fullBinary) {
+                    if (item == '1') {
+                        count++;
+                    }
+                }
+                result.push(interfaceDetail.address + "/" + count);
+
+            }
+        }
+        return result;
     }
 }

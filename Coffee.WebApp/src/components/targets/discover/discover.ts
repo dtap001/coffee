@@ -8,6 +8,8 @@ import { getSelectedTarget, getTargetsState } from 'src/store/target/target.redu
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SocketService, FoundDiscoveryEvent, EndDiscoveryEvent, ErrorDiscoveryEvent } from 'src/app/services/socket.service';
 import { GeneralService } from 'src/app/services/general.service';
+import { DiscoveryGetInterfacesAction } from 'src/store/discovery/discovery.action';
+import { SelectItem } from 'primeng/api';
 
 @Component({
     templateUrl: './discover.html',
@@ -15,39 +17,45 @@ import { GeneralService } from 'src/app/services/general.service';
 })
 export class DiscoverDialog implements OnInit, OnDestroy {
     // targets$: Observable<TargetModel[]>;
+    interfaces: SelectItem[];
+    selectedInterFace: string;
     targets: TargetModel[];
     ngOnDestroy(): void {
     }
-
+    onChangex(event) {
+        console.log("onChange: "  + JSON.stringify(event));
+        this.selectedInterFace = event.value;
+    }
 
     constructor(private store: Store<fromRoot.CoffeeState>, private router: Router, private generalService: GeneralService, private socketService: SocketService) {
-        //  this.targets$ = this.store.select(state => state.targets.discoveredTargets)
-        // 192.168.65.129
-
-
+        // this.interfaces$ = this.store.select(state => state.discovery.interfaces)
+        this.store.select(state => state.discovery.interfaces).subscribe(networks => {
+            this.interfaces = networks.map((network) => { return { value: network, label: network } });
+        });
+        this.store.dispatch(DiscoveryGetInterfacesAction({}));
     }
 
     do() {
-        console.log("DO");
+        console.log("DO selectedInterface: "+ JSON.stringify(this.selectedInterFace));
         this.targets = [];
-        this.generalService.discoveryStart("192.168.65.0/24").subscribe();
+        this.generalService.discoveryStart(this.selectedInterFace).subscribe();
 
-        this.socketService.subscribeToEvent(new FoundDiscoveryEvent("192.168.65.0/24", null)).subscribe((data) => {
+        this.socketService.subscribeToEvent(new FoundDiscoveryEvent(this.selectedInterFace, null)).subscribe((data) => {
             console.log("found: " + JSON.stringify(data));
-          this.targets.push(data);
+            this.targets.push(data);
         });
 
-        this.socketService.subscribeToEvent(new EndDiscoveryEvent("192.168.65.0/24")).subscribe((data) => {
+        this.socketService.subscribeToEvent(new EndDiscoveryEvent(this.selectedInterFace)).subscribe((data) => {
             let asd = "";
         });
 
-        this.socketService.subscribeToEvent(new ErrorDiscoveryEvent("192.168.65.0/24", "")).subscribe((data) => {
+        this.socketService.subscribeToEvent(new ErrorDiscoveryEvent(this.selectedInterFace, "")).subscribe((data) => {
             let asd = "";
         });
     }
 
     ngOnInit() {
-
+        this.store.dispatch(DiscoveryGetInterfacesAction({}));
     }
 
 

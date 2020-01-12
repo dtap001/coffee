@@ -34,6 +34,8 @@ import {FieldsetModule} from 'primeng/fieldset';
 import { DiscoverDialog } from 'src/components/targets/discover/discover';
 import { SocketService } from './services/socket.service';
 import { SocketIoConfig, SocketIoModule } from 'ngx-socket-io';
+import {DropdownModule} from 'primeng/dropdown';
+import { DiscoveryEffect } from 'src/store/discovery/discovery.effect';
 
 const config: SocketIoConfig = { url: 'http://localhost:8988', options: {} };
  
@@ -53,6 +55,7 @@ const config: SocketIoConfig = { url: 'http://localhost:8988', options: {} };
     CoffeeRouter,
     CardModule,
     TableModule,
+    DropdownModule,
     StoreModule.forRoot(reducers, {
       metaReducers: [...metaReducers,localStorageSyncReducer],
       runtimeChecks: {
@@ -61,7 +64,7 @@ const config: SocketIoConfig = { url: 'http://localhost:8988', options: {} };
       }
     }),
     SocketIoModule.forRoot(config),
-    EffectsModule.forRoot([HelloEffect, RouteEffect, UserEffect, TargetsEffect]),
+    EffectsModule.forRoot([HelloEffect, RouteEffect, UserEffect, TargetsEffect,DiscoveryEffect]),
     StoreRouterConnectingModule.forRoot(),
     StoreDevtoolsModule.instrument()
   ],

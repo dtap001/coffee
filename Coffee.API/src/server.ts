@@ -22,6 +22,7 @@ import { SocketServer } from "./socketServer";
 import { DiscoveryStartRoute } from "./routes/discovery/start";
 import container from "./diContainer";
 import TYPES from "./types";
+import { DiscoveryGetInterfacesRoute } from "./routes/discovery/getInterfaces";
 
 export class CoffeeServer {
     private server: Server;
@@ -84,7 +85,7 @@ export class CoffeeServer {
         factory.register(TargetsSearchRoute);
         factory.register(TargetWakeRoute);
         factory.register(DiscoveryStartRoute);
-
+        factory.register(DiscoveryGetInterfacesRoute)
 
         // configure the app to use bodyParser()
         //  this.app.use(express.json());
