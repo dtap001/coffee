@@ -37,7 +37,6 @@ export class DiscoveryStartRoute extends RouteBase {
                 return storage.saveDiscovery(discovery);
             }).then(function () {
                 DiscoveryManager.scan(requestedNetwork);
-
                 that.sendRouteResult(res, new RouteSuccessResult({} as ResponseContentModel));
             }).catch(function (err: RouteError) {
                 that.sendRouteResult(res, new RouteErrorResult(err));

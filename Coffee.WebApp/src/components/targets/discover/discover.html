@@ -1,8 +1,15 @@
-<p-dropdown [options]="interfaces"    (onChange)="onChangex($event)"></p-dropdown>
+<div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="20px">
+    <label>Selected interface:</label>
+    <p-dropdown [options]="interfaces" (onChange)="onChangex($event)"></p-dropdown>
 
-<p (click)="do()">
-    DISCOVERY MOTHERFUCKA
-</p>
+    <p-button [disabled]="!selectedInterFace" fxLayout="column" fxLayoutAlign="center stretch" (click)="discover()">
+        <div fxLayout="row" fxFlexFill fxLayoutAlign="center center">
+            <i style="color:white" class="pi pi-search"></i>
+            <label>Scan</label>
+        </div>
+    </p-button>
+</div>
+
 <div fxLayout="row" fxLayoutAlign="center center">
     <p-table fxFlex="80" [value]="targets">
         <ng-template pTemplate="header">

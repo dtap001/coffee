@@ -23,7 +23,6 @@ export class DiscoverDialog implements OnInit, OnDestroy {
     ngOnDestroy(): void {
     }
     onChangex(event) {
-        console.log("onChange: "  + JSON.stringify(event));
         this.selectedInterFace = event.value;
     }
 
@@ -31,12 +30,13 @@ export class DiscoverDialog implements OnInit, OnDestroy {
         // this.interfaces$ = this.store.select(state => state.discovery.interfaces)
         this.store.select(state => state.discovery.interfaces).subscribe(networks => {
             this.interfaces = networks.map((network) => { return { value: network, label: network } });
+            this.selectedInterFace = this.interfaces.length == 0 ? "Loading.." : this.interfaces[0].value;
         });
         this.store.dispatch(DiscoveryGetInterfacesAction({}));
     }
 
-    do() {
-        console.log("DO selectedInterface: "+ JSON.stringify(this.selectedInterFace));
+    discover() {
+        
         this.targets = [];
         this.generalService.discoveryStart(this.selectedInterFace).subscribe();
 

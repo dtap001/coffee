@@ -12,6 +12,7 @@ import * as os from "os";
 
 var iprange = require('iprange');
 var ping = require('ping');
+const arp = require("arping");
 
 export class ErrorDiscoveryEvent extends SocketEvent {
     constructor(network: string, error: string) {
@@ -68,16 +69,27 @@ export class DiscoveryManager {
         doThis(ipRange2);
         doThis(ipRange3);
 
+        let socket = container.get<SocketServer>(TYPES.SocketServer);
+
         function doThis(iprange) {
-            let socket = container.get<SocketServer>(TYPES.SocketServer);
             iprange.forEach(target => {
                 ping.sys.probe(target, function (isAlive) {
                     var msg = isAlive ? 'host ' + target + ' is alive' : 'host ' + target + ' is dead';
                     if (isAlive) {
                         Log.i("Found HOST: " + target);
-                        socket.emit(new FoundDiscoveryEvent(network, { caption: target, ipAddress: target, id: 1, macAddress: "" }));
+                        doARP(target);
                     }
                 });
+
+            });
+        }
+        function doARP(ip: string) {
+            arp.ping(ip, (err, info) => {
+                if (err) throw err; // Timeout, ...
+                // THA = target hardware address
+                // TIP = target IP address
+                console.log("%s (%s) responded in %s secs", info.tha, info.tip, info.elapsed);
+                socket.emit(new FoundDiscoveryEvent(network, { caption: ip, ipAddress: ip, id: 1, macAddress: info.tha }));
 
             });
         }
