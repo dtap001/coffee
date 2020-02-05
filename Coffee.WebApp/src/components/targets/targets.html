@@ -1,4 +1,5 @@
-<p-dialog header="Discover local network hosts" [(visible)]="isDiscoveryVisible" [style]="{width: '700px', height: '200px'}">
+<p-dialog header="Discover local network hosts" [(visible)]="isDiscoveryVisible"
+    [style]="{width: '700px', height: '200px'}">
     <discover-dialog></discover-dialog>
 </p-dialog>
 
@@ -44,10 +45,6 @@
                     <td>{{target.macAddress}}</td>
                     <td>{{target.ipAddress}}</td>
                     <td class="no-padding">
-                        <!--  <div class="table-button" fxFlex="100" fxLayoutAlign="center center">
-                        <i style="color:white" class="pi pi-check"></i>
-                        <label>Edit</label>
-                    </div>-->
                         <p-button fxLayout="column" fxLayoutAlign="center stretch" (click)="edit(target)">
                             <div fxLayout="row" fxFlexFill fxLayoutAlign="center center">
                                 <i style="color:white" class="pi pi-pencil"></i>
@@ -56,7 +53,7 @@
                         </p-button>
                     </td>
                     <td class="no-padding">
-                        <p-button fxLayout="column" fxLayoutAlign="center stretch" (click)="edit(target)">
+                        <p-button fxLayout="column" fxLayoutAlign="center stretch" (click)="wake(target)">
                             <div fxLayout="row" fxFlexFill fxLayoutAlign="center center">
                                 <i style="color:white" class="pi pi-power-off"></i>
                                 <label>Wake</label>

@@ -15,7 +15,7 @@ export class TargetWakeRoute extends RouteBase {
         return Config.APIVersion() + "/targets/wake";
     }
     getRouteMethod(): RouteMethod {
-        return RouteMethod.GET;
+        return RouteMethod.POST;
     }
     getAction(): Function {
         return (req: express.Request, res: express.Response) => {

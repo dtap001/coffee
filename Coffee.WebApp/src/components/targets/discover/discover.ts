@@ -10,6 +10,7 @@ import { SocketService, FoundDiscoveryEvent, EndDiscoveryEvent, ErrorDiscoveryEv
 import { GeneralService } from 'src/app/services/general.service';
 import { DiscoveryGetInterfacesAction } from 'src/store/discovery/discovery.action';
 import { SelectItem } from 'primeng/api';
+import { TargetsSaveAction } from 'src/store/target/target.action';
 
 @Component({
     templateUrl: './discover.html',
@@ -36,7 +37,7 @@ export class DiscoverDialog implements OnInit, OnDestroy {
     }
 
     discover() {
-        
+
         this.targets = [];
         this.generalService.discoveryStart(this.selectedInterFace).subscribe();
 
@@ -59,5 +60,7 @@ export class DiscoverDialog implements OnInit, OnDestroy {
     }
 
 
-    save() { }
+    save(target: TargetModel) {
+        this.store.dispatch(TargetsSaveAction({ target: target }));
+    }
 }

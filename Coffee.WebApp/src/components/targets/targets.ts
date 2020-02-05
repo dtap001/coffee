@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
 import { TargetsState } from 'src/store/target/target.reducer';
 import { Router } from '@angular/router';
 import { COFFEE_APP_PATHS } from 'src/app/paths';
-import { TargetsDeleteAction } from 'src/store/target/target.action';
+import { TargetsDeleteAction, TargetsWakeAction } from 'src/store/target/target.action';
 @Component({
     templateUrl: './targets.html',
 })
@@ -24,9 +24,14 @@ export class TargetsComponent implements OnInit {
     edit(target: TargetModel) {
         this.router.navigate([COFFEE_APP_PATHS.TARGETS_DETAIL], { queryParams: { id: target.id } });
     }
-    remove(target:TargetModel){
-        this.store.dispatch(TargetsDeleteAction({id:target.id}));
+    remove(target: TargetModel) {
+        this.store.dispatch(TargetsDeleteAction({ id: target.id }));
     }
+
+    wake(target: TargetModel) {
+        this.store.dispatch(TargetsWakeAction({ id: target.id }));
+    }
+
     ngOnInit() {
 
     }

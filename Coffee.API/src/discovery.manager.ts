@@ -9,10 +9,12 @@ import { CoffeeStorage } from "./storage/storage";
 import { RouteError } from "./routes/route";
 import { Log } from "./log";
 import * as os from "os";
+import * as https from "https"
+import * as dns from "dns";
 
 var iprange = require('iprange');
 var ping = require('ping');
-const arp = require("arping");
+const arp = require("node-arp");
 
 export class ErrorDiscoveryEvent extends SocketEvent {
     constructor(network: string, error: string) {
@@ -41,10 +43,10 @@ export class EndDiscoveryEvent extends SocketEvent {
 export class DiscoveryManager {
 
     static scan(network: string) {
-
+        Log.i("Scan network: " + network);
         let allIP: [];
         allIP = iprange(network);
-
+        Log.i("Netowork size: " + allIP.length);
         let rangeSize = allIP.length / 4;
 
         let range0Start = 0;
@@ -75,25 +77,64 @@ export class DiscoveryManager {
             iprange.forEach(target => {
                 ping.sys.probe(target, function (isAlive) {
                     var msg = isAlive ? 'host ' + target + ' is alive' : 'host ' + target + ' is dead';
+                    Log.i(msg);
                     if (isAlive) {
                         Log.i("Found HOST: " + target);
                         doARP(target);
                     }
                 });
-
             });
         }
+
         function doARP(ip: string) {
-            arp.ping(ip, (err, info) => {
-                if (err) throw err; // Timeout, ...
-                // THA = target hardware address
-                // TIP = target IP address
-                console.log("%s (%s) responded in %s secs", info.tha, info.tip, info.elapsed);
-                socket.emit(new FoundDiscoveryEvent(network, { caption: ip, ipAddress: ip, id: 1, macAddress: info.tha }));
-
+            Log.i("doARP ip  (" + ip + ")");
+            arp.getMAC(ip, function (err, result) {
+                if (!err) {
+                    Log.i("doARP ip  (" + ip + ") mac:" + result);
+                    doReverseDNS(ip, result);
+                } else {
+                    Log.i("doARP ip  (" + ip + ") err:" + result);
+                }
             });
         }
+        function doReverseDNS(ip: string, mac: string) {
+            Log.i("doReverseDNS (ip: " + ip + " )");
+            dns.reverse(ip, (err, hostnames) => {
+                if (err) {
+                    Log.i("doReverseDNS (ip: " + ip + " ) err: " + JSON.stringify(err));
+                }
+                if (err || !hostnames || hostnames.length == 0) {
+                    Log.i("doReverseDNS (ip: " + ip + " ) not found reverse DNS");
+                    getMacVendor(ip, mac);
+                } else {
+                    Log.i("doReverseDNS (ip: " + ip + " ) Found reverse dns: " + hostnames[0]);
+                    socket.emit(new FoundDiscoveryEvent(network, { caption: hostnames[0], ipAddress: ip, id: 1, macAddress: mac }));
+                }
+            })
+        }
+        function getMacVendor(ip: string, mac: string) {
+            Log.i("getMacVendor (ip:" + ip + " mac: " + mac + ")");
+            //https://macvendors.co/api/vendorname/00:19:99:E0:31:3D/pipe
+            let url = "https://macvendors.co/api/vendorname/" + mac + "/pipe";
+            https.get(url, (resp) => {
+                let data = '';
 
+                // A chunk of data has been recieved.
+                resp.on('data', (chunk) => {
+
+                    data += chunk;
+                });
+
+                // The whole response has been received. Print out the result.
+                resp.on('end', () => {
+                    Log.i("getMacVendor (ip:" + ip + " mac: " + mac + ") data: " + data);
+                    socket.emit(new FoundDiscoveryEvent(network, { caption: data, ipAddress: ip, id: 1, macAddress: mac }));
+                });
+
+            }).on("error", (err) => {
+                Log.i("getMacVendor (ip:" + ip + " mac: " + mac + ") err: " + JSON.stringify(err));
+            });
+        }
     }
 
     static scanDetail(target: string) {
@@ -169,8 +210,9 @@ export class DiscoveryManager {
                         count++;
                     }
                 }
-                result.push(interfaceDetail.address + "/" + count);
-
+                let splitAddress = interfaceDetail.address.split('.');
+                let finalAddress = splitAddress[0] + "." + splitAddress[1] + "." + splitAddress[2] + ".0";
+                result.push(finalAddress + "/" + count);
             }
         }
         return result;

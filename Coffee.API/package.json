@@ -53,6 +53,7 @@
     "iprange": "^0.1.0",
     "jsonwebtoken": "^8.5.1",
     "moment": "^2.24.0",
+    "node-arp": "^1.0.6",
     "node-schedule": "latest",
     "ping": "^0.2.2",
     "reflect-metadata": "^0.1.13",
