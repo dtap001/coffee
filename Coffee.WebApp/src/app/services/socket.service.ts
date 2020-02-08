@@ -16,7 +16,12 @@ export class SocketService extends Socket {
   }
 
   public subscribeToEvent(event: SocketEvent): Observable<any> {
+    console.log("subscribeToEvent " + event.TAG);
     return this.fromEvent(event.TAG);
+  }
+  public unsubscribe(event: SocketEvent) {
+    console.log("unsubscribe " + event.TAG);
+    return this.removeListener(event.TAG);
   }
 }
 export class SocketEvent {
@@ -47,7 +52,7 @@ export class EndDiscoveryEvent extends SocketEvent {
   }
 }
 
-export class HelloEvent extends SocketEvent{
+export class HelloEvent extends SocketEvent {
   constructor() {
     super();
     this.TAG = "Hello";

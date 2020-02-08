@@ -31,7 +31,7 @@ export class DiscoverDialog implements OnInit, OnDestroy {
         // this.interfaces$ = this.store.select(state => state.discovery.interfaces)
         this.store.select(state => state.discovery.interfaces).subscribe(networks => {
             this.interfaces = networks.map((network) => { return { value: network, label: network } });
-            this.selectedInterFace = this.interfaces.length == 0 ? "Loading.." : this.interfaces[0].value;
+            this.selectedInterFace = this.interfaces.length == 0 ? "Loading..." : this.interfaces[0].value;
         });
         this.store.dispatch(DiscoveryGetInterfacesAction({}));
     }
@@ -47,11 +47,13 @@ export class DiscoverDialog implements OnInit, OnDestroy {
         });
 
         this.socketService.subscribeToEvent(new EndDiscoveryEvent(this.selectedInterFace)).subscribe((data) => {
-            let asd = "";
+            this.socketService.unsubscribe(new FoundDiscoveryEvent(this.selectedInterFace, null));
+            this.socketService.unsubscribe(new EndDiscoveryEvent(this.selectedInterFace));
         });
 
         this.socketService.subscribeToEvent(new ErrorDiscoveryEvent(this.selectedInterFace, "")).subscribe((data) => {
-            let asd = "";
+            this.socketService.unsubscribe(new FoundDiscoveryEvent(this.selectedInterFace, null));
+            this.socketService.unsubscribe(new ErrorDiscoveryEvent(this.selectedInterFace, ""));
         });
     }
 

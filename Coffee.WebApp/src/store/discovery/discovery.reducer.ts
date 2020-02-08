@@ -31,7 +31,7 @@ export const Reducer = createReducer(
     })),
     on(DiscoveryTargetFoundAction, (state: DiscoveryState, action) => ({
         ...state,
-        discoveredTargets: [...state.discoveredTargets, action.target]
+        discoveredTargets: [...state.discoveredTargets.filter(item => item.id == action.target.id), action.target]
     })),
     on(DiscoveryEndAction, (state: DiscoveryState, action) => ({
         ...state,

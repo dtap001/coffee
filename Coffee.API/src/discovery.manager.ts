@@ -11,6 +11,7 @@ import { Log } from "./log";
 import * as os from "os";
 import * as https from "https"
 import * as dns from "dns";
+import { Discovery } from "./models/discovery";
 
 var iprange = require('iprange');
 var ping = require('ping');
@@ -71,19 +72,36 @@ export class DiscoveryManager {
         doThis(ipRange2);
         doThis(ipRange3);
 
+        let doneCount = 0;
         let socket = container.get<SocketServer>(TYPES.SocketServer);
-
+        let storage = container.get<CoffeeStorage>(TYPES.Storage);
         function doThis(iprange) {
             iprange.forEach(target => {
                 ping.sys.probe(target, function (isAlive) {
                     var msg = isAlive ? 'host ' + target + ' is alive' : 'host ' + target + ' is dead';
-                    Log.i(msg);
+                    //Log.i(msg);
                     if (isAlive) {
                         Log.i("Found HOST: " + target);
                         doARP(target);
+                    } else {
+                        onDone(target);
                     }
                 });
             });
+        }
+
+        function onDone(ip) {
+            //Log.i("onDone ip: " + ip)
+            doneCount++;
+            if (doneCount != allIP.length) {
+                return;
+            }
+
+            storage.getDiscovery(network).then(function (discovery: Discovery) {
+                discovery.finishedTimeStamp = new Date();
+                storage.saveDiscovery(discovery);
+            });
+            socket.emit(new EndDiscoveryEvent(network));
         }
 
         function doARP(ip: string) {
@@ -94,6 +112,7 @@ export class DiscoveryManager {
                     doReverseDNS(ip, result);
                 } else {
                     Log.i("doARP ip  (" + ip + ") err:" + result);
+                    onDone(ip);
                 }
             });
         }
@@ -109,6 +128,7 @@ export class DiscoveryManager {
                 } else {
                     Log.i("doReverseDNS (ip: " + ip + " ) Found reverse dns: " + hostnames[0]);
                     socket.emit(new FoundDiscoveryEvent(network, { caption: hostnames[0], ipAddress: ip, id: 1, macAddress: mac }));
+                    onDone(ip);
                 }
             })
         }
@@ -119,9 +139,8 @@ export class DiscoveryManager {
             https.get(url, (resp) => {
                 let data = '';
 
-                // A chunk of data has been recieved.
+                // A chunk of data has been received.
                 resp.on('data', (chunk) => {
-
                     data += chunk;
                 });
 
@@ -129,10 +148,11 @@ export class DiscoveryManager {
                 resp.on('end', () => {
                     Log.i("getMacVendor (ip:" + ip + " mac: " + mac + ") data: " + data);
                     socket.emit(new FoundDiscoveryEvent(network, { caption: data, ipAddress: ip, id: 1, macAddress: mac }));
+                    onDone(ip);
                 });
-
             }).on("error", (err) => {
                 Log.i("getMacVendor (ip:" + ip + " mac: " + mac + ") err: " + JSON.stringify(err));
+                onDone(ip);
             });
         }
     }
