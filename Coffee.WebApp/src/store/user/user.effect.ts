@@ -3,7 +3,7 @@ import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { map, switchMap, catchError, tap, exhaustMap, mergeMap } from "rxjs/operators";
 import { GeneralService } from 'src/app/services/general.service';
 import { of } from 'rxjs';
-import { UserLoginAction, UserLoginSuccessAction, UserLoginFailAction } from './user.action';
+import { UserLoginAction, UserLoginSuccessAction, UserLoginFailAction, UserLogoutAction } from './user.action';
 
 @Injectable()
 export class UserEffect {
@@ -20,6 +20,14 @@ export class UserEffect {
             )
         )
     ));
-
+  /*  userLogout$ = createEffect(() => this.actions$.pipe(
+        ofType(UserLogoutAction),
+        (({}) => this.generalService.login(userName, password)
+            .pipe(
+                map(response => UserLoginSuccessAction({ payload: response.content })),
+                catchError(({ error }) => of(UserLoginFailAction(error)))
+            )
+        )
+    ))*/
 
 }

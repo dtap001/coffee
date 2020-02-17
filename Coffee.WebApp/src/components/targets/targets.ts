@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
 import { TargetsState } from 'src/store/target/target.reducer';
 import { Router } from '@angular/router';
 import { COFFEE_APP_PATHS } from 'src/app/paths';
-import { TargetsDeleteAction, TargetsWakeAction } from 'src/store/target/target.action';
+import { TargetsDeleteAction, TargetsWakeAction, TargetPinAction } from 'src/store/target/target.action';
 @Component({
     templateUrl: './targets.html',
 })
@@ -30,6 +30,9 @@ export class TargetsComponent implements OnInit {
 
     wake(target: TargetModel) {
         this.store.dispatch(TargetsWakeAction({ id: target.id }));
+    }
+    pin(target:TargetModel){
+        this.store.dispatch(TargetPinAction({id:target.id}));
     }
 
     ngOnInit() {

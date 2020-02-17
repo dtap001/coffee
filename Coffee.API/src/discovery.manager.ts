@@ -127,7 +127,7 @@ export class DiscoveryManager {
                     getMacVendor(ip, mac);
                 } else {
                     Log.i("doReverseDNS (ip: " + ip + " ) Found reverse dns: " + hostnames[0]);
-                    socket.emit(new FoundDiscoveryEvent(network, { caption: hostnames[0], ipAddress: ip, id: 1, macAddress: mac }));
+                    socket.emit(new FoundDiscoveryEvent(network, { caption: hostnames[0], ipAddress: ip, id: 1, macAddress: mac, isPinned: false }));
                     onDone(ip);
                 }
             })
@@ -147,7 +147,7 @@ export class DiscoveryManager {
                 // The whole response has been received. Print out the result.
                 resp.on('end', () => {
                     Log.i("getMacVendor (ip:" + ip + " mac: " + mac + ") data: " + data);
-                    socket.emit(new FoundDiscoveryEvent(network, { caption: data, ipAddress: ip, id: 1, macAddress: mac }));
+                    socket.emit(new FoundDiscoveryEvent(network, { caption: data, ipAddress: ip, id: 1, macAddress: mac, isPinned: false }));
                     onDone(ip);
                 });
             }).on("error", (err) => {

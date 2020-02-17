@@ -9,16 +9,17 @@ export interface CoffeeState {
     hello: fromHello.HelloState,
     user: fromUser.UserState
     targets: fromTargets.TargetsState,
-    discovery:fromDiscovery.DiscoveryState
+    discovery: fromDiscovery.DiscoveryState
 }
 
 export const reducers: ActionReducerMap<CoffeeState> = {
+
     hello: fromHello.Reducer,
     user: fromUser.Reducer,
     targets: fromTargets.Reducer,
-    discovery:fromDiscovery.Reducer
+    discovery: fromDiscovery.Reducer
 }
-  
+
 export const metaReducers: MetaReducer<CoffeeState>[] = !environment.production
     ? []
     : [];

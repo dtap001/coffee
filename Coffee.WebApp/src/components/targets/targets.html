@@ -20,7 +20,7 @@
     </div>
 
     <div fxLayout="row" fxLayoutAlign="center center" *ngIf="targets$ | async as data">
-        <p-table fxFlex="50" [value]="data">
+        <p-table fxFlex="70" [value]="data">
             <ng-template pTemplate="header">
                 <tr>
                     <th>Pin</th>
@@ -35,9 +35,10 @@
             <ng-template pTemplate="body" let-target>
                 <tr>
                     <td>
-                        <p-button fxLayout="column" fxLayoutAlign="center stretch" (click)="edit(target)">
+                        <p-button fxLayout="column" fxLayoutAlign="center stretch" (click)="pin(target)">
                             <div fxLayout="row" fxFlexFill fxLayoutAlign="center center">
-                                <i style="color:white" class="pi pi-paperclip"></i>
+                                <i *ngIf="target.isPinned" style="color:white" class="pi pi-paperclip"></i>
+                                <i *ngIf="!target.isPinned" style="color:red" class="pi pi-paperclip"></i>
                             </div>
                         </p-button>
                     </td>

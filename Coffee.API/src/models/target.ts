@@ -3,4 +3,5 @@ export class Target {
     public macAddress: string;
     public ipAddress: string;
     public caption: string;
+    public isPinned: boolean;
 }

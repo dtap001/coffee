@@ -10,4 +10,6 @@ export class TargetEntity {
     ipAddress: string;
     @Column()
     caption: string;
+    @Column()
+    isPinned: boolean;
 }

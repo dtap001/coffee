@@ -37,7 +37,8 @@ export class TargetDetails implements OnInit, OnDestroy {
              caption : this.form.controls["caption"].value,
              id:this.target.id,
              ipAddress:this.target.ipAddress,
-             macAddress:this.target.macAddress
+             macAddress:this.target.macAddress,
+             isPinned:this.target.isPinned
         }}));
     }
 }

@@ -11,7 +11,7 @@
             <div class="ui-inputgroup">
                 <span class="ui-inputgroup-addon"><i class="pi pi-key"
                         style="line-height: 1.25;color:#6f4e37"></i></span>
-                <input [(ngModel)]="password" type="password" pInputText placeholder="Password">
+                <input [(ngModel)]="password" type="password" pInputText (keydown.enter)="doLogin(userName,password)" placeholder="Password">
             </div>
             <p-button (click)="doLogin(userName,password)" fxLayout="column" fxLayoutAlign="center stretch">
                 <div fxLayout="row" fxFlexFill fxLayoutAlign="center center" style="border:solid #624732 2px!important">
@@ -25,7 +25,7 @@
             <label>Targets</label>
             <label>Users</label>
             <label>Settings</label>
-            <label>Logout</label>
+            <label (click)="doLogout()">Logout</label>
         </div>
 
 

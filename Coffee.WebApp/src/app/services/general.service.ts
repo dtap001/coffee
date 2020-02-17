@@ -5,7 +5,7 @@ import { GeneralResponse } from 'src/models/general.response';
 import { Store } from '@ngrx/store';
 import * as fromRoot from '../../store/reducers'
 import { TargetModel } from 'src/models/target.model';
-import { TargetsSearchResponse, TargetsDeleteResponse, TargetsSaveResponse, TargetsWakeResponse } from 'src/models/targets.responses';
+import { TargetsSearchResponse, TargetsDeleteResponse, TargetsSaveResponse, TargetsWakeResponse, TargetsGetPinnedResponse } from 'src/models/targets.responses';
 import { DiscoveryStopResponse, DiscoveryStartResponse, DiscoveryGetInterfacesResponse } from 'src/models/discovery.responses';
 
 @Injectable({
@@ -49,7 +49,16 @@ export class GeneralService {
         let response$ = this.http.post<TargetsWakeResponse>(URL, { id: id }, this.options(this.json()));
         return this.wrapWithIsOKCheck(response$);
     }
-
+    targetsPin(id: number): Observable<GeneralResponse> {
+        const URL = "http://localhost:3000/v1/targets/pin";
+        let response$ = this.http.post<GeneralResponse>(URL, { id: id }, this.options(this.json()));
+        return this.wrapWithIsOKCheck(response$);
+    }
+    targetsGetPinned(): Observable<TargetsGetPinnedResponse> {
+        const URL = "http://localhost:3000/v1/targets/getPinned";
+        let response$ = this.http.post<TargetsGetPinnedResponse>(URL, {}, this.options(this.json()));
+        return this.wrapWithIsOKCheck(response$);
+    }
 
     discoveryStart(network: string): Observable<DiscoveryStartResponse> {
         const URL = "http://localhost:3000/v1/discovery/start";

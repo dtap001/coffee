@@ -121,7 +121,7 @@ export class CoffeeStorage {
     async searchTargets(queryString: string): Promise<Target[]> {
         try {
             let targets = await this._connection.getRepository(TargetEntity).find({});
-            return Promise.resolve(targets.map(target => { return { ipAddress: target.ipAddress, macAddress: target.macAddress, caption: target.caption, id: target.id } as Target }));
+            return Promise.resolve(targets.map(target => { return { ipAddress: target.ipAddress, macAddress: target.macAddress, caption: target.caption, id: target.id, isPinned: target.isPinned } as Target }));
         } catch (err) {
             Log.e("getTargets error: " + err, err);
             return Promise.reject(err)
@@ -150,6 +150,7 @@ export class CoffeeStorage {
                 entity.macAddress = model.macAddress;
                 entity.ipAddress = model.ipAddress;
                 entity.caption = model.caption;
+                entity.isPinned = model.isPinned;
                 await this._connection.getRepository(TargetEntity).save(entity);
             }
             return Promise.resolve();
@@ -236,6 +237,21 @@ export class CoffeeStorage {
             return Promise.resolve();
         } catch (err) {
             Log.e("saveDiscovery error: " + err, err);
+            return Promise.reject(err)
+        }
+    }
+    async pinTarget(id: number): Promise<void> {
+        try {
+            let entity = await this._connection.getRepository(TargetEntity).findOne({ id: id });
+            if (entity == null || entity == undefined) {//create
+                return Promise.reject("Invalid target ID");
+            } else {
+                entity.isPinned = !entity.isPinned;
+                await this._connection.getRepository(TargetEntity).save(entity);
+            }
+            return Promise.resolve();
+        } catch (err) {
+            Log.e("pinTarget error: " + err, err);
             return Promise.reject(err)
         }
     }

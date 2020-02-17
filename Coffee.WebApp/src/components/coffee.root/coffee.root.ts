@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
 import { HelloState } from 'src/store/hello/hello.reducer';
 import { Router } from '@angular/router';
 import { UserState } from 'src/store/user/user.reducer';
-import { UserLoginAction } from 'src/store/user/user.action';
+import { UserLoginAction, UserLogoutAction } from 'src/store/user/user.action';
 import { COFFEE_APP_PATHS } from 'src/app/paths';
 import { SocketService, HelloEvent } from 'src/app/services/socket.service';
 
@@ -23,7 +23,7 @@ export class CoffeeRoot implements OnInit {
     this.helloState$ = this.store.select(state => state.hello);
     this.userState$ = this.store.select(state => state.user);
     this.store.dispatch(HelloAction());
-    this.socketService.dispatch(new HelloEvent());  
+    this.socketService.dispatch(new HelloEvent());
   }
 
   public helloState$: Observable<HelloState>;
@@ -31,6 +31,11 @@ export class CoffeeRoot implements OnInit {
 
   public doLogin(userName: string, password: string) {
     this.store.dispatch(UserLoginAction({ userName: userName, password: password }));
+  }
+
+  public doLogout() {
+    this.store.dispatch(UserLogoutAction({}));
+    this.router.navigate([COFFEE_APP_PATHS.ROOT]);
   }
 
   ngOnInit() {
