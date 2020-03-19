@@ -36,6 +36,8 @@ import { SocketService } from './services/socket.service';
 import { SocketIoConfig, SocketIoModule } from 'ngx-socket-io';
 import {DropdownModule} from 'primeng/dropdown';
 import { DiscoveryEffect } from 'src/store/discovery/discovery.effect';
+import {ToastModule} from 'primeng/toast';
+import { MessageService } from 'primeng/api';
 
 const config: SocketIoConfig = { url: 'http://localhost:8988', options: {} };
  
@@ -54,6 +56,7 @@ const config: SocketIoConfig = { url: 'http://localhost:8988', options: {} };
     DialogModule,
     CoffeeRouter,
     CardModule,
+    ToastModule,
     TableModule,
     DropdownModule,
     StoreModule.forRoot(reducers, {
@@ -82,7 +85,7 @@ const config: SocketIoConfig = { url: 'http://localhost:8988', options: {} };
     provide: HTTP_INTERCEPTORS,
     useClass: AuthInterceptor,
     multi: true
-  }],
+  },MessageService],
   bootstrap: [CoffeeRoot]
 })
 

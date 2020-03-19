@@ -71,7 +71,5 @@ export class TargetsEffect {
                 catchError(({ error }) => of(TargetPinFail(error)))
             )
         )
-    ));
-
-
+    )); 
 }

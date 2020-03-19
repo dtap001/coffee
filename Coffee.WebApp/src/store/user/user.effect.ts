@@ -20,14 +20,4 @@ export class UserEffect {
             )
         )
     ));
-  /*  userLogout$ = createEffect(() => this.actions$.pipe(
-        ofType(UserLogoutAction),
-        (({}) => this.generalService.login(userName, password)
-            .pipe(
-                map(response => UserLoginSuccessAction({ payload: response.content })),
-                catchError(({ error }) => of(UserLoginFailAction(error)))
-            )
-        )
-    ))*/
-
 }

@@ -240,7 +240,7 @@ export class CoffeeStorage {
             return Promise.reject(err)
         }
     }
-    async pinTarget(id: number): Promise<void> {
+    async pinTarget(id: number): Promise<Target> {
         try {
             let entity = await this._connection.getRepository(TargetEntity).findOne({ id: id });
             if (entity == null || entity == undefined) {//create
@@ -249,7 +249,8 @@ export class CoffeeStorage {
                 entity.isPinned = !entity.isPinned;
                 await this._connection.getRepository(TargetEntity).save(entity);
             }
-            return Promise.resolve();
+            return Promise.resolve({ caption: entity.caption, id: entity.id, ipAddress: entity.ipAddress, macAddress: entity.macAddress, isPinned: entity.isPinned } as Target);
+
         } catch (err) {
             Log.e("pinTarget error: " + err, err);
             return Promise.reject(err)

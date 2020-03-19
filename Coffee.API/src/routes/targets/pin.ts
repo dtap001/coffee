@@ -23,8 +23,8 @@ export class TargetsPinRoute extends RouteBase {
             this.authorize(req, res, this.getSufficientRoles());
             let that = this;
             var storage = container.get<CoffeeStorage>(TYPES.Storage);
-            storage.pinTarget((req.body as TargetsPinRequest).id).then(function () {
-                that.sendRouteResult(res, new RouteSuccessResult({} as ResponseContentModel));
+            storage.pinTarget((req.body as TargetsPinRequest).id).then(function (pinnedTarget) {
+                that.sendRouteResult(res, new RouteSuccessResult(pinnedTarget as ResponseContentModel));
             }).catch(function (err: RouteError) {
                 that.sendRouteResult(res, new RouteErrorResult(err));
             });

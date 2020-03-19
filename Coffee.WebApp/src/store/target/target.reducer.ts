@@ -1,6 +1,6 @@
 import { createReducer, on, createSelector, createFeatureSelector } from '@ngrx/store'
 import { TargetModel } from 'src/models/target.model';
-import { TargetsSearchAction, TargetsSearchSuccessAction, TargetsSearchFailAction, TargetsWakeAction, TargetsWakeSuccessAction, TargetsWakeFailAction, TargetsDeleteAction, TargetsDeleteSuccessAction, TargetsDeleteFailAction, TargetsSaveFailAction, TargetsSaveAction, TargetDetailAction } from './target.action';
+import { TargetsSearchAction, TargetsSearchSuccessAction, TargetsSearchFailAction, TargetsWakeAction, TargetsWakeSuccessAction, TargetsWakeFailAction, TargetsDeleteAction, TargetsDeleteSuccessAction, TargetsDeleteFailAction, TargetsSaveFailAction, TargetsSaveAction, TargetDetailAction, TargetPinSuccess } from './target.action';
 
 export interface TargetsState {
     data: TargetModel[];
@@ -80,7 +80,13 @@ export const Reducer = createReducer(
         loading: false,
         error
     })),
-
+    on(TargetPinSuccess, (state: TargetsState, action) => ({
+        ...state,
+        loading: false,
+        loaded: true,
+        error: null,
+        data: [...state.data.filter(item => item.id != action.target.id), action.target]
+    })),
 );
 
 export const getTargetsState = createFeatureSelector<TargetsState>('data');

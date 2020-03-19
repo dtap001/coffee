@@ -13,19 +13,20 @@
                         style="line-height: 1.25;color:#6f4e37"></i></span>
                 <input [(ngModel)]="password" type="password" pInputText (keydown.enter)="doLogin(userName,password)" placeholder="Password">
             </div>
-            <p-button (click)="doLogin(userName,password)" fxLayout="column" fxLayoutAlign="center stretch">
+            <p-button [disabled]="userName == null || password == null" (click)="doLogin(userName,password)" fxLayout="column" fxLayoutAlign="center stretch">
                 <div fxLayout="row" fxFlexFill fxLayoutAlign="center center" style="border:solid #624732 2px!important">
                     <i style="color:white" class="pi pi-key"></i>
                     <label>Login</label>
+                    <p-toast position="top-left"></p-toast>
                 </div>
             </p-button>
         </div>
         <div *ngIf="(userState$ != null )  && (userState$ | async).loggedIn == true" fxFlex="grow" fxLayout="row"
             fxLayoutGap="10px" fxLayoutAlign="space-around center">
-            <label>Targets</label>
-            <label>Users</label>
-            <label>Settings</label>
-            <label (click)="doLogout()">Logout</label>
+            <label class="menu-item">targets</label>
+            <label class="menu-item">users</label>
+            <label class="menu-item">settings</label>
+            <label class="menu-item" (click)="doLogout()">logout</label>
         </div>
 
 
