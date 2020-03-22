@@ -46,8 +46,7 @@ export const Reducer = createReducer(
         loading: false,
         loaded: true,
         error: null,
-        data: [...state.data.filter(item => item.id == action.target.id), action.target]
-    })),
+     })),
 
     on(TargetsWakeFailAction, (state, { error }) => ({
         ...state,
@@ -60,7 +59,6 @@ export const Reducer = createReducer(
         loading: false,
         loaded: true,
         error: null,
-        data: state.data.filter(item => item.id != action.deletedTarget.id),
     })),
     on(TargetsDeleteFailAction, (state, { error }) => ({
         ...state,
@@ -73,7 +71,6 @@ export const Reducer = createReducer(
         loading: false,
         loaded: true,
         error: null,
-        data: [...state.data.filter(item => item.id == action.target.id), action.target]
     })),
     on(TargetsSaveFailAction, (state, { error }) => ({
         ...state,
@@ -85,8 +82,7 @@ export const Reducer = createReducer(
         loading: false,
         loaded: true,
         error: null,
-        data: [...state.data.filter(item => item.id != action.target.id), action.target]
-    })),
+     })),
 );
 
 export const getTargetsState = createFeatureSelector<TargetsState>('data');

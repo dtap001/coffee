@@ -23,8 +23,8 @@ export class TargetDeleteRoute extends RouteBase {
             this.authorize(req, res, this.getSufficientRoles());
             let that = this;
             var storage = container.get<CoffeeStorage>(TYPES.Storage);
-            storage.deleteTarget((req.body as DeleteTargetRequest).id).then(function (target) {
-                that.sendRouteResult(res, new RouteSuccessResult(target));
+            storage.deleteTarget((req.body as DeleteTargetRequest).id).then(function () {
+                that.sendRouteResult(res, new RouteSuccessResult({} as ResponseContentModel));
             }).catch(function (err: RouteError) {
                 that.sendRouteResult(res, new RouteErrorResult(err));
             });

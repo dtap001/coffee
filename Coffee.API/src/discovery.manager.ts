@@ -47,7 +47,7 @@ export class DiscoveryManager {
         Log.i("Scan network: " + network);
         let allIP: [];
         allIP = iprange(network);
-        Log.i("Netowork size: " + allIP.length);
+        Log.i("Network size: " + allIP.length);
         let rangeSize = allIP.length / 4;
 
         let range0Start = 0;
@@ -127,7 +127,7 @@ export class DiscoveryManager {
                     getMacVendor(ip, mac);
                 } else {
                     Log.i("doReverseDNS (ip: " + ip + " ) Found reverse dns: " + hostnames[0]);
-                    socket.emit(new FoundDiscoveryEvent(network, { caption: hostnames[0], ipAddress: ip, id: 1, macAddress: mac, isPinned: false }));
+                    socket.emit(new FoundDiscoveryEvent(network, { caption: hostnames[0], ipAddress: ip, id: -1, macAddress: mac, isPinned: false }));
                     onDone(ip);
                 }
             })
@@ -147,7 +147,7 @@ export class DiscoveryManager {
                 // The whole response has been received. Print out the result.
                 resp.on('end', () => {
                     Log.i("getMacVendor (ip:" + ip + " mac: " + mac + ") data: " + data);
-                    socket.emit(new FoundDiscoveryEvent(network, { caption: data, ipAddress: ip, id: 1, macAddress: mac, isPinned: false }));
+                    socket.emit(new FoundDiscoveryEvent(network, { caption: data, ipAddress: ip, id: -1, macAddress: mac, isPinned: false }));
                     onDone(ip);
                 });
             }).on("error", (err) => {
@@ -176,6 +176,7 @@ export class DiscoveryManager {
 
                 let socket = container.get<SocketServer>(TYPES.SocketServer);
                 let found = new Target();
+                found.id = -1;
                 found.caption = data.banner;
                 found.ipAddress = data.ip;
                 socket.emit(new FoundDiscoveryEvent(target, found));

@@ -54,6 +54,7 @@ export class TargetsEffect {
             )
         )
     ));
+    
     targetsGetPinnedEffect$ = createEffect(() => this.actions$.pipe(
         ofType(TargetsGetPinnedAction),
         switchMap(({ id }) => this.generalService.targetsGetPinned()

@@ -2,7 +2,7 @@
     <form [formGroup]="form" (ngSubmit)="save()" fxLayout="column" fxLayoutGap="20px" fxLayoutAlign="start center">
         <label>Caption:</label>
         <input type="text" pInputText formControlName="caption" class="form-control"
-            [ngClass]="{ 'is-invalid': submitted && form.caption.errors }" />
+            [ngClass]="{ 'is-invalid': form.controls['caption'].errors }" />
         <div *ngIf="form.controls['caption'].errors">
             <div *ngIf="form.controls['caption'].errors.required">Caption is required</div>
         </div>

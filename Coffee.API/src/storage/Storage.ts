@@ -127,11 +127,11 @@ export class CoffeeStorage {
             return Promise.reject(err)
         }
     }
-    async deleteTarget(id: number): Promise<Target> {
+    async deleteTarget(id: number): Promise<void> {
         try {
             let target = await this._connection.getRepository(TargetEntity).find({ id: id });
             await this._connection.getRepository(TargetEntity).delete({ id: id });
-            return Promise.resolve(target[0]);
+            return Promise.resolve();
         } catch (err) {
             Log.e("deleteTarget error: " + err, err);
             return Promise.reject(err)
@@ -141,10 +141,11 @@ export class CoffeeStorage {
         try {
             let entity = await this._connection.getRepository(TargetEntity).findOne({ id: model.id });
             if (entity == null || entity == undefined) {//create
-                await this._connection.getRepository(TargetEntity).save({
+                entity = await this._connection.getRepository(TargetEntity).save({
                     caption: model.caption,
                     ipAddress: model.ipAddress,
                     macAddress: model.macAddress,
+                    isPinned: model.isPinned
                 } as TargetEntity);
             } else {//update                
                 entity.macAddress = model.macAddress;
@@ -240,7 +241,7 @@ export class CoffeeStorage {
             return Promise.reject(err)
         }
     }
-    async pinTarget(id: number): Promise<Target> {
+    async pinTarget(id: number): Promise<void> {
         try {
             let entity = await this._connection.getRepository(TargetEntity).findOne({ id: id });
             if (entity == null || entity == undefined) {//create
@@ -249,8 +250,7 @@ export class CoffeeStorage {
                 entity.isPinned = !entity.isPinned;
                 await this._connection.getRepository(TargetEntity).save(entity);
             }
-            return Promise.resolve({ caption: entity.caption, id: entity.id, ipAddress: entity.ipAddress, macAddress: entity.macAddress, isPinned: entity.isPinned } as Target);
-
+            return Promise.resolve();
         } catch (err) {
             Log.e("pinTarget error: " + err, err);
             return Promise.reject(err)
