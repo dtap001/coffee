@@ -20,7 +20,7 @@
     </div>
 
     <div fxLayout="row" fxLayoutAlign="center center" *ngIf="targets$ | async as data">
-        <p-table fxFlex="70" [value]="data">
+        <p-table fxFlex="70" fxFlex.sm="90" fxFlex.xs="95" [value]="data">
             <ng-template pTemplate="header">
                 <tr>
                     <th>Pin</th>
@@ -33,9 +33,10 @@
                 </tr>
             </ng-template>
             <ng-template pTemplate="body" let-target>
-                <tr>
+                <tr *ngIf="(getTargetView(target.id)) | async as view">
                     <td>
-                        <p-button fxLayout="column" fxLayoutAlign="center stretch" (click)="pin(target)">
+                        <p-button [disabled]="view[0]?.isLoading" fxLayout="column" fxLayoutAlign="center stretch"
+                            (click)="pin(target)">
                             <div fxLayout="row" fxFlexFill fxLayoutAlign="center center">
                                 <i *ngIf="target.isPinned" style="color:white" class="pi pi-paperclip"></i>
                                 <i *ngIf="!target.isPinned" style="color:red" class="pi pi-paperclip"></i>
@@ -46,7 +47,7 @@
                     <td>{{target.macAddress}}</td>
                     <td>{{target.ipAddress}}</td>
                     <td class="no-padding">
-                        <p-button fxLayout="column" fxLayoutAlign="center stretch" (click)="edit(target)">
+                        <p-button [disabled]="view[0]?.isLoading" fxLayout="column" fxLayoutAlign="center stretch" (click)="edit(target)">
                             <div fxLayout="row" fxFlexFill fxLayoutAlign="center center">
                                 <i style="color:white" class="pi pi-pencil"></i>
                                 <label>Edit</label>
@@ -54,7 +55,7 @@
                         </p-button>
                     </td>
                     <td class="no-padding">
-                        <p-button fxLayout="column" fxLayoutAlign="center stretch" (click)="wake(target)">
+                        <p-button [disabled]="view[0]?.isLoading" fxLayout="column" fxLayoutAlign="center stretch" (click)="wake(target)">
                             <div fxLayout="row" fxFlexFill fxLayoutAlign="center center">
                                 <i style="color:white" class="pi pi-power-off"></i>
                                 <label>Wake</label>
@@ -62,7 +63,7 @@
                         </p-button>
                     </td>
                     <td class="no-padding">
-                        <p-button fxLayout="column" fxLayoutAlign="center stretch" (click)="remove(target)">
+                        <p-button [disabled]="view[0]?.isLoading"  fxLayout="column" fxLayoutAlign="center stretch" (click)="remove(target)">
                             <div fxLayout="row" fxFlexFill fxLayoutAlign="center center">
                                 <i style="color:white" class="pi pi-ban"></i>
                                 <label>Remove</label>

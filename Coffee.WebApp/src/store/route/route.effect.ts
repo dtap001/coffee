@@ -42,8 +42,7 @@ export class RouteEffect {
             map(this.mapToRouterStateUrl),
             tap((routerState) => { console.log(`URL: ${JSON.stringify(routerState.url)}`) }),
             filter(routerState =>
-                //  routerState.url.includes(`${COFFEE_APP_PATHS.TARGETS}`) ||
-                routerState.url.includes(`${COFFEE_APP_PATHS.TARGETS_DETAIL}`)
+                 routerState.url.includes(`${COFFEE_APP_PATHS.TARGETS_DETAIL}`)
             ),
             map((routerState) => TargetDetailAction({ id: routerState["root"].queryParams.id }))
         ));

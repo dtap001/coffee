@@ -30,12 +30,12 @@ export const TargetsSaveAction = createAction(
 
 export const TargetsSaveSuccessAction = createAction(
     "[SaveTarget] Success",
-    props<{ savedTarget: TargetModel }>()
+    props<{id:number, savedTarget: TargetModel }>()
 );
 
 export const TargetsSaveFailAction = createAction(
     "[SaveTarget] Fail",
-    props<{ error: String }>()
+    props<{id:number, error: String }>()
 );
 
 export const TargetsDeleteAction = createAction(
@@ -45,12 +45,12 @@ export const TargetsDeleteAction = createAction(
 
 export const TargetsDeleteSuccessAction = createAction(
     "[DeleteTarget] Success",
-    props<{ deletedTarget: TargetModel }>()
+    props<{ id:number,deletedTarget: TargetModel }>()
 );
 
 export const TargetsDeleteFailAction = createAction(
     "[DeleteTarget] Fail",
-    props<{ error: String }>()
+    props<{id:number, error: String }>()
 );
 
 
@@ -61,12 +61,12 @@ export const TargetsWakeAction = createAction(
 
 export const TargetsWakeSuccessAction = createAction(
     "[WakeTarget] Success",
-    props<{ target: TargetModel }>()
+    props<{ id:number,target: TargetModel }>()
 );
 
 export const TargetsWakeFailAction = createAction(
     "[WakeTarget] Fail",
-    props<{ error: String }>()
+    props<{id:number, error: String }>()
 );
 
 export const TargetPinAction = createAction(
@@ -76,12 +76,12 @@ export const TargetPinAction = createAction(
 
 export const TargetPinSuccess = createAction(
     "[TargetPin] Success",
-    props<{ target: TargetModel }>()
+    props<{id:number, target: TargetModel }>()
 );
 
 export const TargetPinFail = createAction(
     "[TargetPin] Fail",
-    props<{ error: String }>()
+    props<{id:number, error: String }>()
 );
 
 export const TargetsGetPinnedAction = createAction(

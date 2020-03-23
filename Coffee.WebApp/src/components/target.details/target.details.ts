@@ -21,11 +21,15 @@ export class TargetDetails implements OnInit, OnDestroy {
 
     constructor(private store: Store<fromRoot.CoffeeState>, private router: Router, private formBuilder: FormBuilder) {
         this.form = this.formBuilder.group({
-            caption: ['', Validators.required]
+            hostname: ['', Validators.required],
+            mac: ['', Validators.required],
+            ip: ['', Validators.required]
         });
         this.subscription$ = this.store.select(state => state.targets.selectedTarget).subscribe(target => {
             this.target = target;
-            this.form.controls["caption"].setValue(target.caption);
+            this.form.controls["hostname"].setValue(target.caption);
+            this.form.controls["mac"].setValue(target.macAddress);
+            this.form.controls["ip"].setValue(target.ipAddress);
         });
     }
 
@@ -34,10 +38,10 @@ export class TargetDetails implements OnInit, OnDestroy {
 
     save() {       
         this.store.dispatch(TargetsSaveAction({ target: {
-             caption : this.form.controls["caption"].value,
-             id:this.target.id,
-             ipAddress:this.target.ipAddress,
-             macAddress:this.target.macAddress,
+             caption : this.form.controls["hostname"].value,
+             ipAddress : this.form.controls["ip"].value,
+             macAddress : this.form.controls["mac"].value,            
+             id:this.target.id,            
              isPinned:this.target.isPinned
         }}));
     }

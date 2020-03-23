@@ -29,8 +29,8 @@ export class TargetsEffect {
         ofType(TargetsDeleteAction),
         switchMap(({ id }) => this.generalService.targetsDelete(id)
             .pipe(
-                map(response => TargetsDeleteSuccessAction({ deletedTarget: response.content })),
-                catchError(({ error }) => of(TargetsDeleteFailAction(error)))
+                map(response => TargetsDeleteSuccessAction({ id: id, deletedTarget: response.content })),
+                catchError(({ error }) => of(TargetsDeleteFailAction({ error: error, id: id })))
             )
         )
     ));
@@ -39,8 +39,8 @@ export class TargetsEffect {
         ofType(TargetsSaveAction),
         switchMap(({ target }) => this.generalService.targetsSave(target)
             .pipe(
-                map(response => TargetsSaveSuccessAction({ savedTarget: response.content })),
-                catchError(({ error }) => of(TargetsSaveFailAction(error)))
+                map(response => TargetsSaveSuccessAction({ id: target.id, savedTarget: response.content })),
+                catchError(({ error }) => of(TargetsSaveFailAction({ id: target.id, error: error })))
             )
         )
     ));
@@ -49,17 +49,17 @@ export class TargetsEffect {
         ofType(TargetsWakeAction),
         switchMap(({ id }) => this.generalService.targetsWake(id)
             .pipe(
-                map(response => TargetsWakeSuccessAction({ target: response.content })),
+                map(response => TargetsWakeSuccessAction({ id: id, target: response.content })),
                 catchError(({ error }) => of(TargetsWakeFailAction(error)))
             )
         )
     ));
-    
+
     targetsGetPinnedEffect$ = createEffect(() => this.actions$.pipe(
         ofType(TargetsGetPinnedAction),
         switchMap(({ id }) => this.generalService.targetsGetPinned()
             .pipe(
-                map(response => TargetsGetPinnedSuccessAction({pinned:response.content})),
+                map(response => TargetsGetPinnedSuccessAction({ pinned: response.content })),
                 catchError(({ error }) => of(TargetsGetPinnedFailAction(error)))
             )
         )
@@ -68,9 +68,9 @@ export class TargetsEffect {
         ofType(TargetPinAction),
         switchMap(({ id }) => this.generalService.targetsPin(id)
             .pipe(
-                map(response => TargetPinSuccess({ target: response.content })),
-                catchError(({ error }) => of(TargetPinFail(error)))
+                map(response => TargetPinSuccess({ id: id, target: response.content })),
+                catchError(({ error }) => of(TargetPinFail({ error: error, id: id })))
             )
         )
-    )); 
+    ));
 }
