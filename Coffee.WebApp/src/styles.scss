@@ -20,7 +20,17 @@ coffe-root {
 i {
   font-size: 30px !important;
 }
-
+p-checkbox > div > div >span {
+  background-color: #6f4e37 !important;
+  color: white;
+  border: 0px !important;
+  &:hover {
+    background-color: #583e2b !important;
+  }
+  &:active {
+    background-color: #412e21 !important;
+  }
+}
 p-button > button {
   background-color: #6f4e37 !important;
   color: white;

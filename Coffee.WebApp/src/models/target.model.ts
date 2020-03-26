@@ -3,7 +3,7 @@ export class TargetModel {
     public macAddress: string;
     public ipAddress: string;
     public caption: string;
-    isPinned:boolean;
+    public isPinned: boolean;
 }
 export class PinnedTargetModel {
     public id: number;

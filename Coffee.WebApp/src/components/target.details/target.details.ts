@@ -6,7 +6,8 @@ import { Observable, Subscription } from 'rxjs';
 import { Router } from '@angular/router';
 import { getSelectedTarget, getTargetsState } from 'src/store/target/target.reducer';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { TargetsSaveAction } from 'src/store/target/target.action';
+import { TargetsSaveAction, TargetsSaveSuccessAction, TargetsSaveFailAction } from 'src/store/target/target.action';
+import { Actions, ofType } from '@ngrx/effects';
 
 @Component({
     templateUrl: './target.details.html',
@@ -18,8 +19,9 @@ export class TargetDetails implements OnInit, OnDestroy {
     target: TargetModel;
     form: FormGroup;
     subscription$: Subscription;
-
-    constructor(private store: Store<fromRoot.CoffeeState>, private router: Router, private formBuilder: FormBuilder) {
+    saveInProgress$ :Observable<boolean>
+    constructor(private actions$: Actions,private store: Store<fromRoot.CoffeeState>, private router: Router, private formBuilder: FormBuilder) {
+        this.saveInProgress$ = this.store.select(state => state.targets.saveInProgress);
         this.form = this.formBuilder.group({
             hostname: ['', Validators.required],
             mac: ['', Validators.required],
@@ -36,13 +38,14 @@ export class TargetDetails implements OnInit, OnDestroy {
     ngOnInit() {
     }
 
-    save() {       
+    save() {    
         this.store.dispatch(TargetsSaveAction({ target: {
              caption : this.form.controls["hostname"].value,
              ipAddress : this.form.controls["ip"].value,
              macAddress : this.form.controls["mac"].value,            
              id:this.target.id,            
-             isPinned:this.target.isPinned
+             isPinned:this.target.isPinned == null ? false : this.target.isPinned
         }}));
     }
+
 }

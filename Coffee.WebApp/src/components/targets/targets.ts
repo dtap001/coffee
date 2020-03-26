@@ -51,7 +51,7 @@ export class TargetsComponent implements OnInit {
     wake(target: TargetModel) {
         this.store.dispatch(TargetsWakeAction({ id: target.id }));
     }
-    pin(target: TargetModel) {
+    pin(target: TargetModel) {       
         this.store.dispatch(TargetPinAction({ id: target.id }));
     }
 

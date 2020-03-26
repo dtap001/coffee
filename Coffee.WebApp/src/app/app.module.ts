@@ -38,6 +38,7 @@ import {DropdownModule} from 'primeng/dropdown';
 import { DiscoveryEffect } from 'src/store/discovery/discovery.effect';
 import {ToastModule} from 'primeng/toast';
 import { MessageService } from 'primeng/api';
+import {CheckboxModule} from 'primeng/checkbox';
 
 const config: SocketIoConfig = { url: 'http://localhost:8988', options: {} };
  
@@ -53,6 +54,7 @@ const config: SocketIoConfig = { url: 'http://localhost:8988', options: {} };
     FieldsetModule,
     CarouselModule,
     InputTextModule,
+    CheckboxModule,
     DialogModule,
     CoffeeRouter,
     CardModule,

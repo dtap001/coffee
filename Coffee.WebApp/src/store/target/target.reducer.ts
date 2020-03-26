@@ -1,6 +1,6 @@
 import { createReducer, on, createSelector, createFeatureSelector, ActionsSubject } from '@ngrx/store'
 import { TargetModel } from 'src/models/target.model';
-import { TargetsSearchAction, TargetsSearchSuccessAction, TargetsSearchFailAction, TargetsWakeAction, TargetsWakeSuccessAction, TargetsWakeFailAction, TargetsDeleteAction, TargetsDeleteSuccessAction, TargetsDeleteFailAction, TargetsSaveFailAction, TargetsSaveAction, TargetDetailAction, TargetPinSuccess, TargetPinFail, TargetPinAction } from './target.action';
+import { TargetsSearchAction, TargetsSearchSuccessAction, TargetsSearchFailAction, TargetsWakeAction, TargetsWakeSuccessAction, TargetsWakeFailAction, TargetsDeleteAction, TargetsDeleteSuccessAction, TargetsDeleteFailAction, TargetsSaveFailAction, TargetsSaveAction, TargetDetailAction, TargetPinSuccess, TargetPinFail, TargetPinAction, TargetsSaveSuccessAction } from './target.action';
 
 export class TargetViewModel {
     isLoading: boolean;
@@ -11,7 +11,8 @@ export interface TargetsState {
     selectedTarget: TargetModel,
     loading: TargetViewModel[];
     error: any,
-    discoveredTargets: TargetModel[]
+    discoveredTargets: TargetModel[],
+    saveInProgress:boolean
 }
 
 export const emptyState: TargetsState = {
@@ -19,7 +20,8 @@ export const emptyState: TargetsState = {
     loading: [],
     error: null,
     selectedTarget: new TargetModel(),
-    discoveredTargets: []
+    discoveredTargets: [],
+    saveInProgress:false
 }
 
 export const Reducer = createReducer(
@@ -73,21 +75,23 @@ export const Reducer = createReducer(
         loading: state.data.filter(t => { t.id == action.id }).map(t => ({ id: t.id, isLoading: false } as TargetViewModel)),
         error: action.error
     })),
-    on(TargetsSaveFailAction, (state,action) => (
+    on(TargetsSaveSuccessAction, (state,action) => (
         { 
             ...state,
             loading: state.data.filter(t => { t.id == action.id }).map(t => ({ id: t.id, isLoading: false } as TargetViewModel)),
-            error:action.error
+            saveInProgress:false
         }
         )),
     on(TargetsSaveAction, (state: TargetsState, action) => ({
         ...state,
-        loading: state.data.filter(t => { t.id == action.target.id }).map(t => ({ id: t.id, isLoading: true } as TargetViewModel)),           
+        loading: state.data.filter(t => { t.id == action.target.id }).map(t => ({ id: t.id, isLoading: true } as TargetViewModel)),   
+        saveInProgress:true,        
         error: null,
     })),
     on(TargetsSaveFailAction, (state, action) => ({
         ...state,
-        loading: state.data.filter(t => { t.id == action.id }).map(t => ({ id: t.id, isLoading: false } as TargetViewModel)),  
+        loading: state.data.filter(t => { t.id == action.id }).map(t => ({ id: t.id, isLoading: false } as TargetViewModel)), 
+        saveInProgress:false, 
         error:action.error
     })),
     on(TargetPinAction, (state: TargetsState, action) => ({
