@@ -17,7 +17,7 @@ import { GeneralService } from './services/general.service';
 import { HelloEffect } from 'src/store/hello/hello.effect';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-import { StoreRouterConnectingModule, routerReducer } from '@ngrx/router-store';
+import { StoreRouterConnectingModule, routerReducer, DefaultRouterStateSerializer } from '@ngrx/router-store';
 import { RouteEffect } from 'src/store/route/route.effect';
 import { StartComponent } from 'src/components/start/start'; 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -70,7 +70,7 @@ const config: SocketIoConfig = { url: 'http://localhost:8988', options: {} };
     }),
     SocketIoModule.forRoot(config),
     EffectsModule.forRoot([HelloEffect, RouteEffect, UserEffect, TargetsEffect,DiscoveryEffect]),
-    StoreRouterConnectingModule.forRoot(),
+    StoreRouterConnectingModule.forRoot({ serializer: DefaultRouterStateSerializer }),
     StoreDevtoolsModule.instrument()
   ],
   declarations: [
