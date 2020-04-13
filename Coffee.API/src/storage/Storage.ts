@@ -17,6 +17,7 @@ import { Job } from "../models/job";
 import { JobEntity } from "./entities/job";
 import { DisocveryEntity } from "./entities/discovery";
 import { Discovery } from "../models/discovery";
+import { PinnedTarget } from "../models/pinnedTarget";
 
 @injectable()
 export class CoffeeStorage {
@@ -127,6 +128,25 @@ export class CoffeeStorage {
             return Promise.reject(err)
         }
     }
+
+    async getTargetById(id: number): Promise<Target> {
+        try {
+            let target = await this._connection.getRepository(TargetEntity).findOne({ id: id });
+            return Promise.resolve({ ipAddress: target.ipAddress, macAddress: target.macAddress, caption: target.caption, id: target.id, isPinned: target.isPinned, pinCode: target.pinCode } as Target);
+        } catch (err) {
+            Log.e("getTargets error: " + err, err);
+            return Promise.reject(err)
+        }
+    }
+    async targetsGetPinned(): Promise<PinnedTarget[]> {
+        try {
+            let targets = await this._connection.getRepository(TargetEntity).find({ isPinned: true });
+            return Promise.resolve(targets.map(target => { return { caption: target.caption, id: target.id } as PinnedTarget }));
+        } catch (err) {
+            Log.e("getTargets error: " + err, err);
+            return Promise.reject(err)
+        }
+    }
     async deleteTarget(id: number): Promise<void> {
         try {
             let target = await this._connection.getRepository(TargetEntity).find({ id: id });
@@ -145,13 +165,15 @@ export class CoffeeStorage {
                     caption: model.caption,
                     ipAddress: model.ipAddress,
                     macAddress: model.macAddress,
-                    isPinned: model.isPinned
+                    isPinned: model.isPinned == null ? false : model.isPinned,
+                    pinCode: model.pinCode == null ? -1 : model.pinCode
                 } as TargetEntity);
             } else {//update                
                 entity.macAddress = model.macAddress;
                 entity.ipAddress = model.ipAddress;
                 entity.caption = model.caption;
-                entity.isPinned = model.isPinned;
+                entity.isPinned = model.isPinned == null ? false : model.isPinned;
+                entity.pinCode = model.pinCode == null ? -1 : model.pinCode;
                 await this._connection.getRepository(TargetEntity).save(entity);
             }
             return Promise.resolve();

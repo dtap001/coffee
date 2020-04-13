@@ -4,4 +4,5 @@ export class Target {
     public ipAddress: string;
     public caption: string;
     public isPinned: boolean;
+    public pinCode: number;
 }

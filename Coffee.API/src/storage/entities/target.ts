@@ -12,4 +12,6 @@ export class TargetEntity {
     caption: string;
     @Column()
     isPinned: boolean;
+    @Column()
+    pinCode: number;
 }

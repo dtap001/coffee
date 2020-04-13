@@ -1,5 +1,17 @@
 <div style="height:100%" fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="center center">
-    <p-card header="header" *ngFor="let car of cars"> 
-        {{car}}
+    <p-card *ngFor="let target of pinnedTargets">
+        <div fxLayout="column" fxLayoutAlign="start stretch">
+            <label><b>Target name:</b></label>
+            <label>{{target.caption}}</label>
+            <label><b>PIN code:</b></label>
+            <input type="number" pInputText id="pinCode_{{target.id}}" />
+            <p-button fxLayout="column" fxLayoutAlign="center stretch" (click)="wake(target.id)">
+                <div fxFlexFill fxLayout="row" fxLayoutAlign="center center">
+                    <i style="color:white" class="pi pi-power-off"></i>
+                    <label>Wake</label>
+                </div>
+            </p-button>
+        </div>
+
     </p-card>
 </div>

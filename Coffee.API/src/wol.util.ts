@@ -4,7 +4,7 @@ import { Log } from "./log";
 @injectable()
 export class WOLUtil {
     async  wake(macAddress: string, ipAddress: string) {
-        wol.wake(macAddress, { address: ipAddress }, function (error) {
+        wol.wake(macAddress, function (error) {
             if (error) {
                 Log.i("wake.util error: " + error);
                 return Promise.reject(error);

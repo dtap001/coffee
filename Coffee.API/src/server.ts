@@ -24,6 +24,8 @@ import container from "./diContainer";
 import TYPES from "./types";
 import { DiscoveryGetInterfacesRoute } from "./routes/discovery/getInterfaces";
 import { TargetsPinRoute } from "./routes/targets/pin";
+import { TargetsGetPinnedRoute } from "./routes/targets/getPinned";
+import { TargetsWakePinned } from "./routes/targets/wakePinned";
 
 export class CoffeeServer {
     private server: Server;
@@ -86,9 +88,10 @@ export class CoffeeServer {
         factory.register(TargetsSearchRoute);
         factory.register(TargetWakeRoute);
         factory.register(TargetsPinRoute);
+        factory.register(TargetsWakePinned);
+        factory.register(TargetsGetPinnedRoute);
         factory.register(DiscoveryStartRoute);
         factory.register(DiscoveryGetInterfacesRoute);
-
         // configure the app to use bodyParser()
         //  this.app.use(express.json());
         /*   this.app.use(express.json({

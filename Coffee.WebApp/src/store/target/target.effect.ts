@@ -7,7 +7,7 @@ import {
 } from "rxjs/operators";
 import { GeneralService } from 'src/app/services/general.service';
 import { of } from 'rxjs';
-import { TargetsSearchAction, TargetsDeleteSuccessAction, TargetsDeleteFailAction, TargetsSaveAction, TargetsSaveSuccessAction, TargetsSaveFailAction, TargetsWakeAction, TargetsWakeSuccessAction, TargetsWakeFailAction, TargetsDeleteAction, TargetsSearchSuccessAction, TargetsSearchFailAction, TargetDetailAction, TargetPinAction, TargetPinSuccess, TargetPinFail, TargetsGetPinnedAction, TargetsGetPinnedSuccessAction, TargetsGetPinnedFailAction } from './target.action';
+import { TargetsSearchAction, TargetsDeleteSuccessAction, TargetsDeleteFailAction, TargetsSaveAction, TargetsSaveSuccessAction, TargetsSaveFailAction, TargetsWakeAction, TargetsWakeSuccessAction, TargetsWakeFailAction, TargetsDeleteAction, TargetsSearchSuccessAction, TargetsSearchFailAction, TargetDetailAction, TargetPinAction, TargetPinSuccess, TargetPinFail, TargetsGetPinnedAction, TargetsGetPinnedSuccessAction, TargetsGetPinnedFailAction, TargetsWakePinnedAction, TargetsWakePinnedSuccessAction, TargetsWakePinnedFailAction } from './target.action';
 
 @Injectable()
 export class TargetsEffect {
@@ -57,7 +57,7 @@ export class TargetsEffect {
 
     targetsGetPinnedEffect$ = createEffect(() => this.actions$.pipe(
         ofType(TargetsGetPinnedAction),
-        switchMap(({ id }) => this.generalService.targetsGetPinned()
+        switchMap(({ }) => this.generalService.targetsGetPinned()
             .pipe(
                 map(response => TargetsGetPinnedSuccessAction({ pinned: response.content })),
                 catchError(({ error }) => of(TargetsGetPinnedFailAction(error)))
@@ -73,4 +73,15 @@ export class TargetsEffect {
             )
         )
     ));
+    targetsWakePinnedEffect$ = createEffect(() => this.actions$.pipe(
+        ofType(TargetsWakePinnedAction),
+        switchMap(({ id, pinCode }) => this.generalService.targetsWakePinned(id, pinCode)
+            .pipe(
+                map(response => TargetsWakePinnedSuccessAction({})),
+                catchError(({ error }) => of(TargetsWakePinnedFailAction({ error: error })))
+            )
+        )
+    ));
+
+
 }

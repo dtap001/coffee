@@ -23,7 +23,7 @@
         <p-table fxFlex="70" fxFlex.md="85" fxFlex.sm="90" fxFlex.xs="95" [value]="data">
             <ng-template pTemplate="header">
                 <tr>
-                    <th>Pin</th>
+                    <th>Pin to login page</th>
                     <th>Hostname</th>
                     <th>MAC</th>
                     <th>IP</th>
@@ -35,11 +35,9 @@
             <ng-template pTemplate="body" let-target>
                 <tr *ngIf="(getTargetView(target.id)) | async as view">
                     <td>
-                        <div fxLayout="column" fxLayoutAlign="center center">
-                            <p-checkbox [disabled]="view[0]?.isLoading" [value]="target.isPinned"
-                                (click)="pin(target)"></p-checkbox>
+                        <div fxLayout="column" fxLayoutAlign="center center">                           
+                            <input type="checkbox" [checked]="target.isPinned" (click)="pin(target)" />
                         </div>
-
                     </td>
                     <td>{{target.caption}}</td>
                     <td>{{target.macAddress}}</td>

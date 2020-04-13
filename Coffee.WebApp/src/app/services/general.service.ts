@@ -56,7 +56,12 @@ export class GeneralService {
     }
     targetsGetPinned(): Observable<TargetsGetPinnedResponse> {
         const URL = "http://localhost:3000/v1/targets/getPinned";
-        let response$ = this.http.post<TargetsGetPinnedResponse>(URL, {}, this.options(this.json()));
+        let response$ = this.http.get<TargetsGetPinnedResponse>(URL, this.options(this.json()));
+        return this.wrapWithIsOKCheck(response$);
+    }
+    targetsWakePinned(id: number, pinCode: number): Observable<GeneralResponse> {
+        const URL = "http://localhost:3000/v1/targets/wakePinned";
+        let response$ = this.http.post<GeneralResponse>(URL, { id: id, pinCode: pinCode }, this.options(this.json()));
         return this.wrapWithIsOKCheck(response$);
     }
 

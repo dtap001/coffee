@@ -86,7 +86,7 @@ export const TargetPinFail = createAction(
 
 export const TargetsGetPinnedAction = createAction(
     "[TargetGetPinned] Start",
-    props<{ id: number }>()
+    props<{}>()
 );
 
 export const TargetsGetPinnedSuccessAction = createAction(
@@ -96,5 +96,19 @@ export const TargetsGetPinnedSuccessAction = createAction(
 
 export const TargetsGetPinnedFailAction = createAction(
     "[TargetGetPinned] Fail",
+    props<{ error: String }>()
+);
+export const TargetsWakePinnedAction = createAction(
+    "[TargetsWakePinned] Start",
+    props<{ id: number,pinCode:number }>()
+);
+
+export const TargetsWakePinnedSuccessAction = createAction(
+    "[TargetsWakePinned] Success",
+    props<{}>()
+);
+
+export const TargetsWakePinnedFailAction = createAction(
+    "[TargetsWakePinned] Fail",
     props<{ error: String }>()
 );

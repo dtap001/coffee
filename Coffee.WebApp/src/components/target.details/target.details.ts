@@ -25,13 +25,15 @@ export class TargetDetails implements OnInit, OnDestroy {
         this.form = this.formBuilder.group({
             hostname: ['', Validators.required],
             mac: ['', Validators.required],
-            ip: ['', Validators.required]
+            ip: ['', Validators.required],
+            pin: ['', Validators.required],
         });
         this.subscription$ = this.store.select(state => state.targets.selectedTarget).subscribe(target => {
             this.target = target;
             this.form.controls["hostname"].setValue(target.caption);
             this.form.controls["mac"].setValue(target.macAddress);
             this.form.controls["ip"].setValue(target.ipAddress);
+            this.form.controls["pin"].setValue(target.pinCode);
         });
     }
 
@@ -42,7 +44,8 @@ export class TargetDetails implements OnInit, OnDestroy {
         this.store.dispatch(TargetsSaveAction({ target: {
              caption : this.form.controls["hostname"].value,
              ipAddress : this.form.controls["ip"].value,
-             macAddress : this.form.controls["mac"].value,            
+             macAddress : this.form.controls["mac"].value, 
+             pinCode : this.form.controls["pin"].value,                       
              id:this.target.id,            
              isPinned:this.target.isPinned == null ? false : this.target.isPinned
         }}));

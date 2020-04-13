@@ -4,8 +4,9 @@ export class TargetModel {
     public ipAddress: string;
     public caption: string;
     public isPinned: boolean;
+    public pinCode:number;
 }
 export class PinnedTargetModel {
     public id: number;
-    public string: string;
+    public caption: string;
 }

@@ -127,14 +127,13 @@ export class DiscoveryManager {
                     getMacVendor(ip, mac);
                 } else {
                     Log.i("doReverseDNS (ip: " + ip + " ) Found reverse dns: " + hostnames[0]);
-                    socket.emit(new FoundDiscoveryEvent(network, { caption: hostnames[0], ipAddress: ip, id: -1, macAddress: mac, isPinned: false }));
+                    socket.emit(new FoundDiscoveryEvent(network, { caption: hostnames[0], ipAddress: ip, id: -1, macAddress: mac, isPinned: false, pinCode: 0 }));
                     onDone(ip);
                 }
             })
         }
         function getMacVendor(ip: string, mac: string) {
             Log.i("getMacVendor (ip:" + ip + " mac: " + mac + ")");
-            //https://macvendors.co/api/vendorname/00:19:99:E0:31:3D/pipe
             let url = "https://macvendors.co/api/vendorname/" + mac + "/pipe";
             https.get(url, (resp) => {
                 let data = '';
@@ -147,7 +146,7 @@ export class DiscoveryManager {
                 // The whole response has been received. Print out the result.
                 resp.on('end', () => {
                     Log.i("getMacVendor (ip:" + ip + " mac: " + mac + ") data: " + data);
-                    socket.emit(new FoundDiscoveryEvent(network, { caption: data, ipAddress: ip, id: -1, macAddress: mac, isPinned: false }));
+                    socket.emit(new FoundDiscoveryEvent(network, { caption: data, ipAddress: ip, id: -1, macAddress: mac, isPinned: false, pinCode: 0 }));
                     onDone(ip);
                 });
             }).on("error", (err) => {
