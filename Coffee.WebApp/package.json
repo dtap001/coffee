@@ -26,6 +26,7 @@
     "@ngrx/store": "9.0.0",
     "@ngrx/store-devtools": "9.0.0",
     "install": "^0.13.0",
+    "ng-otp-input": "^1.7.0",
     "ngrx-store-localstorage": "^8.0.0",
     "ngx-socket-io": "^3.0.1",
     "primeicons": "^2.0.0",

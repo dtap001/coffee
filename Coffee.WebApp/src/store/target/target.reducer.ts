@@ -1,6 +1,6 @@
 import { createReducer, on, createSelector, createFeatureSelector, ActionsSubject } from '@ngrx/store'
 import { TargetModel, PinnedTargetModel } from 'src/models/target.model';
-import { TargetsSearchAction, TargetsSearchSuccessAction, TargetsSearchFailAction, TargetsWakeAction, TargetsWakeSuccessAction, TargetsWakeFailAction, TargetsDeleteAction, TargetsDeleteSuccessAction, TargetsDeleteFailAction, TargetsSaveFailAction, TargetsSaveAction, TargetDetailAction, TargetPinSuccess, TargetPinFail, TargetPinAction, TargetsSaveSuccessAction, TargetsGetPinnedFailAction, TargetsGetPinnedAction, TargetsGetPinnedSuccessAction } from './target.action';
+import { TargetsSearchAction, TargetsSearchSuccessAction, TargetsSearchFailAction, TargetsWakeAction, TargetsWakeSuccessAction, TargetsWakeFailAction, TargetsDeleteAction, TargetsDeleteSuccessAction, TargetsDeleteFailAction, TargetsSaveFailAction, TargetsSaveAction, TargetDetailAction, TargetPinSuccess, TargetPinFail, TargetPinAction, TargetsSaveSuccessAction, TargetsGetPinnedFailAction, TargetsGetPinnedAction, TargetsGetPinnedSuccessAction, TargetsWakePinnedAction, TargetsWakePinnedSuccessAction, TargetsWakePinnedFailAction } from './target.action';
 
 export class TargetViewModel {
     isLoading: boolean;
@@ -14,6 +14,7 @@ export interface TargetsState {
     discoveredTargets: TargetModel[],
     saveInProgress: boolean,
     pinnedTargets: PinnedTargetModel[],
+    wakeInProgress: boolean;
 }
 
 export const emptyState: TargetsState = {
@@ -23,6 +24,7 @@ export const emptyState: TargetsState = {
     selectedTarget: new TargetModel(),
     discoveredTargets: [],
     saveInProgress: false,
+    wakeInProgress: false,
     pinnedTargets: [],
 }
 
@@ -124,6 +126,22 @@ export const Reducer = createReducer(
         ...state,
         error: action.error,
     })),
+    on(TargetsWakePinnedAction, (state: TargetsState, action) => ({
+        ...state,
+        wakeInProgress: true,
+        error: null,
+    })),
+    on(TargetsWakePinnedSuccessAction, (state: TargetsState, action) => ({
+        ...state,
+        wakeInProgress: false,
+        error: null,
+    })),
+    on(TargetsWakePinnedFailAction, (state: TargetsState, action) => ({
+        ...state,
+        wakeInProgress:false,
+        error: action.error,
+    })),
+
 
 );
 

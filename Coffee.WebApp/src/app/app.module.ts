@@ -39,7 +39,8 @@ import { DiscoveryEffect } from 'src/store/discovery/discovery.effect';
 import {ToastModule} from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 import {CheckboxModule} from 'primeng/checkbox';
-
+import { NgOtpInputModule } from  'ng-otp-input';
+import {SelectButtonModule} from 'primeng/selectbutton';
 const config: SocketIoConfig = { url: 'http://localhost:8988', options: {} };
  
 @NgModule({
@@ -61,6 +62,8 @@ const config: SocketIoConfig = { url: 'http://localhost:8988', options: {} };
     ToastModule,
     TableModule,
     DropdownModule,
+    NgOtpInputModule,
+    SelectButtonModule,
     StoreModule.forRoot(reducers, {
       metaReducers: [...metaReducers,localStorageSyncReducer],
       runtimeChecks: {
