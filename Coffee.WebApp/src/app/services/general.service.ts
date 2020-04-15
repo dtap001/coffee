@@ -7,6 +7,8 @@ import * as fromRoot from '../../store/reducers'
 import { TargetModel } from 'src/models/target.model';
 import { TargetsSearchResponse, TargetsDeleteResponse, TargetsSaveResponse, TargetsWakeResponse, TargetsGetPinnedResponse } from 'src/models/targets.responses';
 import { DiscoveryStopResponse, DiscoveryStartResponse, DiscoveryGetInterfacesResponse } from 'src/models/discovery.responses';
+import { SettingsModel } from 'src/models/settings.model';
+import { SettingsGetResponse, SettingsSaveResponse } from 'src/models/settings.responses';
 
 @Injectable({
     providedIn: "root"
@@ -82,6 +84,17 @@ export class GeneralService {
         let response$ = this.http.post<DiscoveryGetInterfacesResponse>(URL, {}, this.options(this.json()));
         return this.wrapWithIsOKCheck(response$);
     }
+    settingsGet(): Observable<SettingsGetResponse> {
+        const URL = "http://localhost:3000/v1/settings";
+        let response$ = this.http.get<SettingsGetResponse>(URL, this.options(this.json()));
+        return this.wrapWithIsOKCheck(response$);
+    }
+    settingsSave(settings: SettingsModel): Observable<SettingsSaveResponse> {
+        const URL = "http://localhost:3000/v1/settings/save";
+        let response$ = this.http.post<SettingsSaveResponse>(URL, { settings: settings }, this.options(this.json()));
+        return this.wrapWithIsOKCheck(response$);
+    }
+
 
 
     private wrapWithIsOKCheck(response$: Observable<GeneralResponse>): Observable<GeneralResponse> {

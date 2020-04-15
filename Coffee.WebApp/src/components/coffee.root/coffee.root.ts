@@ -37,15 +37,20 @@ export class CoffeeRoot implements OnInit {
   public doLogin(userName: string, password: string) {
     this.store.dispatch(UserLoginAction({ userName: userName, password: password }));
   }
-
+  public goSettings() {
+    this.router.navigate([COFFEE_APP_PATHS.SETTINGS]);
+  }
+  public goTargets() {
+    this.router.navigate([COFFEE_APP_PATHS.TARGETS]);
+  }
   public doLogout() {
     this.store.dispatch(UserLogoutAction({}));
     this.router.navigate([COFFEE_APP_PATHS.ROOT]);
   }
 
   onFailed(message) {
-    console.log("OnFailed: "+ JSON.stringify(message));
-    this.messageService.add({severity:'error', summary:"Login failed", detail:message});
+    console.log("OnFailed: " + JSON.stringify(message));
+    this.messageService.add({ severity: 'error', summary: "Login failed", detail: message });
   }
   ngOnInit() {
     this.store.select(state => state.user.loggedIn)

@@ -71,6 +71,9 @@ p-selectbutton > div > div {
   &:focus {
     background-color: #2a2018 !important;
   }
+  &[selected=true] {
+    background-color: #2a2018 !important;
+  }
 }
 
 .noselect {

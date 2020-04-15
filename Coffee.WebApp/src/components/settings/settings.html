@@ -1,0 +1,44 @@
+<p-fieldset legend="Settings">
+    <form [formGroup]="form" (ngSubmit)="save()" fxLayout="column" fxLayoutGap="20px" fxLayoutAlign="start stretch">
+        <div fxLayout="row" fxLayoutAlign="space-around center">
+            <label fxFlex="20%">Username</label>
+            <div fxFlex="60%" fxLayout="column" fxLayoutAlign="center center">
+                <input type="text" pInputText formControlName="username" class="form-control"
+                    [ngClass]="{ 'is-invalid': form.controls['username'].errors }" />
+                <div *ngIf="form.controls['username'].errors">
+                    <div *ngIf="form.controls['username'].errors.required">Username is required</div>
+                </div>
+            </div>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="space-around center">
+            <label fxFlex="20%">Password</label>
+            <div fxFlex="60%" fxLayout="column" fxLayoutAlign="center center">
+                <input type="text" pInputText formControlName="password" class="form-control"
+                    [ngClass]="{ 'is-invalid': form.controls['password'].errors }" />
+                <div *ngIf="form.controls['password'].errors">
+                    <div *ngIf="form.controls['password'].errors.required">Password is required</div>
+                </div>
+            </div>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="space-around center">
+            <label fxFlex="20%">Password confirm</label>
+            <div fxFlex="60%" fxLayout="column" fxLayoutAlign="center center">
+                <input type="text" pInputText formControlName="passwordConfirm" class="form-control"
+                    [ngClass]="{ 'is-invalid': form.controls['passwordConfirm'].errors }" />
+                <div *ngIf="form.controls['passwordConfirm'].errors">
+                    <div *ngIf="form.controls['passwordConfirm'].errors.required">Password confirm is required</div>
+                </div>
+            </div>
+        </div>
+    </form>
+    <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="20px">
+        <back-button></back-button>
+        <p-button [disabled]="(saveInProgress$ | async) || form.invalid" fxLayout="column"
+            fxLayoutAlign="center stretch" (click)="save()">
+            <div fxLayout="row" fxFlexFill fxLayoutAlign="center center">
+                <i style="color:white" class="pi pi-save"></i>
+                <label>Save</label>
+            </div>
+        </p-button>
+    </div>
+</p-fieldset>

@@ -23,9 +23,8 @@
         </div>
         <div *ngIf="(userState$ != null )  && (userState$ | async).loggedIn == true" fxFlex="grow" fxLayout="row"
             fxLayoutGap="10px" fxLayoutAlign="space-around center">
-            <label class="menu-item">targets</label>
-            <label class="menu-item">users</label>
-            <label class="menu-item">settings</label>
+            <label class="menu-item" (click)="goTargets()"> targets</label>             
+            <label class="menu-item" (click)="goSettings()">settings</label>
             <label class="menu-item" (click)="doLogout()">logout</label>
         </div>
 
