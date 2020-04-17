@@ -18,6 +18,7 @@ import { JobEntity } from "./entities/job";
 import { DisocveryEntity } from "./entities/discovery";
 import { Discovery } from "../models/discovery";
 import { PinnedTarget } from "../models/pinnedTarget";
+import { CommonUtil } from "../utils";
 
 @injectable()
 export class CoffeeStorage {
@@ -53,13 +54,13 @@ export class CoffeeStorage {
         }
     }
 
-    async getUser(email: string, passwordHash: string): Promise<User> {
+    async getUser(email: string, password: string): Promise<User> {
         try {
-            let user = await this._connection.getRepository(UserEntity).findOne({ email: email, passwordHash: passwordHash } as UserEntity, { relations: ["roles"] });
+            let user = await this._connection.getRepository(UserEntity).findOne({ email: email, passwordHash: CommonUtil.hash(password) } as UserEntity, { relations: ["roles"] });
             if (user == null || user == undefined) {
                 return Promise.reject(new RouteError("User not found"));
             }
-            return Promise.resolve({ name: user.email, roles: user.roles.map(e => e.caption) } as User);
+            return Promise.resolve({ id: user.id, userName: user.email, roles: user.roles.map(e => e.caption) } as User);
         } catch (err) {
             Log.e("Getuser error: " + err, err);
             return Promise.reject(err)
@@ -70,9 +71,9 @@ export class CoffeeStorage {
         try {
             let users = await this._connection.getRepository(UserEntity).find({ relations: ["roles"] });
 
-            return Promise.resolve(users.map(user => { return { name: user.email, roles: user.roles.map(role => role.caption) } as User }));
+            return Promise.resolve(users.map(user => { return { id: user.id, userName: user.email, roles: user.roles.map(role => role.caption) } as User }));
         } catch (err) {
-            Log.e("Getusers error: " + err, err);
+            Log.e("searchUsers error: " + err, err);
             return Promise.reject(err)
         }
     }
@@ -90,14 +91,13 @@ export class CoffeeStorage {
             let userEntity = await this._connection.getRepository(UserEntity).findOne({ id: user.id });
             if (userEntity == null || userEntity == undefined) {//create
                 await this._connection.getRepository(UserEntity).save({
-                    passwordHash: "test",
+                    passwordHash: CommonUtil.hash('password'),
                     email: user.email,
-                    name: user.name
+                    name: user.userName
                 } as UserEntity);
             } else {//update
-                userEntity.passwordHash = user.passwordHash;
-                userEntity.email = user.email;
-                userEntity.name = user.name;
+                userEntity.passwordHash = CommonUtil.hash(user.password);
+                userEntity.email = user.userName;
                 await this._connection.getRepository(UserEntity).save(userEntity);
             }
             return Promise.resolve();

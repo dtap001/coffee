@@ -18,6 +18,20 @@ export const UserLoginFailAction = createAction(
     props<{ error: String }>()
 );
 
+export const UserSaveAction = createAction(
+    "[UserSave] Start",
+    props<{ id: number, userName: string, passwordHash: string }>()
+);
+
+export const UserSaveSuccessAction = createAction(
+    "[UserSave] Success",
+    props<{}>()
+);
+
+export const UserSaveFailAction = createAction(
+    "[UserSave] Fail",
+    props<{ error: String }>()
+);
 
 export const UserLogoutAction = createAction(
     "UserLogut",

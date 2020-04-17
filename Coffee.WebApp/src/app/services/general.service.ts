@@ -28,6 +28,12 @@ export class GeneralService {
         return this.wrapWithIsOKCheck(response$);
     }
 
+    userSave(id: number, userName: string, password: string): Observable<GeneralResponse> {
+        const URL = "http://localhost:3000/v1/user/save";
+        let response$ = this.http.post<GeneralResponse>(URL, { id: id, userName: userName, password: password }, this.options(this.json()));
+        return this.wrapWithIsOKCheck(response$);
+    }
+
     targetsSearch(search: string): Observable<TargetsSearchResponse> {
         const URL = "http://localhost:3000/v1/targets/search";
         let response$ = this.http.post<TargetsSearchResponse>(URL, { search: search }, this.options(this.json()));
@@ -85,7 +91,7 @@ export class GeneralService {
         return this.wrapWithIsOKCheck(response$);
     }
     settingsGet(): Observable<SettingsGetResponse> {
-        const URL = "http://localhost:3000/v1/settings";
+        const URL = "http://localhost:3000/v1/settings/get";
         let response$ = this.http.get<SettingsGetResponse>(URL, this.options(this.json()));
         return this.wrapWithIsOKCheck(response$);
     }

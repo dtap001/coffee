@@ -1,6 +1,6 @@
 import { createReducer, on, createSelector, createFeatureSelector } from '@ngrx/store';
 import { UserModel } from 'src/models/user.model';
-import { UserLoginFailAction, UserLoginAction, UserLoginSuccessAction, UserLogoutAction } from './user.action';
+import { UserLoginFailAction, UserLoginAction, UserLoginSuccessAction, UserLogoutAction, UserSaveAction, UserSaveSuccessAction, UserSaveFailAction } from './user.action';
 import { KickedOutAction } from '../hello/hello.action';
 
 export interface UserState {
@@ -11,7 +11,7 @@ export interface UserState {
     error: any
 }
 
-export const emptyState: UserState = {  
+export const emptyState: UserState = {
     data: {} as UserModel,
     loaded: false,
     loading: false,
@@ -35,6 +35,20 @@ export const Reducer = createReducer(
         ...state,
         loading: false,
         loggedIn: false,
+        error
+    })),
+    on(UserSaveAction, (state, action) => ({
+        ...state,
+        loading: false,
+    })),
+    on(UserSaveSuccessAction, (state, { }) => ({
+        ...state,
+        loading: false,
+
+    })),
+    on(UserSaveFailAction, (state, { error }) => ({
+        ...state,
+        loading: false,
         error
     })),
     on(UserLogoutAction, (state) => ({

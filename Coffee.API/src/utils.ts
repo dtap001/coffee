@@ -1,3 +1,4 @@
+var crypto = require('crypto');
 export class CommonUtil {
 
     static deepEqual(object, validationTemplate, currentPath?: string): boolean {
@@ -16,6 +17,13 @@ export class CommonUtil {
             }
         }
         return true;
+    }
+    static hash(raw) {
+
+        var hash = crypto.createHash('sha256')
+            .update(raw)
+            .digest('hex');
+        return hash;
     }
 }
 

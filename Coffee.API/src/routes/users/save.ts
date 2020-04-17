@@ -9,7 +9,7 @@ import { CoffeCache } from "../../storage/coffe.cache";
 
 export class UserSaveRoute extends RouteBase {
     getSufficientRoles(): string[] {
-        let roles = container.get<CoffeCache>(TYPES.Cache).AdminRoles;
+        let roles = container.get<CoffeCache>(TYPES.Cache).AllRoles;
         return roles.map(r => r.caption);
     }
     getPath(): string {
@@ -24,7 +24,7 @@ export class UserSaveRoute extends RouteBase {
             this.authorize(req, res, this.getSufficientRoles());
             let that = this;
             var storage = container.get<CoffeeStorage>(TYPES.Storage);
-            storage.saveUser((req.body as SaveUserRequest).user).then(function () {
+            storage.saveUser(req.body as User).then(function () {
                 that.sendRouteResult(res, new RouteSuccessResult({} as ResponseContentModel));
             }).catch(function (err: RouteError) {
                 that.sendRouteResult(res, new RouteErrorResult(err));

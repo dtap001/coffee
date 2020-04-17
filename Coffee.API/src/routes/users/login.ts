@@ -34,14 +34,16 @@ export class UserLoginRoute extends RouteBase {
 }
 
 export class LoginResponse extends ResponseContentModel {
+    ID: number;
     Token: string;
     UserName: string;
     Email: string;
     constructor(jwt: string, user: User) {
         super();
         this.Token = jwt;
-        this.UserName = user.name;
+        this.UserName = user.userName;
         this.Email = user.email;
+        this.ID = user.id;
     }
 }
 

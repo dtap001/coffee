@@ -13,7 +13,7 @@
         <div fxLayout="row" fxLayoutAlign="space-around center">
             <label fxFlex="20%">Password</label>
             <div fxFlex="60%" fxLayout="column" fxLayoutAlign="center center">
-                <input type="text" pInputText formControlName="password" class="form-control"
+                <input type="password" pInputText formControlName="password" class="form-control"
                     [ngClass]="{ 'is-invalid': form.controls['password'].errors }" />
                 <div *ngIf="form.controls['password'].errors">
                     <div *ngIf="form.controls['password'].errors.required">Password is required</div>
@@ -23,10 +23,11 @@
         <div fxLayout="row" fxLayoutAlign="space-around center">
             <label fxFlex="20%">Password confirm</label>
             <div fxFlex="60%" fxLayout="column" fxLayoutAlign="center center">
-                <input type="text" pInputText formControlName="passwordConfirm" class="form-control"
+                <input type="password" pInputText formControlName="passwordConfirm" (input)="onPasswordChange()" class="form-control"
                     [ngClass]="{ 'is-invalid': form.controls['passwordConfirm'].errors }" />
                 <div *ngIf="form.controls['passwordConfirm'].errors">
                     <div *ngIf="form.controls['passwordConfirm'].errors.required">Password confirm is required</div>
+                    <div *ngIf="form.controls['passwordConfirm'].errors.mismatch">Two passwords are not the same!</div>
                 </div>
             </div>
         </div>
