@@ -47,10 +47,40 @@ export class CoffeeStorage {
             });
             this._connection = connection;
             Log.i("DB is connected");
+
+            await this.ensureDefaultUser();
+
             return Promise.resolve();
         } catch (err) {
             Log.e(`Could not connect to the DB ${err} `, err)
             return Promise.reject("Could not connect to the DB");
+        }
+    }
+    async ensureDefaultUser() {
+        try {
+            let roles = await this._connection.getRepository(RoleEntity).find();
+            if (roles == null || roles.length == 0) {
+                await this._connection.getRepository(RoleEntity).save({
+                    caption: "All"
+                });
+            }
+
+            let rolesX = await this._connection.getRepository(RoleEntity).find();
+
+            let users = await this._connection.getRepository(UserEntity).find({ relations: ["roles"] });
+            if (users == null || users.length == 0) {
+                await this._connection.getRepository(UserEntity).save({
+                    passwordHash: CommonUtil.hash('admin'),
+                    email: "admin",
+                    name: "admin",
+                    roles: rolesX
+                } as UserEntity);
+            }
+
+            return Promise.resolve();
+        } catch (err) {
+            Log.e("ensureDefaultUser error: " + err, err);
+            return Promise.reject(err)
         }
     }
 

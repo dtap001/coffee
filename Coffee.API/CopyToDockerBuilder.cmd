@@ -1,0 +1,1 @@
+robocopy . Z:\DockerBuildDestination\coffee.API\. /IS /S /XD node_modules

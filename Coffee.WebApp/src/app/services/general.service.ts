@@ -1,4 +1,4 @@
-import { Injectable, OnInit } from "@angular/core";
+import { Injectable, OnInit, isDevMode } from "@angular/core";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Observable } from 'rxjs';
 import { GeneralResponse } from 'src/models/general.response';
@@ -22,14 +22,20 @@ export class GeneralService {
             ofType(HelloSuccessAction),
         ).subscribe(action => { this._v = action.payload.ApiVersion });
     }
+    getHost() {
+        if (isDevMode()) {
+            return "http://localhost:3000/api"
+        }
+        return window.location.origin + "/api";
+    }
 
     getURL() {
-        //return window.location.origin + "/" + this.state.getValue().hello.data.ApiVersion;
-        return "http://localhost:3000/api/" + this._v;
+        return this.getHost() + "/" + this._v;
     }
 
     hello(): Observable<GeneralResponse> {
-        const URL = "http://localhost:3000/api" + "/hello";
+        let URL = this.getHost()+"/hello";
+
         return this.http.get<GeneralResponse>(URL, this.options(this.json()));
     }
 

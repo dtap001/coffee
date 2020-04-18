@@ -40,7 +40,7 @@ export class CoffeeServer {
             allowedHeaders: ["Origin", "X-Requested-With", "Content-Type", "Accept", "X-Access-Token", "Access-Control-Allow-Headers", "Access-Control-Allow-Origin", "Authorization"],
             credentials: true,
             methods: "GET,HEAD,OPTIONS,PUT,PATCH,POST,DELETE",
-            origin: ["http://localhost:4200", "http://localhost:3000"],
+            origin: ["http://localhost:4200", "http://localhost:3000", "http://192.168.20.139"],
             preflightContinue: false
         };
 
@@ -111,10 +111,11 @@ export class CoffeeServer {
             res.statusCode = (error as RouteError).code;
             res.json(new RouteErrorResult(error));
         });
-        this.app.use(express.static(path.join(__dirname, '../client')));
-        /* this.app.get('*', (req, res) => {
-             res.sendFile(path.join(__dirname + '../client/index.html'));
-         });*/
+        this.app.use(express.static(path.join(__dirname, 'client')));
+        this.app.get('*', (req, res) => {
+            res.sendFile(path.join(__dirname + '/client/index.html'));
+        });
+
         this.app.use(function (req: express.Request, res, next) {
             res.status(404).send(new RouteErrorResult(new RouteError(`Invalid route: ${req.url}`)));
         });

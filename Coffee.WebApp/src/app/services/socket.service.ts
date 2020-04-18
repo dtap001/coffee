@@ -8,7 +8,7 @@ import { TargetModel } from 'src/models/target.model';
 })
 export class SocketService extends Socket {
   constructor() {
-    super({ url: 'http://localhost:3000', options: { origin: '*', transport: ['websocket'] } });
+    super({ url: window.location.origin, options: { origin: '*', transport: ['websocket'] } });
   }
 
   public dispatch(event: SocketEvent) {

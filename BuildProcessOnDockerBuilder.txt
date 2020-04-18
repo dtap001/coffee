@@ -1,0 +1,4 @@
+docker login -u coffeeapi
+cd /media/sf_Projects.git/coffee.API
+docker build -t coffeeapi/system -f coffee.docker .
+docker push coffeeapi/system
