@@ -23,7 +23,7 @@ export const Reducer = createReducer(
         loading: false,
         loggedIn: true,
         error: null,
-        //apiVersion: action.payload.ApiVersion
+        data: action.payload
     })),
     on(HelloFailedAction, (state, { error }) => ({
         ...state,

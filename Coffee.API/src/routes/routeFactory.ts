@@ -9,18 +9,18 @@ export class RouteFactory {
 
     register<T extends RouteBase>(routeType: (new () => T)) {
         let route = new routeType();
-
+        let path = "/api" + route.getPath();
         switch (route.getRouteMethod()) {
             case RouteMethod.GET:
-                this.app.get(route.getPath(),
+                this.app.get(path,
                     route.getAction());
                 break;
             case RouteMethod.POST:
-                this.app.post(route.getPath(),
+                this.app.post(path,
                     route.getAction());
                 break;
         }
-        Log.i(`Registered route: ${route.getPath()}`)
+        Log.i(`Registered route: ${path}`)
     };
 }
 export class RouteActionWrapper {

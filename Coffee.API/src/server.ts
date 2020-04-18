@@ -26,7 +26,7 @@ import { DiscoveryGetInterfacesRoute } from "./routes/discovery/getInterfaces";
 import { TargetsPinRoute } from "./routes/targets/pin";
 import { TargetsGetPinnedRoute } from "./routes/targets/getPinned";
 import { TargetsWakePinned } from "./routes/targets/wakePinned";
-
+import path from 'path'
 export class CoffeeServer {
     private server: Server;
     private socketServer: SocketServer;
@@ -111,6 +111,10 @@ export class CoffeeServer {
             res.statusCode = (error as RouteError).code;
             res.json(new RouteErrorResult(error));
         });
+        this.app.use(express.static(path.join(__dirname, '../client')));
+        /* this.app.get('*', (req, res) => {
+             res.sendFile(path.join(__dirname + '../client/index.html'));
+         });*/
         this.app.use(function (req: express.Request, res, next) {
             res.status(404).send(new RouteErrorResult(new RouteError(`Invalid route: ${req.url}`)));
         });

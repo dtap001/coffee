@@ -8,7 +8,7 @@ export class HelloRoute extends RouteBase {
         throw new Error("Method not implemented.");
     }
     getPath(): string {
-        return urljoin(Config.APIVersion(), "/hello");
+        return "/hello";
     }
     getRouteMethod(): RouteMethod {
         return RouteMethod.GET;
