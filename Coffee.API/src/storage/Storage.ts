@@ -19,6 +19,7 @@ import { DisocveryEntity } from "./entities/discovery";
 import { Discovery } from "../models/discovery";
 import { PinnedTarget } from "../models/pinnedTarget";
 import { CommonUtil } from "../utils";
+import { Config } from "../config";
 
 @injectable()
 export class CoffeeStorage {
@@ -28,12 +29,13 @@ export class CoffeeStorage {
         await this._connection.close();
     }
     async initialize() {
-        Log.i(`Connecting to DB: ${__dirname}.`);
+        let dbPath = Config.GetDBPath();
+        Log.i(`Connecting to DB: ${dbPath}.`);
 
         try {
             let connection = await createConnection({
                 type: "sqlite",
-                database: "coffee.sqlite",
+                database: dbPath,//"coffee.sqlite",
                 entities: [
                     //  __dirname + "/storage/entities/*.js"
                     UserEntity,

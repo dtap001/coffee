@@ -2,3 +2,5 @@ docker login -u coffeeapi
 cd /media/sf_Projects.git/coffee.API
 docker build -t coffeeapi/system -f coffee.docker .
 docker push coffeeapi/system
+docker run --net host --privileged -v /proc/net/arp:/host/arp -v /root/coffee:/usr/src/db -p 80:3000 -e DB_PATH=/usr/src/db/db.sqlite -e PORT=80 coffeeapi/system
+
