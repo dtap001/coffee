@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, isDevMode } from '@angular/core';
 import { Socket } from 'ngx-socket-io';
 import { Observable } from 'rxjs/internal/Observable';
 import { TargetModel } from 'src/models/target.model';
@@ -8,7 +8,11 @@ import { TargetModel } from 'src/models/target.model';
 })
 export class SocketService extends Socket {
   constructor() {
-    super({ url: window.location.origin, options: { origin: '*', transport: ['websocket'] } });
+    let url = window.location.origin;
+    if (isDevMode()) {
+      url = "http://localhost:3000/"
+    }
+    super({ url: url, options: { origin: '*', transport: ['websocket'] } });
   }
 
   public dispatch(event: SocketEvent) {

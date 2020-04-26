@@ -25,17 +25,9 @@ export class TargetsComponent implements OnInit {
         this.targetViewModels$ = this.store.select(state => state.targets.loading);
     }
     getTargetView(id) {
-        let array = this.store.select(state => state.targets.loading.filter(t => t.id == id));       
-        
+        let array = this.store.select(state => state.targets.loading.filter(t => t.id == id));               
         return array;
     }
-
-    /*
-    this.store.select(fromBatStores.selectBatStoresBatStores)
-    .switchMap((batStores : BatStore[]) => Observable.from(batStores))
-    .single((bs: BatStore) => bs.number === editId);
-    
-    */
 
     add() {
         this.router.navigate([COFFEE_APP_PATHS.TARGETS_DETAIL], { queryParams: { id: -1 } });
@@ -56,17 +48,6 @@ export class TargetsComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.actions$.pipe(
-            ofType(TargetsWakeSuccessAction),
-        ).subscribe(action => this.store.dispatch(TargetsSearchAction({ search: "" })));
-        this.actions$.pipe(
-            ofType(TargetsSaveSuccessAction),
-        ).subscribe(action => this.store.dispatch(TargetsSearchAction({ search: "" })));
-        this.actions$.pipe(
-            ofType(TargetPinSuccess),
-        ).subscribe(action => this.store.dispatch(TargetsSearchAction({ search: "" })));
-        this.actions$.pipe(
-            ofType(TargetsDeleteSuccessAction),
-        ).subscribe(action => this.store.dispatch(TargetsSearchAction({ search: "" })));
+ 
     }
 }

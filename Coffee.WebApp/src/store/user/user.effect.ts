@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from "@ngrx/effects";
-import { map, switchMap, catchError, tap, exhaustMap, mergeMap } from "rxjs/operators";
+import { map, switchMap, catchError, tap, exhaustMap, mergeMap, concatMap } from "rxjs/operators";
 import { GeneralService } from 'src/app/services/general.service';
 import { of } from 'rxjs';
 import { UserLoginAction, UserLoginSuccessAction, UserLoginFailAction, UserLogoutAction, UserSaveSuccessAction, UserSaveFailAction, UserSaveAction } from './user.action';
@@ -20,9 +20,10 @@ export class UserEffect {
             )
         )
     ));
+    
     saveUserEffect$ = createEffect(() => this.actions$.pipe(
         ofType(UserSaveAction),
-        switchMap(({ id, userName, passwordHash }) => this.generalService.userSave(id, userName, passwordHash)
+        concatMap(({ id, userName, passwordHash }) => this.generalService.userSave(id, userName, passwordHash)
             .pipe(
                 map(response => UserSaveSuccessAction({})),
                 catchError(({ error }) => of(UserSaveFailAction(error)))

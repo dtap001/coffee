@@ -11,26 +11,27 @@
             <div class="ui-inputgroup">
                 <span class="ui-inputgroup-addon"><i class="pi pi-key"
                         style="line-height: 1.25;color:#6f4e37"></i></span>
-                <input [(ngModel)]="password" type="password" pInputText (keydown.enter)="doLogin(userName,password)" placeholder="Password">
+                <input [(ngModel)]="password" type="password" pInputText (keydown.enter)="doLogin(userName,password)"
+                    placeholder="Password">
             </div>
-            <p-button [disabled]="userName == null || password == null" (click)="doLogin(userName,password)" fxLayout="column" fxLayoutAlign="center stretch">
+            <p-button [disabled]="userName == null || password == null" (click)="doLogin(userName,password)"
+                fxLayout="column" fxLayoutAlign="center stretch">
                 <div fxLayout="row" fxFlexFill fxLayoutAlign="center center" style="border:solid #624732 2px!important">
                     <i style="color:white" class="pi pi-key"></i>
                     <label>Login</label>
                     <p-toast position="top-left"></p-toast>
                 </div>
             </p-button>
-        </div>
+        </div>      
         <div *ngIf="(userState$ != null )  && (userState$ | async).loggedIn == true" fxFlex="grow" fxLayout="row"
             fxLayoutGap="10px" fxLayoutAlign="space-around center">
-            <label class="menu-item" (click)="goTargets()"> targets</label>             
+            <label class="menu-item" (click)="goTargets()"> targets</label>
             <label class="menu-item" (click)="goSettings()">settings</label>
             <label class="menu-item" (click)="doLogout()">logout</label>
         </div>
-
-
-    </div>
+    </div> 
     <div fxLayout="column" fxFlex="auto" fxLayoutAlign="center center">
-        <router-outlet style="height:100%" fxLayout="column" fxFlex="auto" fxLayoutAlign="center center"></router-outlet>
+        <router-outlet style="height:100%" fxLayout="column" fxFlex="auto" fxLayoutAlign="center center">
+        </router-outlet>
     </div>
 </div>

@@ -3,7 +3,9 @@ import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { Router } from '@angular/router';
 import {
     map, catchError,
-    switchMap
+    switchMap,
+    exhaustMap,
+    concatMap
 } from "rxjs/operators";
 import { GeneralService } from 'src/app/services/general.service';
 import { of } from 'rxjs';
@@ -18,7 +20,7 @@ export class SettingsEffect {
 
     targetsSearchEffect$ = createEffect(() => this.actions$.pipe(
         ofType(GetSettingsAction),
-        switchMap(({ }) => this.generalService.settingsGet()
+        concatMap(({ }) => this.generalService.settingsGet()
             .pipe(
                 map(response => GetSettingsSuccessAction({ settings: response.content })),
                 catchError(({ error }) => of(GetSettingsFailAction(error)))

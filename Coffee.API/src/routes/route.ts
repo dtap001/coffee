@@ -37,6 +37,9 @@ export abstract class RouteBase {
         throw new UnauthorizedError(`Insufficent roles for route ${req.path}`);
     }
     sendRouteResult(res: express.Response, result: RouteResult) {
+        if (result instanceof RouteErrorResult) {
+            res.status(result.error.code);
+        }
         res.type('application/json');
         res.json(result);
     }
@@ -65,6 +68,7 @@ export class RouteErrorResult extends RouteResult {
         super();
         this.error = error;
         this.isOK = false;
+        this.error.code = 400;
     }
 }
 

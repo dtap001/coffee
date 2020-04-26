@@ -1,41 +1,21 @@
 <div fxLayout="column" fxLayoutGap="20px" fxLayoutAlign="center stretch" style="margin:20px">
     <h1 class="big-text">Select pinned target</h1>
     <div xLayoutGap="20px" fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="space-around center">
-        <p-selectButton [options]="pinnedTargets" [(ngModel)]="selectedTarget" optionLabel="caption" class="noSelect" ></p-selectButton>
-
-        <!--  <p-card *ngFor="let target of pinnedTargets">
-            <div fxLayout="column" fxLayoutAlign="start stretch">
-                <label><b>{{target.caption}}</b></label>
-            </div>
-        </p-card>-->
+        <p-selectButton [options]="pinnedTargets" [(ngModel)]="selectedTarget" optionLabel="caption" class="noSelect">
+        </p-selectButton>
     </div>
     <h1 *ngIf="selectedTarget" class="big-text">Enter pin for: {{selectedTarget.caption}}</h1>
     <div *ngIf="selectedTarget" fxLayout="row" fxLayoutGap="20px" fxLayoutAlign="start center">
         <ng-otp-input (onInputChange)="onOtpChange($event)" [config]="{length:4}"></ng-otp-input>
-        <p-button [disabled]="(loading$ | async) || code == 0" fxLayout="column" fxLayoutAlign="center stretch" (click)="wake()">
+        <p-button [disabled]="(loading$ | async) || code == 0" fxLayout="column" fxLayoutAlign="center stretch"
+            (click)="wake()">
             <div *ngIf="!(loading$ | async)" fxFlexFill fxLayout="row" fxLayoutAlign="center center">
                 <i style="color:white" class="pi pi-power-off"></i>
-                <label >Wake</label>
+                <label>Wake</label>
             </div>
             <div *ngIf="(loading$ | async)" fxFlexFill fxLayout="row" fxLayoutAlign="center center">
-                <i style="color:white" class="pi pi-spin pi-spinner"></i>               
+                <i style="color:white" class="pi pi-spin pi-spinner"></i>
             </div>
         </p-button>
     </div>
 </div>
-
-<!-- 
-<label>{{target.caption}}</label>
-                <label><b>PIN code:</b></label>
-                <input type="number" pInputText id="pinCode_{{target.id}}" />
-                <div fxLayout="row" fxLayoutAlign="center center">
-                    <p-button label="" fxLayout="column" fxLayoutAlign="center stretch" (click)="wake(target.id)">
-                        <div fxLayout="row" fxLayoutAlign="center center">
-                            <i style="color:white" class="pi pi-power-off"></i>
-                            <label>Wake</label>
-                        </div>
-                    </p-button>
-                </div>
-
-
--->

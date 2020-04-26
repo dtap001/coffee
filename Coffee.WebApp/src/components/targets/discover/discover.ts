@@ -63,6 +63,7 @@ export class DiscoverDialog implements OnInit, OnDestroy {
 
 
     save(target: TargetModel) {
+        console.log("Save started!");
         this.store.dispatch(TargetsSaveAction({ target: target }));
     }
 }

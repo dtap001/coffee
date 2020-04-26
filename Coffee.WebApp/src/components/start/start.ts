@@ -29,10 +29,6 @@ export class StartComponent implements OnInit, OnDestroy {
         this.error$ = this.store.select(state => state.targets.error);
     }
     ngOnInit() {
-        this.actions$.pipe(
-            ofType(HelloSuccessAction),
-        ).subscribe(action => { this.store.dispatch(TargetsGetPinnedAction({})); });
-
     }
     wake() {
         this.store.dispatch(TargetsWakePinnedAction({ id: this.selectedTarget.id, pinCode: this.code }));

@@ -3,7 +3,11 @@ import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { Router } from '@angular/router';
 import {
     map, catchError,
-    switchMap
+    switchMap,
+    exhaustMap,
+    concatMap,
+    flatMap,
+    tap
 } from "rxjs/operators";
 import { GeneralService } from 'src/app/services/general.service';
 import { of } from 'rxjs';
@@ -25,6 +29,16 @@ export class TargetsEffect {
             )
         )
     ));
+    targetsSuccessSearchEffect$ = createEffect(() => this.actions$.pipe(
+        ofType(TargetsDeleteSuccessAction, TargetsSaveSuccessAction, TargetsWakeSuccessAction, TargetPinSuccess),
+        switchMap(() => this.generalService.targetsSearch("")
+            .pipe(
+                map(response => TargetsSearchSuccessAction({ payload: response.content })),
+                catchError(({ error }) => of(TargetsSearchFailAction(error)))
+            )
+        )
+    ));
+
     targetsDeleteEffect$ = createEffect(() => this.actions$.pipe(
         ofType(TargetsDeleteAction),
         switchMap(({ id }) => this.generalService.targetsDelete(id)
@@ -39,6 +53,7 @@ export class TargetsEffect {
         ofType(TargetsSaveAction),
         switchMap(({ target }) => this.generalService.targetsSave(target)
             .pipe(
+                tap(()=>console.log("inside targetSaveEffect")),
                 map(response => TargetsSaveSuccessAction({ id: target.id, savedTarget: response.content })),
                 catchError(({ error }) => of(TargetsSaveFailAction({ id: target.id, error: error })))
             )
@@ -64,6 +79,7 @@ export class TargetsEffect {
             )
         )
     ));
+
     targetPinEffect$ = createEffect(() => this.actions$.pipe(
         ofType(TargetPinAction),
         switchMap(({ id }) => this.generalService.targetsPin(id)
@@ -82,6 +98,5 @@ export class TargetsEffect {
             )
         )
     ));
-
 
 }

@@ -9,7 +9,7 @@ import { of } from 'rxjs';
 import { ROUTER_NAVIGATION } from '@ngrx/router-store';
 import { AppRouterState } from 'src/core/reducers/router.reducers';
 import { HelloState } from '../hello/hello.reducer';
-import { TargetsSearchAction, TargetDetailAction } from '../target/target.action';
+import { TargetsSearchAction, TargetDetailAction, TargetsGetPinnedAction } from '../target/target.action';
 import { Store } from '@ngrx/store';
 import { COFFEE_APP_PATHS } from 'src/app/paths';
 
@@ -24,15 +24,25 @@ export class RouteEffect {
     private mapToRouterStateUrl = (action): AppRouterState => {
         return action.payload.routerState;
     };
+    getPinned$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(ROUTER_NAVIGATION),
+            map(this.mapToRouterStateUrl),
+        //    tap((routerState) => { console.log(`URLx: ${JSON.stringify(routerState)}`) }),
+            filter(routerState =>
+                routerState.url == ('\\')
+            ),
+            map((routerState) => TargetsGetPinnedAction({}))
+        ));
 
     targetsSearch$ = createEffect(() =>
         this.actions$.pipe(
             ofType(ROUTER_NAVIGATION),
             map(this.mapToRouterStateUrl),
-            tap((routerState) => { console.log(`URL: ${JSON.stringify(routerState)}`) }),
             filter(routerState =>
                 routerState.url.includes(`${COFFEE_APP_PATHS.TARGETS}`)
             ),
+            tap(() => console.log("Not filtered")),
             map((routerState) => TargetsSearchAction({ search: this.undefinedToEmpty(routerState["root"].queryParams.search) })) //fix this shit
         ));
 
@@ -40,9 +50,8 @@ export class RouteEffect {
         this.actions$.pipe(
             ofType(ROUTER_NAVIGATION),
             map(this.mapToRouterStateUrl),
-            tap((routerState) => { console.log(`URL: ${JSON.stringify(routerState.url)}`) }),
             filter(routerState =>
-                 routerState.url.includes(`${COFFEE_APP_PATHS.TARGETS_DETAIL}`)
+                routerState.url.includes(`${COFFEE_APP_PATHS.TARGETS_DETAIL}`)
             ),
             map((routerState) => TargetDetailAction({ id: routerState["root"].queryParams.id }))
         ));

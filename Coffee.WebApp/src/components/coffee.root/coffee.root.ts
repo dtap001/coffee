@@ -50,12 +50,11 @@ export class CoffeeRoot implements OnInit {
 
   onFailed(message) {
     console.log("OnFailed: " + JSON.stringify(message));
-    this.messageService.add({ severity: 'error', summary: "Login failed", detail: message });
+    this.messageService.add({ severity: 'error', summary: "Login failed", detail: message.message });
   }
   ngOnInit() {
     this.store.select(state => state.user.loggedIn)
       .subscribe((loggedIn) => {
-        console.log("URL: " + this.router.url);
         if (loggedIn && this.router.url == "/") {
           this.router.navigate([COFFEE_APP_PATHS.TARGETS]);
         }

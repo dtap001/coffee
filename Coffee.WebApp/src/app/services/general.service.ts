@@ -11,6 +11,7 @@ import { SettingsModel } from 'src/models/settings.model';
 import { SettingsGetResponse, SettingsSaveResponse } from 'src/models/settings.responses';
 import { Actions, ofType, act } from '@ngrx/effects';
 import { HelloSuccessAction } from 'src/store/hello/hello.action';
+import { map, tap } from 'rxjs/operators';
 
 @Injectable({
     providedIn: "root"
@@ -30,12 +31,15 @@ export class GeneralService {
     }
 
     getURL() {
-        return this.getHost() + "/" + this._v;
+        if (this._v == null) {
+            return this.getHost() + "/v1";//TODO refactor to handle this route versioning
+        } else {
+            return this.getHost() + "/" + this._v;
+        }
     }
 
     hello(): Observable<GeneralResponse> {
-        let URL = this.getHost()+"/hello";
-
+        let URL = this.getHost() + "/hello";
         return this.http.get<GeneralResponse>(URL, this.options(this.json()));
     }
 
@@ -64,6 +68,7 @@ export class GeneralService {
     }
 
     targetsSave(target: TargetModel): Observable<TargetsSaveResponse> {
+        console.log("generalService.targetsSave");
         const URL = this.getURL() + "/targets/save";
         let response$ = this.http.post<TargetsSaveResponse>(URL, { target: target }, this.options(this.json()));
         return this.wrapWithIsOKCheck(response$);
@@ -80,6 +85,7 @@ export class GeneralService {
         return this.wrapWithIsOKCheck(response$);
     }
     targetsGetPinned(): Observable<TargetsGetPinnedResponse> {
+        console.log("service.targetsGetPinned");
         const URL = this.getURL() + "/targets/getPinned";
         let response$ = this.http.get<TargetsGetPinnedResponse>(URL, this.options(this.json()));
         return this.wrapWithIsOKCheck(response$);
@@ -115,14 +121,21 @@ export class GeneralService {
     settingsSave(settings: SettingsModel): Observable<SettingsSaveResponse> {
         const URL = this.getURL() + "/settings/save";
         let response$ = this.http.post<SettingsSaveResponse>(URL, { settings: settings }, this.options(this.json()));
+        //return this.http.get('').map()    
+       
         return this.wrapWithIsOKCheck(response$);
     }
-
-
+    private handleError(error: Response | any) {
+        let body = error.json();
+        console.error(body);
+        return Observable.throw(body);
+    }
 
     private wrapWithIsOKCheck(response$: Observable<GeneralResponse>): Observable<GeneralResponse> {
+        return response$;
         let result$ = new Observable<GeneralResponse>(observer => {
             response$.subscribe(response => {
+                console.log(JSON.stringify(response));
                 if (!response.isOK) {
                     return observer.error(response);
                 }
