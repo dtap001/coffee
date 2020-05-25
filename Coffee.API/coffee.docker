@@ -9,7 +9,8 @@ RUN mkdir /usr/src/db
 COPY package*.json ./
 COPY dist .
 COPY jwt ./jwt
-RUN npm install
+COPY node_modules ./node_modules
+#RUN npm install
 # If you are building your code for production
 # RUN npm ci --only=production
 RUN apt-get update

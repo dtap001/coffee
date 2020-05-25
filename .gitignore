@@ -67,3 +67,4 @@ Coffee.API/jwt/public.key
 Coffee.API/coffee.sqlite
 Coffee.API/coffee.sqlite
 Coffee.API/client
+Coffee.API/coffee.xsqlite
