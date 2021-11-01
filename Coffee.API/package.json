@@ -59,7 +59,7 @@
     "reflect-metadata": "^0.1.13",
     "socket.io": "^2.4.0",
     "sqlite3": "^4.1.0",
-    "typeorm": "^0.2.19",
+    "typeorm": "^0.2.25",
     "url-join": "^4.0.1",
     "uuid": "^3.3.2",
     "wake_on_lan": "^1.0.0"
