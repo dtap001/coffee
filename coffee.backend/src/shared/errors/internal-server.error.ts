@@ -1,4 +1,5 @@
-export class BusinessError extends Error {
+export class InternalServerError extends Error {
+  originalError?: Error;
   guid: string;
   context: string;
   message: string;

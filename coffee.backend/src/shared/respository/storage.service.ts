@@ -3,17 +3,18 @@ import { Config } from '../util/config';
 import { CoffeeLogger } from '../util/logger';
 import { createConnection, Connection } from 'typeorm';
 import { SeedableRepostiory } from './seedable.interface';
-import { BackendError } from '../errors/backend.error';
 import { GuidService } from '../edge/guid.service';
+import { ErrorFactory } from '../errors/error.factory';
 
 @Injectable()
 export class StorageService implements SeedableRepostiory {
   private readonly log = new CoffeeLogger(StorageService.name, this.guid.value);
   private dbConnection: Connection;
   private entityList = [];
-  private seedableRepositories: SeedableRepostiory[];
+  private seedableRepositories: SeedableRepostiory[] = [];
 
-  constructor(private guid: GuidService) {}
+  constructor(private guid: GuidService, private errorFactory: ErrorFactory) {}
+
   registerEntity(entity) {
     this.entityList.push(entity);
   }
@@ -36,16 +37,19 @@ export class StorageService implements SeedableRepostiory {
       this.dbConnection = connection;
       this.log.info('DB is connected');
     } catch (err) {
-      this.log.error(`Could not connect to the DB ${err} `, err);
-      throw new BackendError('Could not connect to the DB');
+      throw this.errorFactory.internalServerError(
+        `${StorageService.name}${this.initialize.name}`,
+        `Could not connect to the DB ${err} `,
+        err,
+      );
     }
     await this.seed();
   }
 
   async seed() {
-    this.seedableRepositories.forEach(
-      async (seedable: SeedableRepostiory) => await seedable.seed(),
-    );
+    for (const seedable of this.seedableRepositories) {
+      await seedable.seed();
+    }
   }
 
   getConnection() {

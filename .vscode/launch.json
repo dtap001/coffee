@@ -54,7 +54,7 @@
       "type": "node",
       "request": "launch",
       "name": "Debug Backend",
-      "runtimeArgs": ["--nolazy", "-r", "ts-node/register"],
+      "runtimeArgs": ["--nolazy", "-r", "npx ts-node/register"],
       "args": ["${workspaceFolder}/coffee.backend/src/main.ts"],
       "autoAttachChildProcesses": true
     }

@@ -1,48 +1,46 @@
-import crypto from 'crypto';
+import * as crypto from 'crypto';
 import * as jsonWebToken from 'jsonwebtoken';
 import * as fs from 'fs';
 import { CoffeeLogger } from './logger';
 import { Config } from './config';
-import { BackendError } from '../errors/backend.error';
-import uuidGen = require('uuid');
+import { Injectable } from '@nestjs/common';
+import { GuidService } from '../edge/guid.service';
+import { ErrorFactory } from '../errors/error.factory';
 
+@Injectable()
 export class CoffeeSecurity {
-  private static readonly log = new CoffeeLogger(
-    CoffeeSecurity.name,
-    CoffeeSecurity.generateUUID(),
-  );
-  private static privateKEY: string;
-  private static publicKEY: string;
+  private readonly log = new CoffeeLogger(CoffeeSecurity.name, this.guid.value);
+  private privateKEY: string;
+  private publicKEY: string;
 
-  constructor() {
+  constructor(private guid: GuidService, private errorFactory: ErrorFactory) {}
+
+  init() {
     try {
-      CoffeeSecurity.privateKEY = fs.readFileSync(
-        Config.JWTPrivateKeyPath(),
-        'utf8',
-      ); //use this to generate http://travistidwell.com/jsencrypt/demo/
-      CoffeeSecurity.publicKEY = fs.readFileSync(
-        Config.JWTPublicKeyPath(),
-        'utf8',
-      );
+      this.privateKEY = fs.readFileSync(Config.JWTPrivateKeyPath(), 'utf8'); //use this to generate http://travistidwell.com/jsencrypt/demo/
+      this.publicKEY = fs.readFileSync(Config.JWTPublicKeyPath(), 'utf8');
     } catch (err) {
-      throw new BackendError(
-        `Failed to load JWT keys ${Config.JWTPrivateKeyPath()} ${Config.JWTPublicKeyPath()} ${err}`,
+      throw this.errorFactory.internalServerError(
+        `${CoffeeSecurity.name}.constructor`,
+        `Failed to load JWT keys ${Config.JWTPrivateKeyPath()} ${Config.JWTPublicKeyPath()}`,
+        err,
       );
     }
-    CoffeeSecurity.log.log(
+    this.log.log(
       `Loaded JWT keys ${Config.JWTPrivateKeyPath()} ${Config.JWTPublicKeyPath()}`,
     );
   }
 
-  static hash(raw: string) {
+  hash(raw: string) {
     const hash = crypto.createHash('sha256').update(raw).digest('hex');
     return hash;
   }
-  static generateUUID() {
-    return uuidGen.v4();
-  }
-  static signJWT(roles: string[]) {
-    CoffeeSecurity.log.business(`Signing jwt with roles ${roles}`);
+
+  signJWT(roles: string[]) {
+    this.log.business(
+      `${CoffeeSecurity.name}:${this.signJWT.name}`,
+      `Signing jwt with roles ${roles}`,
+    );
     // PAYLOAD
     const payload = {
       roles: roles,
@@ -56,20 +54,16 @@ export class CoffeeSecurity {
     };
     let token: string;
     try {
-      token = jsonWebToken.sign(
-        payload,
-        CoffeeSecurity.privateKEY,
-        signOptions,
-      );
+      token = jsonWebToken.sign(payload, this.privateKEY, signOptions);
     } catch (err) {
-      CoffeeSecurity.log.error('JWT signing failed', err);
+      this.log.error('JWT signing failed', err);
     }
     return token;
   }
 
-  static verifyJWT(jwt: string): JWTResult {
+  verifyJWT(jwt: string): JWTResult {
     try {
-      const result = jsonWebToken.verify(jwt, CoffeeSecurity.publicKEY);
+      const result = jsonWebToken.verify(jwt, this.publicKEY);
       return { isValid: true, roles: result['roles'] as string[] };
     } catch (err) {
       return { isValid: false, roles: null };

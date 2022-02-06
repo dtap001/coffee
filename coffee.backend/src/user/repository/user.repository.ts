@@ -7,15 +7,20 @@ import { CoffeeSecurity } from 'src/shared/util/security';
 import { UserBO } from '../business/bos/user.bo';
 import { RepositoryError } from 'src/shared/errors/repository.error';
 import { SeedableRepostiory } from 'src/shared/respository/seedable.interface';
-import { BackendError } from 'src/shared/errors/backend.error';
 import { GuidService } from 'src/shared/edge/guid.service';
 
 @Injectable()
 export class UserRepository implements SeedableRepostiory {
-  private readonly log = new CoffeeLogger(StorageService.name, this.guid.value);
-  constructor(private storage: StorageService, private guid: GuidService) {
+  private readonly log = new CoffeeLogger(UserRepository.name, this.guid.value);
+
+  constructor(
+    private storage: StorageService,
+    private guid: GuidService,
+    private security: CoffeeSecurity,
+  ) {
     this.storage.registerEntity(UserEntity);
     this.storage.registerEntity(RoleEntity);
+    this.storage.registerSeedableRepository(this);
     this.log.info('Registered entities');
   }
 
@@ -26,6 +31,7 @@ export class UserRepository implements SeedableRepostiory {
         .getConnection()
         .getRepository(RoleEntity)
         .find();
+
       if (roles == null || roles.length == 0) {
         await this.storage.getConnection().getRepository(RoleEntity).save({
           caption: 'All',
@@ -41,12 +47,14 @@ export class UserRepository implements SeedableRepostiory {
         .getConnection()
         .getRepository(UserEntity)
         .find({ relations: ['roles'] });
-      if (users == null || users.length == 0) {
+
+      if (users) {
         await this.storage
           .getConnection()
           .getRepository(UserEntity)
           .save({
-            passwordHash: CoffeeSecurity.hash('admin'),
+            passwordHash: this.security.hash('admin'),
+            guid: this.guid.generateUUID(),
             email: 'admin',
             name: 'admin',
             roles: rolesX,
@@ -55,29 +63,26 @@ export class UserRepository implements SeedableRepostiory {
 
       return Promise.resolve();
     } catch (err) {
-      this.log.error('ensureDefaultUser error: ' + err, err);
+      this.log.error('ensureDefaultUser error', err);
       return Promise.reject(err);
     }
   }
 
   async getUser(email: string): Promise<UserBO> {
-    try {
-      const user = await this.storage
-        .getConnection()
-        .getRepository(UserEntity)
-        .findOne(
-          {
-            email: email,
-          } as UserEntity,
-          { relations: ['roles'] },
-        );
-      if (!user) {
-        throw new RepositoryError('User not found');
-      }
-      return user.toBO();
-    } catch (err) {
-      this.log.error('Getuser error: ' + err, err);
-      throw new BackendError(err);
+    const user = await this.storage
+      .getConnection()
+      .getRepository(UserEntity)
+      .findOne(
+        {
+          email: email,
+        } as UserEntity,
+        { relations: ['roles'] },
+      );
+
+    if (!user) {
+      throw new RepositoryError('User not found');
     }
+
+    return user.toBO();
   }
 }

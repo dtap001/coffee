@@ -1,6 +1,8 @@
-export class BaseError extends Error {
+/*export class BaseError extends Error {
+  originalError?: Error;
   guid: string;
-  constructor(msg) {
-    super(msg);
+  context: string;
+  constructor(originalError) {
+    super(originalError);
   }
-}
+}*/
