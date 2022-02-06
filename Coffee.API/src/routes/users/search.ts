@@ -13,7 +13,7 @@ export class UsersSearchRoute extends RouteBase {
         return roles.map(r => r.caption);
     }
     getPath(): string {
-        return Config.APIVersion() + "/users/search";
+        return "/users/search";
     }
     getRouteMethod(): RouteMethod {
         return RouteMethod.GET;

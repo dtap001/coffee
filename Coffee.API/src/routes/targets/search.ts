@@ -14,7 +14,7 @@ export class TargetsSearchRoute extends RouteBase {
         return roles.map(r => r.caption);
     }
     getPath(): string {
-        return Config.APIVersion() + "/targets/search";
+        return "/targets/search";
     }
     getRouteMethod(): RouteMethod {
         return RouteMethod.POST;

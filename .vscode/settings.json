@@ -11,4 +11,5 @@
     "mochaExplorer.debuggerPort": 9228,
     "mochaExplorer.exit": true,
     "mochaExplorer.timeout": 10000,
+    "vsicons.presets.nestjs": true,
 }

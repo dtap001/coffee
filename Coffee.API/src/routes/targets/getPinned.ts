@@ -14,7 +14,7 @@ export class TargetsGetPinnedRoute extends RouteBase {
         return roles.map(r => r.caption);
     }
     getPath(): string {
-        return Config.APIVersion() + "/targets/getPinned";
+        return "/targets/getPinned";
     }
     getRouteMethod(): RouteMethod {
         return RouteMethod.GET;

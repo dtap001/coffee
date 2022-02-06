@@ -13,7 +13,7 @@ export class TargetsWakePinned extends RouteBase {
         return roles.map(r => r.caption);
     }
     getPath(): string {
-        return Config.APIVersion() + "/targets/wakePinned";
+        return "/targets/wakePinned";
     }
     getRouteMethod(): RouteMethod {
         return RouteMethod.POST;

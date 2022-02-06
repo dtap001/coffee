@@ -14,7 +14,7 @@ export class JobSaveRoute extends RouteBase {
         return roles.map(r => r.caption);
     }
     getPath(): string {
-        return Config.APIVersion() + "/job/save";
+        return "/job/save";
     }
     getRouteMethod(): RouteMethod {
         return RouteMethod.POST;

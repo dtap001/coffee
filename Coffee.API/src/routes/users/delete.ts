@@ -12,7 +12,7 @@ export class UserDeleteRoute extends RouteBase {
         return roles.map(r => r.caption);
     }
     getPath(): string {
-        return Config.APIVersion() + "/user/delete";
+        return "/user/delete";
     }
     getRouteMethod(): RouteMethod {
         return RouteMethod.POST;
