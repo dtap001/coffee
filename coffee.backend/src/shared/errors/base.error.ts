@@ -1,8 +1,12 @@
-/*export class BaseError extends Error {
-  originalError?: Error;
-  guid: string;
-  context: string;
-  constructor(originalError) {
-    super(originalError);
+import { ValueString } from '../util/value-type';
+
+export class ErrorMessage extends ValueString {
+  constructor(value) {
+    super(value);
   }
-}*/
+}
+export class ErrorOrigin extends ValueString {
+  constructor(value) {
+    super(value);
+  }
+}

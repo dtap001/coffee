@@ -1,9 +1,9 @@
 import { IsEmail, IsNotEmpty } from 'class-validator';
 export class LoginRequestDTO {
-  @IsEmail()
-  @IsNotEmpty()
+ // @IsEmail()
+ // @IsNotEmpty()
   email: string;
-  @IsNotEmpty()
+ // @IsNotEmpty()
   passwordHash: string;
 }
 

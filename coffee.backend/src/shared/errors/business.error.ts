@@ -1,6 +1,8 @@
+import { SessionContext } from '../session-context';
+
 export class BusinessError extends Error {
-  guid: string;
-  context: string;
+  context: SessionContext;
+  origin: string;
   message: string;
   constructor() {
     super();

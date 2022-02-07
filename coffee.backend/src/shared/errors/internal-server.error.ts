@@ -1,7 +1,9 @@
+import { SessionContext } from '../session-context';
+
 export class InternalServerError extends Error {
   originalError?: Error;
-  guid: string;
-  context: string;
+  origin: string;
+  context: SessionContext;
   message: string;
   constructor() {
     super();

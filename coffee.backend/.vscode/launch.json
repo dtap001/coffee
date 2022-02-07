@@ -5,7 +5,9 @@
       "type": "node",
       "request": "launch",
       "name": "Debug Nest Framework",
-      "args": ["${workspaceFolder}/src/main.ts"],
+      "args": [
+        "${workspaceFolder}/src/main.ts"
+      ],
       "runtimeArgs": [
         "--nolazy",
         "-r",
@@ -21,13 +23,17 @@
     },
     {
       "type": "node",
+      "name": "vscode-jest-tests",
       "request": "launch",
-      "name": "DEBUG",
-      "args": ["${workspaceFolder}/src/main.ts"],
-      "runtimeArgs": ["--nolazy", "-r", "ts-node/register"],
-      "sourceMaps": true,
-      "cwd": "${workspaceRoot}",
-      "protocol": "inspector"
-  }
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "disableOptimisticBPs": true,
+      "program": "${workspaceFolder}\\node_modules\\jest\\bin\\jest",
+      "cwd": "${workspaceFolder}",
+      "args": [
+        "--runInBand",
+        "--watchAll=false"
+      ]
+    }
   ]
 }

@@ -1,31 +1,31 @@
 import { Injectable } from '@nestjs/common';
-import { GuidService } from '../edge/guid.service';
+import { SessionContext } from '../session-context';
+import { ErrorMessage, ErrorOrigin } from './base.error';
 import { BusinessError } from './business.error';
 import { InternalServerError } from './internal-server.error';
+
 @Injectable()
 export class ErrorFactory {
-  constructor(private guid: GuidService) {}
-
-  business(context: string, msg: string) {
+  business(msg: ErrorMessage, origin: ErrorOrigin, context?: SessionContext) {
     const err = new BusinessError();
+    err.origin = origin.value;
     err.context = context;
-    err.guid = this.guid.value;
-    err.message = msg;
+    err.message = msg.value;
 
     return err;
   }
 
   internalServerError(
-    context: string,
-    msg: string,
+    msg: ErrorMessage,
+    origin: ErrorOrigin,
     originalError?: Error,
+    context?: SessionContext,
   ): InternalServerError {
     const err = new InternalServerError();
     err.originalError = originalError;
-    err.message = msg;
-    err.guid = this.guid.value;
+    err.message = msg.value;
+    err.origin = origin.value;
     err.context = context;
-
     return err;
   }
 }

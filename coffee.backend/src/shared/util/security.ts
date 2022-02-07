@@ -1,19 +1,20 @@
 import * as crypto from 'crypto';
 import * as jsonWebToken from 'jsonwebtoken';
 import * as fs from 'fs';
-import { CoffeeLogger } from './logger';
+import { CoffeeLogger, LogMessage, LogOrigin } from './logger';
 import { Config } from './config';
 import { Injectable } from '@nestjs/common';
-import { GuidService } from '../edge/guid.service';
 import { ErrorFactory } from '../errors/error.factory';
+import uuidGen = require('uuid');
+import { ErrorMessage } from '../errors/base.error';
 
 @Injectable()
 export class CoffeeSecurity {
-  private readonly log = new CoffeeLogger(CoffeeSecurity.name, this.guid.value);
+  private readonly log = new CoffeeLogger(CoffeeSecurity.name);
   private privateKEY: string;
   private publicKEY: string;
 
-  constructor(private guid: GuidService, private errorFactory: ErrorFactory) {}
+  constructor(private errorFactory: ErrorFactory) {}
 
   init() {
     try {
@@ -21,13 +22,17 @@ export class CoffeeSecurity {
       this.publicKEY = fs.readFileSync(Config.JWTPublicKeyPath(), 'utf8');
     } catch (err) {
       throw this.errorFactory.internalServerError(
-        `${CoffeeSecurity.name}.constructor`,
-        `Failed to load JWT keys ${Config.JWTPrivateKeyPath()} ${Config.JWTPublicKeyPath()}`,
+        new ErrorMessage(
+          `Failed to load JWT keys ${Config.JWTPrivateKeyPath()} ${Config.JWTPublicKeyPath()}`,
+        ),
         err,
       );
     }
-    this.log.log(
-      `Loaded JWT keys ${Config.JWTPrivateKeyPath()} ${Config.JWTPublicKeyPath()}`,
+    this.log.info(
+      new LogMessage(
+        `Loaded JWT keys ${Config.JWTPrivateKeyPath()} ${Config.JWTPublicKeyPath()}`,
+      ),
+      new LogOrigin(this.init.name),
     );
   }
 
@@ -38,8 +43,8 @@ export class CoffeeSecurity {
 
   signJWT(roles: string[]) {
     this.log.business(
-      `${CoffeeSecurity.name}:${this.signJWT.name}`,
-      `Signing jwt with roles ${roles}`,
+      new LogMessage(`Signing jwt with roles ${roles}`),
+      new LogOrigin(this.signJWT.name),
     );
     // PAYLOAD
     const payload = {
@@ -56,7 +61,7 @@ export class CoffeeSecurity {
     try {
       token = jsonWebToken.sign(payload, this.privateKEY, signOptions);
     } catch (err) {
-      this.log.error('JWT signing failed', err);
+      this.log.error(new LogMessage('JWT signing failed'), err);
     }
     return token;
   }
@@ -68,6 +73,10 @@ export class CoffeeSecurity {
     } catch (err) {
       return { isValid: false, roles: null };
     }
+  }
+
+  generateUUID() {
+    return uuidGen.v4();
   }
 }
 
