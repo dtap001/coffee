@@ -36,7 +36,6 @@ export class CoffeeLogger {
   }
 
   errorFromObject(err: Error, origin: string, context?: SessionContext) {
-    this.errorFromObject.caller;
     this.logger.error(
       this.buildLogMsg(err.message, origin, 'CRITICAL', context),
       err.stack,

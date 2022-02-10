@@ -4,6 +4,7 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 import { AppModule } from './app.module';
 import { StorageService } from './shared/respository/storage.service';
 import { SystemLogger } from './shared/util/logger';
+import { CoffeeSecurity } from './shared/util/security';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
@@ -12,6 +13,8 @@ async function bootstrap() {
   const log = new SystemLogger('Main');
   app.useLogger(app.get(SystemLogger));
 
+  const security = app.get(CoffeeSecurity);
+  security.init();
   const storage = app.get(StorageService);
   await storage.initialize();
   log.info('Storage init is done');

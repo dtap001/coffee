@@ -13,7 +13,6 @@ export class StorageService implements SeedableRepostiory {
   private entityList = [];
   private seedableRepositories: SeedableRepostiory[] = [];
 
-  constructor(private errorFactory: ErrorFactory) {}
 
   registerEntity(entity) {
     this.entityList.push(entity);
@@ -43,7 +42,7 @@ export class StorageService implements SeedableRepostiory {
         new LogOrigin(this.initialize.name),
       );
     } catch (err) {
-      throw this.errorFactory.internalServerError(
+      throw ErrorFactory.internalServerError(
         new ErrorMessage(`Could not connect to the DB ${err} `),
         new ErrorOrigin(`${StorageService.name}${this.initialize.name}`),
         err,

@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { ErrorMessage, ErrorOrigin } from 'src/shared/errors/base.error';
-import { ErrorFactory } from 'src/shared/errors/error.factory';
-import { RepositoryError } from 'src/shared/errors/repository.error';
-import { CoffeeLogger, LogMessage, LogOrigin } from 'src/shared/util/logger';
-import { CoffeeSecurity } from 'src/shared/util/security';
+import { ErrorMessage, ErrorOrigin } from '../../shared/errors/base.error';
+import { ErrorFactory } from '../../shared/errors/error.factory';
+import { RepositoryError } from '../../shared/errors/repository.error';
+import { CoffeeLogger, LogMessage, LogOrigin } from '../../shared/util/logger';
+import { CoffeeSecurity } from '../../shared/util/security';
 import { UserRepository } from '../repository/user.repository';
 import { UserBO } from './bos/user.bo';
 
@@ -12,7 +12,6 @@ export class UserService {
   private readonly log = new CoffeeLogger(UserService.name);
   constructor(
     private userRepository: UserRepository,
-    private errorFactory: ErrorFactory,
     private security: CoffeeSecurity,
   ) {}
 
@@ -22,19 +21,19 @@ export class UserService {
   ): Promise<{ token: string; user: UserBO }> {
     const user = await this.userRepository.getUser(email).catch(err => {
       if (err.constructor === RepositoryError) {
-        throw this.errorFactory.business(
+        throw ErrorFactory.business(
           new ErrorMessage('Invalid login attempt!'),
           new ErrorOrigin(`${UserService.name}:${this.validateLogin.name}`),
         );
       } else {
-        throw this.errorFactory.internalServerError(
+        throw ErrorFactory.internalServerError(
           new ErrorMessage(err),
           new ErrorOrigin(`${UserService.name}:${this.validateLogin.name}`),
         );
       }
     });
     if (user.passwordHash !== passwordHash) {
-      throw this.errorFactory.business(
+      throw ErrorFactory.business(
         new ErrorMessage('Invalid login attempt!'),
         new ErrorOrigin(`${UserService.name}:${this.validateLogin.name}`),
       );

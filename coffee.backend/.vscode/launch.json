@@ -4,7 +4,7 @@
     {
       "type": "node",
       "request": "launch",
-      "name": "Debug Nest Framework",
+      "name": "Debug NEST",
       "args": [
         "${workspaceFolder}/src/main.ts"
       ],
@@ -23,12 +23,12 @@
     },
     {
       "type": "node",
-      "name": "vscode-jest-tests",
+      "name": "Debug JEST",
       "request": "launch",
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen",
       "disableOptimisticBPs": true,
-      "program": "${workspaceFolder}\\node_modules\\jest\\bin\\jest",
+      "program": "${workspaceFolder}/node_modules/jest/bin/jest",
       "cwd": "${workspaceFolder}",
       "args": [
         "--runInBand",

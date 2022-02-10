@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
-import { CoffeeLogger, LogMessage, LogOrigin } from 'src/shared/util/logger';
-import { StorageService } from 'src/shared/respository/storage.service';
+import { CoffeeLogger, LogMessage, LogOrigin } from '../../shared/util/logger';
+import { StorageService } from '../../shared/respository/storage.service';
 import { RoleEntity } from './entities/role.entity';
 import { UserEntity } from './entities/user.entity';
-import { CoffeeSecurity } from 'src/shared/util/security';
+import { CoffeeSecurity } from '../../shared/util/security';
 import { UserBO } from '../business/bos/user.bo';
-import { RepositoryError } from 'src/shared/errors/repository.error';
-import { SeedableRepostiory } from 'src/shared/respository/seedable.interface';
+import { RepositoryError } from '../../shared/errors/repository.error';
+import { SeedableRepostiory } from '../../shared/respository/seedable.interface';
 
 @Injectable()
 export class UserRepository implements SeedableRepostiory {
@@ -73,7 +73,6 @@ export class UserRepository implements SeedableRepostiory {
   }
 
   async getUser(email: string): Promise<UserBO> {
-    this.storage = null;
     const user = await this.storage
       .getConnection()
       .getRepository(UserEntity)

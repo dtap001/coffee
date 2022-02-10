@@ -5,7 +5,7 @@ import { CoffeeLogger, LogMessage, LogOrigin } from './logger';
 import { Config } from './config';
 import { Injectable } from '@nestjs/common';
 import { ErrorFactory } from '../errors/error.factory';
-import uuidGen = require('uuid');
+import * as uuid from 'uuid';
 import { ErrorMessage } from '../errors/base.error';
 
 @Injectable()
@@ -14,14 +14,12 @@ export class CoffeeSecurity {
   private privateKEY: string;
   private publicKEY: string;
 
-  constructor(private errorFactory: ErrorFactory) {}
-
   init() {
     try {
       this.privateKEY = fs.readFileSync(Config.JWTPrivateKeyPath(), 'utf8'); //use this to generate http://travistidwell.com/jsencrypt/demo/
       this.publicKEY = fs.readFileSync(Config.JWTPublicKeyPath(), 'utf8');
     } catch (err) {
-      throw this.errorFactory.internalServerError(
+      throw ErrorFactory.internalServerError(
         new ErrorMessage(
           `Failed to load JWT keys ${Config.JWTPrivateKeyPath()} ${Config.JWTPublicKeyPath()}`,
         ),
@@ -61,7 +59,7 @@ export class CoffeeSecurity {
     try {
       token = jsonWebToken.sign(payload, this.privateKEY, signOptions);
     } catch (err) {
-      this.log.error(new LogMessage('JWT signing failed'), err);
+      this.log.errorFromObject(err, 'JWT signing failed');
     }
     return token;
   }
@@ -76,7 +74,7 @@ export class CoffeeSecurity {
   }
 
   generateUUID() {
-    return uuidGen.v4();
+    return uuid.v4();
   }
 }
 

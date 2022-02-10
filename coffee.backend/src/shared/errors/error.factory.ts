@@ -1,12 +1,14 @@
-import { Injectable } from '@nestjs/common';
 import { SessionContext } from '../session-context';
 import { ErrorMessage, ErrorOrigin } from './base.error';
 import { BusinessError } from './business.error';
 import { InternalServerError } from './internal-server.error';
 
-@Injectable()
 export class ErrorFactory {
-  business(msg: ErrorMessage, origin: ErrorOrigin, context?: SessionContext) {
+  static business(
+    msg: ErrorMessage,
+    origin: ErrorOrigin,
+    context?: SessionContext,
+  ) {
     const err = new BusinessError();
     err.origin = origin.value;
     err.context = context;
@@ -15,7 +17,7 @@ export class ErrorFactory {
     return err;
   }
 
-  internalServerError(
+  static internalServerError(
     msg: ErrorMessage,
     origin: ErrorOrigin,
     originalError?: Error,

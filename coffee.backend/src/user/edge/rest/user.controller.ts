@@ -1,8 +1,8 @@
 import { Controller, Post, Body, Res, HttpStatus } from '@nestjs/common';
-import { UserService } from 'src/user/business/user.service';
+import { UserService } from '../../../user/business/user.service';
 import { LoginRequestDTO, LoginResponseDTO } from '../dto/login.dto';
 import { Response } from 'express';
-import { BaseController } from 'src/shared/edge/base.controller';
+import { BaseController } from '../../../shared/edge/base.controller';
 
 @Controller('user')
 export class UserController extends BaseController {

@@ -9,17 +9,17 @@ import { Response } from 'express';
 import { BusinessError } from '../errors/business.error';
 import { InternalServerError } from '../errors/internal-server.error';
 import { CoffeeLogger, LogMessage, LogOrigin } from '../util/logger';
-import { DTOFactory } from './dto.factory';
+import {
+  YouFuckedUpResponseDTO,
+  WeFuckedUpResponseDTO,
+} from './error-response.dto';
 import { SessionContextService } from './session-context.service';
 
 @Catch(Error)
 export class ErrorFilterREST implements ExceptionFilter {
   private readonly log = new CoffeeLogger(ErrorFilterREST.name);
 
-  constructor(
-    private dtoFactory: DTOFactory,
-    private sessionContext: SessionContextService,
-  ) {}
+  constructor(private sessionContext: SessionContextService) {}
 
   catch(error: Error, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
@@ -37,9 +37,7 @@ export class ErrorFilterREST implements ExceptionFilter {
         return response
           .status(HttpStatus.BAD_REQUEST)
           .json(
-            this.dtoFactory.youFuckedUpResponse(
-              `${err.message} ${err.response.message}`,
-            ),
+            this.youFuckedUpResponse(`${err.message} ${err.response.message}`),
           );
       case BusinessError:
         err = error as BusinessError;
@@ -50,7 +48,7 @@ export class ErrorFilterREST implements ExceptionFilter {
         );
         return response
           .status(HttpStatus.BAD_REQUEST)
-          .json(this.dtoFactory.youFuckedUpResponse(error.message));
+          .json(this.youFuckedUpResponse(error.message));
       case InternalServerError:
         err = error as InternalServerError;
         this.log.error(
@@ -60,7 +58,7 @@ export class ErrorFilterREST implements ExceptionFilter {
         );
         return response
           .status(HttpStatus.INTERNAL_SERVER_ERROR)
-          .json(this.dtoFactory.weFuckedUpResponse());
+          .json(this.weFuckedUpResponse());
       default:
         this.log.errorFromObject(
           error,
@@ -69,7 +67,21 @@ export class ErrorFilterREST implements ExceptionFilter {
         );
         return response
           .status(HttpStatus.INTERNAL_SERVER_ERROR)
-          .json(this.dtoFactory.weFuckedUpResponse());
+          .json(this.weFuckedUpResponse());
     }
+  }
+
+  private youFuckedUpResponse(message: string): YouFuckedUpResponseDTO {
+    const result = new YouFuckedUpResponseDTO();
+    result.message = message;
+    result.guid = this.sessionContext.context.guid;
+    return result;
+  }
+
+  private weFuckedUpResponse(): WeFuckedUpResponseDTO {
+    const result = new WeFuckedUpResponseDTO();
+    result.message = 'The dog ate our homework.';
+    result.guid = this.sessionContext.context.guid;
+    return result;
   }
 }

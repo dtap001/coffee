@@ -1,5 +1,5 @@
-import { CoffeeEntity } from 'src/shared/respository/entity.interface';
-import { UserBO } from 'src/user/business/bos/user.bo';
+import { CoffeeEntity } from '../../../shared/respository/entity.interface';
+import { UserBO } from '../../../user/business/bos/user.bo';
 import {
   Entity,
   Column,
