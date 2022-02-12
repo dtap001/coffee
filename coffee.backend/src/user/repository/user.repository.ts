@@ -35,7 +35,7 @@ export class UserRepository implements SeedableRepostiory {
 
       if (roles == null || roles.length == 0) {
         await this.storage.getConnection().getRepository(RoleEntity).save({
-          caption: 'All',
+          caption: 'admin',
         });
       }
 
@@ -72,13 +72,30 @@ export class UserRepository implements SeedableRepostiory {
     }
   }
 
-  async getUser(email: string): Promise<UserBO> {
+  async getUserByEmail(email: string): Promise<UserBO> {
     const user = await this.storage
       .getConnection()
       .getRepository(UserEntity)
       .findOne(
         {
           email: email,
+        } as UserEntity,
+        { relations: ['roles'] },
+      );
+
+    if (!user) {
+      throw new RepositoryError('User not found');
+    }
+
+    return user.toBO();
+  }
+  async getUserByGuid(guid: string): Promise<UserBO> {
+    const user = await this.storage
+      .getConnection()
+      .getRepository(UserEntity)
+      .findOne(
+        {
+          guid: guid,
         } as UserEntity,
         { relations: ['roles'] },
       );

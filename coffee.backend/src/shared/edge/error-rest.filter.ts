@@ -4,7 +4,10 @@ import {
   ArgumentsHost,
   HttpStatus,
   BadRequestException,
+  UnauthorizedException,
+  ForbiddenException,
 } from '@nestjs/common';
+import { debug } from 'console';
 import { Response } from 'express';
 import { BusinessError } from '../errors/business.error';
 import { InternalServerError } from '../errors/internal-server.error';
@@ -36,9 +39,7 @@ export class ErrorFilterREST implements ExceptionFilter {
         );
         return response
           .status(HttpStatus.BAD_REQUEST)
-          .json(
-            this.youFuckedUpResponse(`${err.message} ${err.response.message}`),
-          );
+          .json(this.youFuckedUpResponse(`${err.message}`));
       case BusinessError:
         err = error as BusinessError;
         this.log.business(
@@ -59,7 +60,14 @@ export class ErrorFilterREST implements ExceptionFilter {
         return response
           .status(HttpStatus.INTERNAL_SERVER_ERROR)
           .json(this.weFuckedUpResponse());
+      case ForbiddenException:
+      case UnauthorizedException:
+        err = error as UnauthorizedException;
+        return response
+          .status(HttpStatus.UNAUTHORIZED)
+          .json(this.youFuckedUpResponse(`${err.message}`));
       default:
+        debugger;
         this.log.errorFromObject(
           error,
           this.catch.name,

@@ -19,7 +19,7 @@ export class UserService {
     email: string,
     passwordHash: string,
   ): Promise<{ token: string; user: UserBO }> {
-    const user = await this.userRepository.getUser(email).catch(err => {
+    const user = await this.userRepository.getUserByEmail(email).catch(err => {
       if (err.constructor === RepositoryError) {
         throw ErrorFactory.business(
           new ErrorMessage('Invalid login attempt!'),
@@ -42,7 +42,7 @@ export class UserService {
       new LogMessage('Valid login attempt.'),
       new LogOrigin(this.validateLogin.name),
     );
-    const signedJWT = this.security.signJWT(user.roles.map(r => r.caption));
+    const signedJWT = this.security.signJWT(user.guid,user.roles.map(r => r.caption));
     return { token: signedJWT, user: user };
   }
 }

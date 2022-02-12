@@ -39,14 +39,17 @@ export class CoffeeSecurity {
     return hash;
   }
 
-  signJWT(roles: string[]) {
+  signJWT(guid: string, roles: string[]) {
     this.log.business(
       new LogMessage(`Signing jwt with roles ${roles}`),
       new LogOrigin(this.signJWT.name),
     );
     // PAYLOAD
     const payload = {
-      roles: roles,
+      user: {
+        roles: roles,
+        guid: guid,
+      } as JWTUser,
     }; // PRIVATE and PUBLIC key
     const signOptions = {
       issuer: 'Coffee.API',
@@ -64,12 +67,12 @@ export class CoffeeSecurity {
     return token;
   }
 
-  verifyJWT(jwt: string): JWTResult {
+  decodeJWT(jwt: string): JWTResult {
     try {
       const result = jsonWebToken.verify(jwt, this.publicKEY);
-      return { isValid: true, roles: result['roles'] as string[] };
+      return { isValid: true, user: result.user };
     } catch (err) {
-      return { isValid: false, roles: null };
+      return { isValid: false, user: null };
     }
   }
 
@@ -77,8 +80,16 @@ export class CoffeeSecurity {
     return uuid.v4();
   }
 }
+export enum CoffeeRole {
+  ADMIN = 'admin',
+}
 
 export class JWTResult {
   isValid: boolean;
+  user: JWTUser;
+}
+
+export class JWTUser {
   roles: string[];
+  guid: string;
 }
