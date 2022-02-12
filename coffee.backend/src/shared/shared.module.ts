@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { APP_GUARD } from '@nestjs/core';
 import { BaseController } from './edge/base.controller';
 import { SessionContextService } from './edge/session-context.service';
 import { StorageService } from './respository/storage.service';

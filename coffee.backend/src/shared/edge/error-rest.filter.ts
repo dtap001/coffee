@@ -7,7 +7,6 @@ import {
   UnauthorizedException,
   ForbiddenException,
 } from '@nestjs/common';
-import { debug } from 'console';
 import { Response } from 'express';
 import { BusinessError } from '../errors/business.error';
 import { InternalServerError } from '../errors/internal-server.error';

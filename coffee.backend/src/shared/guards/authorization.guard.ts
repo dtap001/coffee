@@ -3,16 +3,21 @@ import {
   CanActivate,
   ExecutionContext,
   UnauthorizedException,
+  Scope,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { Observable } from 'rxjs';
 import { RoleBO } from 'src/user/business/bos/role.bo';
+import { SessionContextService } from '../edge/session-context.service';
 import { PUBLIC_METADATAKEY } from './public.guard';
 import { ROLES_METADATA_KEY } from './role-decorator.guard';
 
-@Injectable()
+@Injectable({ scope: Scope.REQUEST })
 export class AuthorizationGuard implements CanActivate {
-  constructor(private reflector: Reflector) {}
+  constructor(
+    private reflector: Reflector,
+    private sessionContext: SessionContextService,
+  ) {}
   canActivate(
     context: ExecutionContext,
   ): boolean | Promise<boolean> | Observable<boolean> {
@@ -42,6 +47,7 @@ export class AuthorizationGuard implements CanActivate {
         return false;
       }
     }
+   this.sessionContext.setUser(request.user);
     return true;
   }
 }

@@ -3,6 +3,7 @@ import {
   CanActivate,
   ExecutionContext,
   UnauthorizedException,
+  Scope,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { IncomingMessage } from 'http';
@@ -10,7 +11,7 @@ import { UserRepository } from 'src/user/repository/user.repository';
 import { CoffeeSecurity } from '../util/security';
 import { PUBLIC_METADATAKEY } from './public.guard';
 
-@Injectable()
+@Injectable({ scope: Scope.REQUEST })
 export class AuthenticationGuard implements CanActivate {
   constructor(
     private security: CoffeeSecurity,
@@ -19,7 +20,6 @@ export class AuthenticationGuard implements CanActivate {
   ) {}
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
-    debugger;
     const isPublic = this.reflector.get<string[]>(
       PUBLIC_METADATAKEY,
       context.getHandler(),

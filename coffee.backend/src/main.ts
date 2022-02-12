@@ -1,5 +1,5 @@
 import { ValidationPipe } from '@nestjs/common';
-import { NestFactory } from '@nestjs/core';
+import { NestFactory, Reflector } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { AppModule } from './app.module';
 import { StorageService } from './shared/respository/storage.service';
@@ -24,5 +24,6 @@ async function bootstrap() {
 try {
   bootstrap();
 } catch (err) {
+  debugger;
   console.error(`Bootsrapping failed:`, err);
 }

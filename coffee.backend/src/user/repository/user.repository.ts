@@ -26,7 +26,7 @@ export class UserRepository implements SeedableRepostiory {
   }
 
   async seed() {
-    this.log.info(new LogMessage('Seeding'), new LogOrigin(this.seed.name));
+    this.log.info(new LogMessage('Starting'), new LogOrigin(this.seed.name));
     try {
       const roles = await this.storage
         .getConnection()

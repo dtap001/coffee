@@ -5,7 +5,7 @@ import {
   Res,
   HttpStatus,
   Get,
-  UseGuards,
+  Req,
 } from '@nestjs/common';
 import { UserService } from '../../../user/business/user.service';
 import { LoginRequestDTO, LoginResponseDTO } from '../dto/login.dto';
@@ -13,10 +13,14 @@ import { Response } from 'express';
 import { BaseController } from '../../../shared/edge/base.controller';
 import { AdminRole } from 'src/shared/guards/role-decorator.guard';
 import { Public } from 'src/shared/guards/public.guard';
+import { SessionContextService } from 'src/shared/edge/session-context.service';
 
 @Controller('user')
 export class UserController extends BaseController {
-  constructor(private readonly userService: UserService) {
+  constructor(
+    private readonly userService: UserService,
+    private sessionContext: SessionContextService,
+  ) {
     super();
   }
   @Public()
@@ -34,9 +38,9 @@ export class UserController extends BaseController {
 
   @AdminRole()
   @Get('profile')
-  async profile(@Res() res: Response) {
+  async profile(@Req() req, @Res() res: Response) {
     return res.status(HttpStatus.OK).json({
-      hello: 'bello',
+      hello: `szevasz geci! ${this.sessionContext.context.user.email}`,
     });
   }
 }
