@@ -52,7 +52,7 @@
     "inversify": "^5.0.1",
     "iprange": "^0.1.0",
     "jsonwebtoken": "^8.5.1",
-    "moment": "^2.24.0",
+    "moment": "^2.29.2",
     "node-arp": "^1.0.6",
     "node-schedule": "latest",
     "ping": "^0.2.2",
