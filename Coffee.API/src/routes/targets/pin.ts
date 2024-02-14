@@ -12,7 +12,7 @@ export class TargetsPinRoute extends RouteBase {
         return roles.map(r => r.caption);
     }
     getPath(): string {
-        return Config.APIVersion() + "/targets/pin";
+        return "/targets/pin";
     }
     getRouteMethod(): RouteMethod {
         return RouteMethod.POST;

@@ -68,3 +68,8 @@ Coffee.API/coffee.sqlite
 Coffee.API/coffee.sqlite
 Coffee.API/client
 Coffee.API/coffee.xsqlite
+coffee.backend/coffee.sqlite
+coffee.backend/coffee.sqlite
+coffee.backend/.jwt/private.pem
+coffee.backend/.jwt/public.pem
+coffee.backend/coffee.sqlite

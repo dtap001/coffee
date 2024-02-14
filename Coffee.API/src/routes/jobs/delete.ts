@@ -13,7 +13,7 @@ export class JobDeleteRoute extends RouteBase {
         return roles.map(r => r.caption);
     }
     getPath(): string {
-        return Config.APIVersion() + "/job/delete";
+        return "/job/delete";
     }
     getRouteMethod(): RouteMethod {
         return RouteMethod.POST;

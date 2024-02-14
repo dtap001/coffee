@@ -14,7 +14,7 @@ export class DiscoveryGetInterfacesRoute extends RouteBase {
         return roles.map(r => r.caption);
     }
     getPath(): string {
-        return Config.APIVersion() + "/discovery/getInterfaces";
+        return "/discovery/getInterfaces";
     }
     getRouteMethod(): RouteMethod {
         return RouteMethod.POST;

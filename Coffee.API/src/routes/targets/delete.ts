@@ -1,6 +1,5 @@
 import { RouteBase, RouteMethod as RouteMethod, RequestModel, ResponseContentModel, RouteSuccessResult, RouteErrorResult, BaseEror, RouteError } from "../route";
 import * as express from "express"
-import { Config } from "../../config";
 import TYPES from "../../types";
 import container from "../../diContainer";
 import { CoffeeStorage } from "../../storage/storage";
@@ -12,7 +11,7 @@ export class TargetDeleteRoute extends RouteBase {
         return roles.map(r => r.caption);
     }
     getPath(): string {
-        return Config.APIVersion() + "/targets/delete";
+        return "/targets/delete";
     }
     getRouteMethod(): RouteMethod {
         return RouteMethod.POST;

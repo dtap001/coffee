@@ -1,5 +1,6 @@
 import { RouteBase, RouteMethod } from "./route";
 import { Log } from "../log";
+import { Config } from "../config";
 
 export class RouteFactory {
     private app;
@@ -9,7 +10,7 @@ export class RouteFactory {
 
     register<T extends RouteBase>(routeType: (new () => T)) {
         let route = new routeType();
-        let path = "/api" + route.getPath();
+        let path = "/api" + Config.APIVersion() + route.getPath();
         switch (route.getRouteMethod()) {
             case RouteMethod.GET:
                 this.app.get(path,

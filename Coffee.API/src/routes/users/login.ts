@@ -13,7 +13,7 @@ export class UserLoginRoute extends RouteBase {
         throw new Error("Method not implemented.");
     }
     getPath(): string {
-        return Config.APIVersion() + "/user/login";
+        return "/user/login";
     }
     getRouteMethod(): RouteMethod {
         return RouteMethod.POST;

@@ -14,7 +14,7 @@ export class DiscoveryStartRoute extends RouteBase {
         return roles.map(r => r.caption);
     }
     getPath(): string {
-        return Config.APIVersion() + "/discovery/start";
+        return "/discovery/start";
     }
     getRouteMethod(): RouteMethod {
         return RouteMethod.POST;
